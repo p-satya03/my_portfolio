@@ -10,6 +10,17 @@
         "test",
         "demo"
       ]
-    }
+    },
+    {
+      "file": "weekly/20thJuly Risk Alert Report.pdf",
+      "title": "Sample Weekly Brief11",
+      "description": "A test report to verify the system works.",
+      "date": "2026-03-20",
+      "type": "weekly",
+      "tags": [
+        "test",
+        "demo"
+      ]
+    },
   ]
 }
