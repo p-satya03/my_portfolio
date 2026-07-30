@@ -16,7 +16,7 @@
 
     <style>
         /* ============================================================
-               MAIN STYLES (same as before, compact)
+               MAIN STYLES (unchanged)
                ============================================================ */
         *,
         *::before,
@@ -1636,7 +1636,7 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT – FAST & SYNCED
+    JAVASCRIPT – FAST & SYNCED (FIXED SPACES IN URL)
     ============================================================ -->
     <script>
         (function() {
@@ -1715,6 +1715,16 @@
             let currentManifestSha = null;
             let observer = null;
 
+            // ---- CRITICAL FIX: Build safe URL with encoded spaces ----
+            function buildPdfUrl(filePath) {
+                // Split by '/' so we don't encode the slashes
+                const parts = filePath.split('/');
+                // Encode each part individually (handles spaces, special chars)
+                const encodedParts = parts.map(part => encodeURIComponent(part));
+                // Join back with '/'
+                return PDF_BASE + encodedParts.join('/');
+            }
+
             // ---- Helpers ----
             function formatDate(iso) {
                 if (!iso) return 'Unknown date';
@@ -1761,13 +1771,14 @@
                 emptyState.style.display = 'none';
             }
 
-            // ---- Lazy thumbnail renderer ----
+            // ---- Lazy thumbnail renderer (FIXED: uses buildPdfUrl) ----
             function renderThumbnailLazy(file, container) {
-                const url = PDF_BASE + file;
-
-                // Check if already loaded
+                // Already loaded?
                 if (container.dataset.loaded === 'true') return;
                 container.dataset.loaded = 'true';
+
+                // Build safe URL
+                const url = buildPdfUrl(file);
 
                 const placeholder = container.querySelector('.placeholder');
                 if (!placeholder) return;
@@ -1788,7 +1799,6 @@
                     })
                     .then(function(page) {
                         const viewport = page.getViewport({ scale: 1 });
-                        // Smaller thumbnails = faster
                         const scale = Math.min(
                             (container.clientWidth || 300) / viewport.width,
                             (container.clientHeight || 200) / viewport.height
@@ -1827,7 +1837,7 @@
                     });
             }
 
-            // ---- Setup IntersectionObserver for lazy loading ----
+            // ---- Setup IntersectionObserver ----
             function setupLazyLoading() {
                 if (observer) observer.disconnect();
 
@@ -1852,7 +1862,7 @@
                 });
             }
 
-            // ---- Render reports (main page) ----
+            // ---- Render reports ----
             function renderReports(reports) {
                 emptyState.style.display = 'none';
 
@@ -1921,7 +1931,6 @@
                     });
                 });
 
-                // Setup lazy loading for thumbnails
                 setupLazyLoading();
             }
 
@@ -1952,9 +1961,8 @@
                 updateStatsAndBadges(allReports);
             }
 
-            // ---- Load manifest (main page – uses GitHub API for consistency) ----
+            // ---- Load manifest ----
             async function loadManifest(useCache = true) {
-                // Check cache
                 if (useCache) {
                     try {
                         const cached = sessionStorage.getItem(CACHE_KEY);
@@ -1971,18 +1979,12 @@
                     } catch (e) { /* ignore */ }
                 }
 
-                // Show skeletons while loading
                 renderSkeletons(6);
 
                 try {
-                    // Try GitHub API first (consistent with admin panel)
                     const token = sessionStorage.getItem('spsss_admin_token');
-                    const headers = {
-                        'Accept': 'application/vnd.github.v3+json'
-                    };
-                    if (token) {
-                        headers['Authorization'] = `token ${token}`;
-                    }
+                    const headers = { 'Accept': 'application/vnd.github.v3+json' };
+                    if (token) headers['Authorization'] = `token ${token}`;
 
                     const response = await fetch(GITHUB_API_URL, { headers });
 
@@ -1995,7 +1997,6 @@
                         allReports = list;
                         currentManifestSha = data.sha;
 
-                        // Cache it
                         sessionStorage.setItem(CACHE_KEY, JSON.stringify({
                             reports: list,
                             timestamp: Date.now()
@@ -2006,7 +2007,7 @@
                         return;
                     }
 
-                    // Fallback: try relative path
+                    // Fallback: relative path
                     const fallbackRes = await fetch(MANIFEST_PATH);
                     if (fallbackRes.ok) {
                         const data = await fallbackRes.json();
@@ -2024,7 +2025,6 @@
                     throw new Error('Manifest not found');
                 } catch (err) {
                     console.warn('Manifest load error:', err);
-                    // Try one last time with cache
                     try {
                         const cached = sessionStorage.getItem(CACHE_KEY);
                         if (cached) {
@@ -2036,7 +2036,6 @@
                         }
                     } catch (e) { /* ignore */ }
 
-                    // Show empty state
                     allReports = [];
                     updateStatsAndBadges(allReports);
                     filterAndRender();
@@ -2054,9 +2053,9 @@
                 }
             }
 
-            // ---- PDF modal ----
+            // ---- PDF modal (FIXED: uses buildPdfUrl) ----
             function openPdf(file) {
-                const url = PDF_BASE + file;
+                const url = buildPdfUrl(file);
                 modalTitle.textContent = getFileName(file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
                 downloadBtn.href = url;
                 modalBody.innerHTML =
@@ -2162,7 +2161,7 @@
             });
 
             // ================================================================
-            //  ADMIN PANEL
+            //  ADMIN PANEL (unchanged, but works with the fix)
             // ================================================================
 
             function openAdmin() { adminOverlay.classList.add('open'); }
@@ -2176,7 +2175,6 @@
                 }
             }
 
-            // Triple-click trigger
             let clickCount = 0;
             let clickTimer = null;
             adminTrigger.addEventListener('click', function(e) {
@@ -2200,7 +2198,6 @@
             adminClose.addEventListener('click', closeAdmin);
             adminOverlay.addEventListener('click', function(e) { if (e.target === adminOverlay) closeAdmin(); });
 
-            // Admin Login
             async function attemptAdminLogin(silent = false) {
                 const pass = adminPassword.value;
                 const token = githubToken.value.trim();
@@ -2234,7 +2231,6 @@
             adminPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
             githubToken.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
 
-            // Load manifest for admin
             function loadManifestForAdmin() {
                 const token = sessionStorage.getItem('spsss_admin_token');
                 if (!token) return;
@@ -2269,7 +2265,6 @@
                         adminFileStatus.textContent = `📄 Loaded (${list.length} reports)`;
                         setAdminStatus('success', `Loaded ${list.length} reports from GitHub.`);
 
-                        // Also update main page
                         allReports = list;
                         updateStatsAndBadges(allReports);
                         filterAndRender();
@@ -2288,7 +2283,6 @@
 
             adminRefreshBtn.addEventListener('click', function() {
                 loadManifestForAdmin();
-                // Also refresh main page
                 loadManifest(false);
             });
 
@@ -2427,9 +2421,7 @@
                         adminFileStatus.textContent = `✅ Saved (${reports.length} reports)`;
                         setAdminStatus('success', `Successfully saved ${reports.length} reports to GitHub.`);
                         adminSaveBtn.disabled = false;
-                        // Refresh main page
                         loadManifest(false);
-                        // Refresh admin
                         loadManifestForAdmin();
                     })
                     .catch(err => {
