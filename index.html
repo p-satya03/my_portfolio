@@ -1,70 +1,582 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>My Security Reports</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Research Reports | Your Name</title>
+  <meta name="description" content="A clean portfolio site for research reports, briefings, archives, and contact details." />
+  <style>
+    :root {
+      --bg: #f7f8fb;
+      --surface: #ffffff;
+      --surface-2: #f2f4f8;
+      --text: #1f2937;
+      --muted: #5b6472;
+      --line: #dbe1ea;
+      --accent: #2457d6;
+      --accent-2: #163a8a;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.06);
+      --radius: 18px;
+      --max: 1120px;
+    }
 
-<style>
-body{
-    max-width:800px;
-    margin:40px auto;
-    font-family:Arial,sans-serif;
-    line-height:1.6;
-    padding:20px;
-}
-h1{
-    border-bottom:2px solid #ddd;
-    padding-bottom:10px;
-}
-.report{
-    margin:20px 0;
-    padding:15px;
-    border:1px solid #ddd;
-    border-radius:8px;
-}
-a{
-    color:#0366d6;
-    text-decoration:none;
-}
-a:hover{
-    text-decoration:underline;
-}
-</style>
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background: linear-gradient(180deg, #fbfcfe 0%, var(--bg) 100%);
+      line-height: 1.6;
+    }
 
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .wrap {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(247, 248, 251, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(219, 225, 234, 0.8);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 16px 0;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand strong {
+      font-size: 1.05rem;
+      letter-spacing: 0.2px;
+    }
+
+    .brand span {
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .navlinks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      justify-content: flex-end;
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      padding: 56px 0 28px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .card, .hero-panel, .metric, .report-card, .step, .small-card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-panel {
+      padding: 32px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: var(--accent-2);
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      line-height: 1.12;
+      margin-bottom: 14px;
+      letter-spacing: -0.03em;
+    }
+
+    .hero-panel p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      max-width: 62ch;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 16px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      font-weight: 700;
+      text-decoration: none;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    .btn.primary {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
+    }
+
+    .btn.primary:hover { background: var(--accent-2); }
+    .btn:hover { text-decoration: none; transform: translateY(-1px); }
+
+    .hero-panel .meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .metric {
+      padding: 16px;
+      background: var(--surface-2);
+      box-shadow: none;
+    }
+
+    .metric strong {
+      display: block;
+      font-size: 1.15rem;
+      margin-bottom: 4px;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .sidebar {
+      display: grid;
+      gap: 16px;
+    }
+
+    .small-card {
+      padding: 22px;
+    }
+
+    .small-card h3 {
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .small-card p, .small-card li, .small-card a {
+      color: var(--muted);
+      font-size: 0.96rem;
+    }
+
+    .small-card ul {
+      margin: 10px 0 0 18px;
+      padding: 0;
+    }
+
+    section {
+      padding: 20px 0 10px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--muted);
+      max-width: 70ch;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .report-card, .step {
+      padding: 22px;
+    }
+
+    .tagrow {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #eef3ff;
+      color: var(--accent-2);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .report-card h3 {
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+    }
+
+    .report-card .details {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .report-card .links a {
+      display: inline-block;
+      margin-right: 14px;
+      font-weight: 700;
+    }
+
+    .timeline {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+    }
+
+    .timeline li {
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      background: var(--surface);
+      border-radius: 14px;
+    }
+
+    .timeline strong { display: block; margin-bottom: 4px; }
+    .muted { color: var(--muted); }
+
+    .resource-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .footer {
+      margin-top: 28px;
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    code {
+      background: #eef2f7;
+      border: 1px solid #dde5f1;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-family: Consolas, Monaco, monospace;
+      font-size: 0.92em;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .grid-3, .grid-2, .resource-list {
+        grid-template-columns: 1fr;
+      }
+      .section-head {
+        align-items: start;
+        flex-direction: column;
+      }
+      .hero-panel .meta {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav { flex-direction: column; align-items: flex-start; }
+      .hero { padding-top: 28px; }
+      .hero-panel, .report-card, .step, .small-card { padding: 18px; }
+      .navlinks { gap: 10px; }
+    }
+  </style>
 </head>
 <body>
+  <div class="topbar">
+    <div class="wrap">
+      <div class="nav">
+        <div class="brand">
+          <strong>Your Name</strong>
+          <span>Research reports • briefings • archive</span>
+        </div>
+        <div class="navlinks">
+          <a href="#home">Home</a>
+          <a href="#reports">Reports</a>
+          <a href="#workflow">Workflow</a>
+          <a href="#archive">Archive</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<h1>Security Research Reports</h1>
+  <main id="home" class="wrap">
+    <section class="hero">
+      <div class="hero-grid">
+        <div class="hero-panel">
+          <div class="eyebrow">Independent Research Portfolio</div>
+          <h1>Clear, structured reports built for credibility.</h1>
+          <p>
+            This site is a simple professional home for your reports, case studies, source material,
+            and archive. It is designed to work well on GitHub Pages, stay easy to maintain, and look
+            standard without unnecessary styling.
+          </p>
+          <div class="actions">
+            <a class="btn primary" href="#reports">View reports</a>
+            <a class="btn" href="#archive">See file structure</a>
+            <a class="btn" href="#contact">Contact</a>
+          </div>
+          <div class="meta">
+            <div class="metric">
+              <strong>Weekly output</strong>
+              <span>Deep reports + short sitreps</span>
+            </div>
+            <div class="metric">
+              <strong>Format</strong>
+              <span>Light theme, clean layout</span>
+            </div>
+            <div class="metric">
+              <strong>Hosting</strong>
+              <span>GitHub Pages, free</span>
+            </div>
+          </div>
+        </div>
 
-<p>
-Independent vulnerability research and responsible disclosure reports.
-</p>
+        <div class="sidebar">
+          <div class="small-card">
+            <h3>What this site is for</h3>
+            <p>
+              A public archive of your work, with each report available as a PDF or a dedicated page.
+              Add your own notes, timeline, sources, and visuals as needed.
+            </p>
+          </div>
+          <div class="small-card">
+            <h3>Recommended pages</h3>
+            <ul>
+              <li><a href="#reports">Reports index</a></li>
+              <li><a href="#workflow">Workflow</a></li>
+              <li><a href="#archive">Repository structure</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="small-card">
+            <h3>Best practice</h3>
+            <p>
+              Keep one consistent footer, one byline format, and one clean folder structure. Repetition
+              makes the archive look intentional and easier to trust.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-<div class="report">
-<h2>Example Report #1</h2>
+    <section id="reports">
+      <div class="section-head">
+        <div>
+          <h2>Reports</h2>
+          <p>List your strongest work here. Each item can link to a PDF, a dedicated page, or both.</p>
+        </div>
+      </div>
 
-<p>
-Stored XSS in Example Application.
-</p>
+      <div class="grid-3">
+        <article class="report-card">
+          <h3>Report Title One</h3>
+          <div class="tagrow">
+            <span class="tag">Deep report</span>
+            <span class="tag">Public archive</span>
+          </div>
+          <div class="details">Published: 2026-07-30 • Topic: Example investigation • Status: Fixed / Verified</div>
+          <p class="muted">A concise summary of the issue, evidence, and impact. Keep this to 2–4 sentences.</p>
+          <div class="links">
+            <a href="reports/report-one.html">Page</a>
+            <a href="reports/report-one.pdf">PDF</a>
+          </div>
+        </article>
 
-<a href="reports/example-report.pdf">
-Read PDF →
-</a>
+        <article class="report-card">
+          <h3>Report Title Two</h3>
+          <div class="tagrow">
+            <span class="tag">Rapid sitrep</span>
+            <span class="tag">Source-based</span>
+          </div>
+          <div class="details">Published: 2026-07-26 • Topic: Example event • Status: Monitoring</div>
+          <p class="muted">Use this card style for faster updates or shorter write-ups that still deserve a permanent place.</p>
+          <div class="links">
+            <a href="reports/report-two.html">Page</a>
+            <a href="reports/report-two.pdf">PDF</a>
+          </div>
+        </article>
 
-</div>
+        <article class="report-card">
+          <h3>Report Title Three</h3>
+          <div class="tagrow">
+            <span class="tag">Case study</span>
+            <span class="tag">Archive</span>
+          </div>
+          <div class="details">Published: 2026-07-20 • Topic: Example analysis • Status: Archived</div>
+          <p class="muted">This can be an older but important report, kept discoverable for recruiters and readers.</p>
+          <div class="links">
+            <a href="reports/report-three.html">Page</a>
+            <a href="reports/report-three.pdf">PDF</a>
+          </div>
+        </article>
+      </div>
+    </section>
 
-<div class="report">
-<h2>Example Report #2</h2>
+    <section id="workflow">
+      <div class="section-head">
+        <div>
+          <h2>Weekly workflow</h2>
+          <p>Turn your publishing routine into a visible system. This makes the site feel active and intentional.</p>
+        </div>
+      </div>
 
-<p>
-Authentication bypass analysis.
-</p>
+      <div class="grid-2">
+        <div class="step">
+          <h3>1. Collect</h3>
+          <p class="muted">Gather sources, screenshots, links, dates, and notes in a single working folder or document.</p>
+        </div>
+        <div class="step">
+          <h3>2. Draft</h3>
+          <p class="muted">Write in Google Docs, then move the final copy into a repeatable report template.</p>
+        </div>
+        <div class="step">
+          <h3>3. Publish</h3>
+          <p class="muted">Export PDF, upload it to GitHub, and add a matching page summary on the site.</p>
+        </div>
+        <div class="step">
+          <h3>4. Archive</h3>
+          <p class="muted">Store the source material, images, and final files in a clear folder structure for easy reuse.</p>
+        </div>
+      </div>
+    </section>
 
-<a href="reports/auth-bypass.pdf">
-Read PDF →
-</a>
+    <section id="archive">
+      <div class="section-head">
+        <div>
+          <h2>Suggested repository structure</h2>
+          <p>This structure keeps the website and your reports separate, organized, and easy to grow later.</p>
+        </div>
+      </div>
 
-</div>
+      <div class="small-card">
+        <pre style="margin:0; overflow:auto; font-family:Consolas, Monaco, monospace; font-size:0.93rem; color:#344054;">
+my-reports-site/
+├── index.html
+├── about.html
+├── reports.html
+├── contact.html
+├── assets/
+│   ├── css/
+│   │   └── style.css
+│   ├── images/
+│   └── files/
+│       ├── brand-guidelines.pdf
+│       └── media-kit.pdf
+├── reports/
+│   ├── report-one.html
+│   ├── report-one.pdf
+│   ├── report-two.html
+│   ├── report-two.pdf
+│   └── report-three.html
+├── archive/
+│   ├── source-notes/
+│   ├── screenshots/
+│   └── raw-material/
+└── README.md</pre>
+      </div>
 
+      <div class="resource-list" style="margin-top:16px;">
+        <div class="small-card">
+          <h3>Where to store reports</h3>
+          <p>Use <code>/reports/</code> for final PDFs and report pages.</p>
+          <p>Use <code>/archive/</code> for source notes, screenshots, and raw evidence.</p>
+        </div>
+        <div class="small-card">
+          <h3>Where to store site assets</h3>
+          <p>Use <code>/assets/css/</code> for styling, <code>/assets/images/</code> for logos/screenshots, and <code>/assets/files/</code> for extra documents.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="section-head">
+        <div>
+          <h2>Contact</h2>
+          <p>Keep this simple and professional. Add only the links you actually use.</p>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="small-card">
+          <h3>Links</h3>
+          <ul>
+            <li>GitHub: <a href="#">your-username</a></li>
+            <li>LinkedIn: <a href="#">your-profile</a></li>
+            <li>Substack: <a href="#">your-publication</a></li>
+            <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+          </ul>
+        </div>
+        <div class="small-card">
+          <h3>Footer note</h3>
+          <p>
+            Independent research and reporting. Content is published for educational and archival
+            purposes, with source-based summaries and clear labeling.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      <div class="wrap" style="padding:0;">
+        © 2026 Your Name · Built for GitHub Pages · Light theme only
+      </div>
+    </div>
+  </main>
 </body>
 </html>
