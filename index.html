@@ -16,7 +16,7 @@
 
     <style>
         /* ============================================================
-               CSS – Professional · Minimal · Aesthetic
+               CSS – Professional · Minimal · Tabbed Slider
                ============================================================ */
         *,
         *::before,
@@ -174,28 +174,6 @@
             width: 100%;
         }
 
-        .nav-cta {
-            background: var(--navy);
-            color: var(--white) !important;
-            padding: 6px 18px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 13px;
-            letter-spacing: 0.3px;
-            transition: var(--transition);
-            border: none;
-        }
-        .nav-cta::after {
-            display: none !important;
-        }
-        .nav-cta:hover {
-            background: var(--navy-light);
-            color: var(--white) !important;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(15, 42, 74, 0.2);
-        }
-
-        /* ---- Search in Nav ---- */
         .search-wrapper {
             display: flex;
             align-items: center;
@@ -236,17 +214,16 @@
             opacity: 0.5;
         }
 
-        /* ----- Hero Section (Redesigned – no photo, abstract art) ----- */
+        /* ----- Hero ----- */
         .hero {
             position: relative;
-            padding: 100px 0 80px;
+            padding: 80px 0 60px;
             background: var(--cream);
             overflow: hidden;
             text-align: center;
             border-bottom: 1px solid rgba(15, 42, 74, 0.04);
         }
 
-        /* Abstract art blobs */
         .hero::before {
             content: '';
             position: absolute;
@@ -355,9 +332,9 @@
             opacity: 0.8;
         }
 
-        /* ----- Section Titles ----- */
+        /* ----- Section Titles (for within panels) ----- */
         .section-title {
-            font-size: 26px;
+            font-size: 24px;
             font-weight: 700;
             color: var(--navy);
             letter-spacing: -0.5px;
@@ -376,32 +353,118 @@
             margin: 0 0 16px 0;
         }
 
-        /* ----- Reports Section (Full Width) ----- */
-        .reports-section {
-            padding: 60px 0 60px;
+        /* ================================================================
+           TABBED SLIDER CONTENT
+           ================================================================ */
+        .slider-section {
+            padding: 40px 0 40px;
+            background: var(--cream);
         }
 
-        .reports-header {
-            padding: 0 40px 24px 40px;
+        .slider-tabs {
             display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
+            gap: 4px;
+            border-bottom: 2px solid rgba(15, 42, 74, 0.06);
+            margin-bottom: 24px;
             flex-wrap: wrap;
         }
 
-        .filter-tab {
+        .slider-tab {
             background: transparent;
             border: none;
-            padding: 6px 18px;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .slider-tab:hover {
+            color: var(--navy);
+        }
+
+        .slider-tab.active {
+            color: var(--navy);
+            border-bottom-color: var(--gold);
+        }
+
+        .slider-tab .badge {
+            display: inline-block;
+            background: rgba(15, 42, 74, 0.08);
             border-radius: 40px;
-            font-size: 13px;
+            padding: 0 8px;
+            font-size: 11px;
+            margin-left: 6px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .slider-tab.active .badge {
+            background: rgba(196, 163, 90, 0.15);
+            color: var(--gold);
+        }
+
+        .slider-panel {
+            display: none;
+            height: 620px;
+            /* Locked height */
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-light) transparent;
+        }
+
+        .slider-panel.active {
+            display: block;
+        }
+
+        .slider-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .slider-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slider-panel::-webkit-scrollbar-thumb {
+            background: var(--gold-light);
+            border-radius: 10px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .panel-header .panel-left {
+            flex: 1;
+        }
+
+        .panel-header .panel-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .report-filter-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .report-filter-tab {
+            background: transparent;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--text-light);
             cursor: pointer;
@@ -410,43 +473,44 @@
             border: 1px solid transparent;
         }
 
-        .filter-tab:hover {
+        .report-filter-tab:hover {
             color: var(--navy);
             background: rgba(15, 42, 74, 0.04);
         }
 
-        .filter-tab.active {
+        .report-filter-tab.active {
             background: var(--navy);
             color: var(--white);
             border-color: var(--navy);
             box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
         }
 
-        .filter-tab .badge {
+        .report-filter-tab .badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 40px;
-            padding: 0 8px;
+            padding: 0 6px;
             font-size: 10px;
             margin-left: 4px;
             font-weight: 600;
         }
 
-        .filter-tab.active .badge {
+        .report-filter-tab.active .badge {
             background: rgba(255, 255, 255, 0.2);
         }
-        .filter-tab:not(.active) .badge {
+        .report-filter-tab:not(.active) .badge {
             background: rgba(15, 42, 74, 0.08);
             color: var(--text-light);
         }
 
-        .reports-grid {
+        /* Grids */
+        .content-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
-            padding: 0 40px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
         }
 
+        /* Report Card */
         .report-card {
             background: var(--white);
             border-radius: var(--radius);
@@ -592,29 +656,209 @@
             gap: 10px;
         }
 
-        /* ----- Empty State ----- */
-        .empty-state {
+        /* Video Card */
+        .video-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--navy);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-thumb .play-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 22px;
+            transition: var(--transition);
+        }
+
+        .video-card:hover .play-icon {
+            background: var(--gold);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .video-meta {
+            padding: 16px 20px 20px;
+        }
+
+        .video-meta .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .video-meta .video-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Explainer Card */
+        .explainer-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .explainer-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .explainer-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--cream-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 32px;
+            opacity: 0.4;
+        }
+
+        .explainer-meta {
+            padding: 16px 20px 20px;
+        }
+
+        .explainer-meta .explainer-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .explainer-meta .explainer-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .explainer-meta .read-more-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .explainer-meta .read-more-link:hover {
+            color: var(--navy);
+            gap: 10px;
+        }
+
+        /* Empty state inside panels */
+        .panel-empty {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-light);
             grid-column: 1 / -1;
         }
-        .empty-state svg {
-            opacity: 0.2;
+        .panel-empty svg {
+            opacity: 0.15;
             margin-bottom: 16px;
         }
-        .empty-state h3 {
-            font-size: 20px;
+        .panel-empty h3 {
+            font-size: 18px;
             color: var(--navy);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
         }
-        .empty-state p {
-            font-size: 15px;
+        .panel-empty p {
+            font-size: 14px;
             max-width: 400px;
             margin: 0 auto;
+            opacity: 0.7;
         }
 
-        /* ----- About Section (Short & Punchy) ----- */
+        /* Skeletons */
+        .card-skeleton {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            display: flex;
+            flex-direction: column;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .card-skeleton .skeleton-thumb {
+            width: 100%;
+            aspect-ratio: 1.414 / 1;
+            background: var(--cream-dark);
+        }
+        .card-skeleton .skeleton-meta {
+            padding: 18px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .card-skeleton .skeleton-line {
+            height: 14px;
+            background: var(--cream-dark);
+            border-radius: 4px;
+            width: 100%;
+        }
+        .card-skeleton .skeleton-line.short {
+            width: 60%;
+        }
+        .card-skeleton .skeleton-line.tiny {
+            width: 30%;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ----- About Section ----- */
         .about-section {
             padding: 40px 0 60px;
         }
@@ -701,7 +945,7 @@
             letter-spacing: 0.2px;
         }
 
-        /* ----- Contact Section (Ultra Minimal) ----- */
+        /* ----- Contact Section ----- */
         .contact-section {
             padding: 20px 0 40px;
         }
@@ -747,7 +991,7 @@
             opacity: 0.15;
         }
 
-        /* ----- PDF Modal (Unchanged) ----- */
+        /* ----- PDF Modal ----- */
         .pdf-modal {
             position: fixed;
             inset: 0;
@@ -926,7 +1170,7 @@
             transform: translateY(-1px);
         }
 
-        /* ----- Footer (Redesigned) ----- */
+        /* ----- Footer ----- */
         footer {
             background: var(--navy);
             color: var(--white);
@@ -1057,6 +1301,13 @@
             .hero-stats {
                 gap: 32px;
             }
+            .slider-panel {
+                height: 550px;
+            }
+            .slider-tab {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
             .about-card {
                 flex-direction: column;
                 text-align: center;
@@ -1066,20 +1317,6 @@
                 text-align: left;
             }
             .about-expertise {
-                justify-content: center;
-            }
-            .reports-grid {
-                padding: 0 16px;
-                gap: 20px;
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
-            .reports-header {
-                padding: 0 16px 20px 16px;
-                flex-direction: column;
-                align-items: stretch;
-                gap: 12px;
-            }
-            .filter-tabs {
                 justify-content: center;
             }
             .contact-strip {
@@ -1098,15 +1335,29 @@
                 flex-direction: column;
                 text-align: center;
             }
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 16px;
+            }
+            .panel-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .report-filter-tabs {
+                justify-content: center;
+            }
         }
 
         @media (max-width: 480px) {
             .container {
                 padding: 0 16px;
             }
-            .reports-grid {
+            .slider-panel {
+                height: 500px;
+            }
+            .content-grid {
                 grid-template-columns: 1fr;
-                padding: 0 4px;
             }
             .hero h1 {
                 font-size: 26px;
@@ -1123,54 +1374,15 @@
                 align-items: center;
                 gap: 20px;
             }
-        }
-
-        /* ----- Skeletons ----- */
-        .card-skeleton {
-            background: var(--white);
-            border-radius: var(--radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(15, 42, 74, 0.04);
-            display: flex;
-            flex-direction: column;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        .card-skeleton .skeleton-thumb {
-            width: 100%;
-            aspect-ratio: 1.414 / 1;
-            background: var(--cream-dark);
-        }
-        .card-skeleton .skeleton-meta {
-            padding: 18px 22px 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .card-skeleton .skeleton-line {
-            height: 14px;
-            background: var(--cream-dark);
-            border-radius: 4px;
-            width: 100%;
-        }
-        .card-skeleton .skeleton-line.short {
-            width: 60%;
-        }
-        .card-skeleton .skeleton-line.tiny {
-            width: 30%;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
+            .slider-tab {
+                flex: 1;
+                text-align: center;
+                padding: 8px 12px;
+                font-size: 13px;
             }
         }
 
-        /* ----- Admin Overlay (unchanged) ----- */
+        /* ----- Admin Overlay ----- */
         .admin-overlay {
             position: fixed;
             inset: 0;
@@ -1189,7 +1401,7 @@
         .admin-panel {
             background: var(--white);
             border-radius: var(--radius);
-            max-width: 820px;
+            max-width: 860px;
             width: 100%;
             max-height: 92vh;
             display: flex;
@@ -1281,10 +1493,10 @@
             background: var(--navy);
             color: var(--white);
             border: none;
-            padding: 10px 24px;
-            border-radius: 8px;
+            padding: 8px 18px;
+            border-radius: 6px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             font-family: var(--font);
             cursor: pointer;
             transition: var(--transition);
@@ -1306,6 +1518,10 @@
         .admin-btn.danger:hover {
             background: #c0392b;
         }
+        .admin-btn.small {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
         .admin-btn:disabled {
             opacity: 0.4;
             cursor: not-allowed;
@@ -1318,15 +1534,47 @@
             display: block;
         }
 
+        .admin-sub-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            padding-bottom: 8px;
+        }
+        .admin-sub-tab {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            font-family: var(--font);
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+        .admin-sub-tab:hover {
+            background: rgba(15, 42, 74, 0.04);
+            color: var(--navy);
+        }
+        .admin-sub-tab.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .admin-list-container {
+            min-height: 200px;
+        }
+
         .admin-report-item {
             background: var(--white);
             border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 14px;
+            padding: 14px;
+            margin-bottom: 12px;
             border: 1px solid rgba(15, 42, 74, 0.06);
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            gap: 8px;
             align-items: start;
         }
         .admin-report-item .field-group {
@@ -1335,7 +1583,7 @@
             gap: 2px;
         }
         .admin-report-item .field-group label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-light);
             text-transform: uppercase;
@@ -1343,19 +1591,23 @@
         }
         .admin-report-item .field-group input,
         .admin-report-item .field-group select {
-            padding: 6px 10px;
+            padding: 5px 8px;
             border: 1px solid rgba(15, 42, 74, 0.08);
             border-radius: 6px;
             font-size: 13px;
             font-family: var(--font);
             background: var(--cream);
             transition: var(--transition);
+            width: 100%;
         }
         .admin-report-item .field-group input:focus,
         .admin-report-item .field-group select:focus {
             border-color: var(--gold);
             background: var(--white);
             outline: none;
+        }
+        .admin-report-item .field-group.full-width {
+            grid-column: 1 / -1;
         }
         .admin-report-item .delete-report-btn {
             justify-self: end;
@@ -1377,7 +1629,7 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            margin-top: 8px;
+            margin-top: 16px;
             padding-top: 16px;
             border-top: 1px solid rgba(15, 42, 74, 0.06);
         }
@@ -1398,7 +1650,7 @@
             gap: 2px;
         }
         .admin-add-form .field-group label {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
             color: var(--text-light);
             text-transform: uppercase;
@@ -1406,7 +1658,7 @@
         }
         .admin-add-form .field-group input,
         .admin-add-form .field-group select {
-            padding: 6px 10px;
+            padding: 5px 8px;
             border: 1px solid rgba(15, 42, 74, 0.08);
             border-radius: 6px;
             font-size: 13px;
@@ -1463,17 +1715,6 @@
         .admin-token-warning a {
             color: var(--gold);
         }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
-        }
     </style>
 </head>
 
@@ -1492,7 +1733,7 @@
                 </span>
             </a>
             <nav>
-                <a href="#reports" class="active">Reports</a>
+                <a href="#content-slider" class="active">Content</a>
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
                 <div class="search-wrapper">
@@ -1504,7 +1745,7 @@
     </header>
 
     <!-- ============================================================
-    HERO · REDESIGNED (No photo, abstract art)
+    HERO
     ============================================================ -->
     <section class="hero">
         <div class="container">
@@ -1515,21 +1756,21 @@
                     <span class="highlight">strategic foresight</span>
                 </h1>
                 <p>
-                    Weekly deep-dives and rapid special briefs — verified, structured,
-                    and built for decision‑makers.
+                    Weekly deep-dives, rapid special briefs, and explainer content —
+                    all in one place.
                 </p>
                 <div class="hero-stats">
                     <div class="stat">
                         <div class="stat-number" id="totalReportCount">0</div>
-                        <div class="stat-label">Total Reports</div>
+                        <div class="stat-label">Reports</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-number" id="weeklyCount">0</div>
-                        <div class="stat-label">Weekly Reports</div>
+                        <div class="stat-number" id="totalVideoCount">0</div>
+                        <div class="stat-label">Videos</div>
                     </div>
                     <div class="stat">
-                        <div class="stat-number" id="alertCount">0</div>
-                        <div class="stat-label">Special Reports</div>
+                        <div class="stat-number" id="totalExplainerCount">0</div>
+                        <div class="stat-label">Explainers</div>
                     </div>
                 </div>
             </div>
@@ -1537,43 +1778,98 @@
     </section>
 
     <!-- ============================================================
-    REPORTS · FULL WIDTH · TABS: Weekly / Special
+    TABBED SLIDER · REPORTS / VIDEOS / EXPLAINERS
     ============================================================ -->
-    <section class="reports-section" id="reports">
-        <div class="reports-header">
-            <div>
-                <h2 class="section-title">Report Library</h2>
-                <p class="section-sub">Filter by type or search above.</p>
-            </div>
-            <div class="filter-tabs" role="tablist">
-                <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
-                    All <span class="badge" id="allBadge">0</span>
+    <section class="slider-section" id="content-slider">
+        <div class="container">
+            <div class="slider-tabs" role="tablist">
+                <button class="slider-tab active" data-target="panel-reports" role="tab" aria-selected="true">
+                    Reports <span class="badge" id="tabReportBadge">0</span>
                 </button>
-                <button class="filter-tab" data-filter="weekly" role="tab" aria-selected="false">
-                    Weekly Reports <span class="badge" id="weeklyBadge">0</span>
+                <button class="slider-tab" data-target="panel-videos" role="tab" aria-selected="false">
+                    Videos <span class="badge" id="tabVideoBadge">0</span>
                 </button>
-                <button class="filter-tab" data-filter="alert" role="tab" aria-selected="false">
-                    Special Reports <span class="badge" id="alertBadge">0</span>
+                <button class="slider-tab" data-target="panel-explainers" role="tab" aria-selected="false">
+                    Explainers <span class="badge" id="tabExplainerBadge">0</span>
                 </button>
             </div>
-        </div>
 
-        <div class="reports-grid" id="reportsGrid">
-            <div class="empty-state" id="emptyState" style="display:none;">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                    <path d="M14 2v6h6" />
-                    <path d="M12 18v-4" />
-                    <path d="M12 9v.01" />
-                </svg>
-                <h3>No reports match</h3>
-                <p>Try adjusting your filter or search term.</p>
+            <!-- PANEL: Reports -->
+            <div id="panel-reports" class="slider-panel active">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Report Library</h3>
+                        <p class="section-sub" style="font-size:14px;">Filter by type or search above.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <div class="report-filter-tabs" id="reportFilterTabs">
+                            <button class="report-filter-tab active" data-filter="all">All <span class="badge" id="filterAllBadge">0</span></button>
+                            <button class="report-filter-tab" data-filter="weekly">Weekly <span class="badge" id="filterWeeklyBadge">0</span></button>
+                            <button class="report-filter-tab" data-filter="alert">Special <span class="badge" id="filterAlertBadge">0</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-grid" id="reportsGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                            <path d="M14 2v6h6" />
+                            <path d="M12 18v-4" />
+                            <path d="M12 9v.01" />
+                        </svg>
+                        <h3>No reports yet</h3>
+                        <p>Use the admin panel (triple-click the logo) to add reports.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Videos -->
+            <div id="panel-videos" class="slider-panel">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Video Library</h3>
+                        <p class="section-sub" style="font-size:14px;">Intelligence briefings, OSINT deep‑dives, and explainers.</p>
+                    </div>
+                </div>
+                <div class="content-grid" id="videosGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <polygon points="10,8 16,12 10,16 10,8" />
+                        </svg>
+                        <h3>No videos yet</h3>
+                        <p>Add videos via the admin panel (triple-click the logo).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Explainers -->
+            <div id="panel-explainers" class="slider-panel">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Project Explainers</h3>
+                        <p class="section-sub" style="font-size:14px;">Deep‑dive articles on methodologies, tools, and case studies.</p>
+                    </div>
+                </div>
+                <div class="content-grid" id="explainersGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                            <path d="M14 2v6h6" />
+                            <path d="M16 13H8" />
+                            <path d="M16 17H8" />
+                            <path d="M10 9H8" />
+                        </svg>
+                        <h3>No explainers yet</h3>
+                        <p>Add explainers via the admin panel (triple-click the logo).</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================================
-    ABOUT · SHORT & PUNCHY (moved after reports)
+    ABOUT
     ============================================================ -->
     <section class="about-section" id="about">
         <div class="container">
@@ -1583,14 +1879,11 @@
 
             <div class="about-card">
                 <div class="about-avatar">
-                    <!-- Replace 'assets/profile.jpg' with your actual image path -->
                     <img src="assets/profile.jpg" alt="Profile photo" />
                 </div>
-
                 <div class="about-content">
-                    <div class="analyst-name">Satyasheel</div>
+                    <div class="analyst-name">[Your Full Name]</div>
                     <div class="analyst-title">M.Sc. Homeland Security · NFSU</div>
-
                     <div class="analyst-bio">
                         <p>
                             <strong>M.Sc. Homeland Security</strong> candidate at NFSU with a sharp focus on
@@ -1600,7 +1893,6 @@
                             I turn open-source data into actionable foresight.
                         </p>
                     </div>
-
                     <div class="about-expertise">
                         <span class="expert-tag">📡 OSINT</span>
                         <span class="expert-tag">🌍 Geopolitical Risk</span>
@@ -1615,7 +1907,7 @@
     </section>
 
     <!-- ============================================================
-    CONTACT · ULTRA MINIMAL (single line)
+    CONTACT
     ============================================================ -->
     <section class="contact-section" id="contact">
         <div class="container">
@@ -1668,7 +1960,7 @@
     </div>
 
     <!-- ============================================================
-    ADMIN PANEL OVERLAY
+    ADMIN PANEL
     ============================================================ -->
     <div class="admin-overlay" id="adminOverlay">
         <div class="admin-panel">
@@ -1677,20 +1969,15 @@
                 <button class="admin-close" id="adminClose">✕</button>
             </div>
             <div class="admin-panel-body" id="adminPanelBody">
-                <!-- Auth screen -->
+                <!-- Auth -->
                 <div id="adminAuthScreen">
                     <div class="admin-auth">
                         <label for="adminPassword">Admin Password</label>
                         <input type="password" id="adminPassword" placeholder="Enter admin password" />
                         <div class="admin-error" id="adminAuthError">Incorrect password.</div>
-
-                        <label for="githubToken">GitHub Personal Access Token</label>
+                        <label for="githubToken">GitHub Token</label>
                         <input type="text" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
-                        <div class="admin-token-warning">
-                            Needs <strong>repo</strong> or <strong>contents:write</strong> scope.
-                            <a href="https://github.com/settings/tokens" target="_blank">Get a token →</a>
-                        </div>
-
+                        <div class="admin-token-warning">Needs <strong>repo</strong> scope.</div>
                         <button class="admin-btn" id="adminLoginBtn">🔓 Unlock Editor</button>
                     </div>
                 </div>
@@ -1698,35 +1985,32 @@
                 <!-- Editor -->
                 <div id="adminEditorScreen" class="admin-manifest-editor">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                        <span style="font-weight:600; color:var(--navy);">📄 Manage reports (manifest.json)</span>
+                        <span style="font-weight:600; color:var(--navy);">📄 Manage Content</span>
                         <span style="font-size:13px; color:var(--text-light);" id="adminFileStatus">Not saved</span>
                     </div>
 
-                    <div id="adminReportList">
-                        <!-- Dynamic report items rendered here -->
+                    <div class="admin-sub-tabs">
+                        <button class="admin-sub-tab active" data-admin-type="reports">Reports</button>
+                        <button class="admin-sub-tab" data-admin-type="videos">Videos</button>
+                        <button class="admin-sub-tab" data-admin-type="explainers">Explainers</button>
                     </div>
 
-                    <!-- Add new report form -->
+                    <div class="admin-list-container" id="adminListContainer">
+                        <!-- Rendered dynamically -->
+                    </div>
+
                     <div class="admin-add-form" id="adminAddForm">
-                        <div class="field-group"><label>File path</label><input id="addFile" placeholder="weekly/file.pdf" /></div>
-                        <div class="field-group"><label>Title</label><input id="addTitle" placeholder="My Report" /></div>
-                        <div class="field-group"><label>Description</label><input id="addDesc" placeholder="Brief summary..." /></div>
-                        <div class="field-group"><label>Date (YYYY-MM-DD)</label><input id="addDate" placeholder="2026-03-20" /></div>
-                        <div class="field-group"><label>Type</label>
-                            <select id="addType"><option value="weekly">Weekly</option><option value="alert">Special</option></select>
-                        </div>
-                        <div class="field-group"><label>Tags (comma separated)</label><input id="addTags" placeholder="osint, geopolitics" /></div>
+                        <div id="adminAddFields"></div>
                         <div class="add-btn-wrap">
-                            <button class="admin-btn gold" id="addReportBtn">+ Add Report</button>
+                            <button class="admin-btn gold" id="adminAddItemBtn">+ Add Item</button>
                         </div>
                     </div>
 
                     <div class="admin-actions">
                         <button class="admin-btn" id="adminSaveBtn">💾 Save to GitHub</button>
-                        <button class="admin-btn" id="adminRefreshBtn">⟳ Refresh from GitHub</button>
+                        <button class="admin-btn" id="adminRefreshBtn">⟳ Refresh</button>
                         <button class="admin-btn danger" id="adminLogoutBtn">🚪 Lock &amp; Logout</button>
                     </div>
-
                     <div class="admin-status" id="adminStatus"></div>
                 </div>
             </div>
@@ -1734,7 +2018,7 @@
     </div>
 
     <!-- ============================================================
-    FOOTER · REDESIGNED
+    FOOTER
     ============================================================ -->
     <footer>
         <div class="container">
@@ -1746,7 +2030,7 @@
                 <div class="footer-links">
                     <div class="footer-links-column">
                         <span class="col-title">Navigate</span>
-                        <a href="#reports">Reports</a>
+                        <a href="#content-slider">Content</a>
                         <a href="#about">About</a>
                         <a href="#contact">Contact</a>
                     </div>
@@ -1757,14 +2041,13 @@
                     </div>
                 </div>
             </div>
-
             <div class="footer-bottom">
                 <span>&copy; 2026 · National Forensic Sciences University</span>
                 <div class="footer-social">
-                    <a href="#" aria-label="LinkedIn" title="LinkedIn">🔗</a>
-                    <a href="#" aria-label="X / Twitter" title="X / Twitter">🐦</a>
-                    <a href="#" aria-label="Substack" title="Substack">📬</a>
-                    <a href="#" aria-label="GitHub" title="GitHub">🐙</a>
+                    <a href="#" aria-label="LinkedIn">🔗</a>
+                    <a href="#" aria-label="X / Twitter">🐦</a>
+                    <a href="#" aria-label="Substack">📬</a>
+                    <a href="#" aria-label="GitHub">🐙</a>
                 </div>
             </div>
         </div>
@@ -1772,7 +2055,7 @@
 
 
     <!-- ============================================================
-    JAVASCRIPT (logic unchanged, labels updated)
+    JAVASCRIPT – Clean, No Samples, Full Filtering
     ============================================================ -->
     <script>
         (function() {
@@ -1782,25 +2065,30 @@
             const ADMIN_PASSWORD_HASH = 'eb726061ac73d98f8fde13111f8db3a0f544f27f6ea6feb1dd67ecbbd5d03104';
             const GITHUB_REPO_OWNER = 'p-satya03';
             const GITHUB_REPO_NAME = 'my_portfolio';
-
             const MANIFEST_PATH = 'reports/manifest.json';
             const PDF_BASE = 'reports/';
             const GITHUB_API_URL =
                 `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${MANIFEST_PATH}`;
-            const CACHE_KEY = 'spsss_manifest_cache';
+            const CACHE_KEY = 'spsss_full_manifest_cache';
             const CACHE_TTL = 60000;
 
             // ---- DOM refs ----
-            const grid = document.getElementById('reportsGrid');
-            const emptyState = document.getElementById('emptyState');
-            const totalCountEl = document.getElementById('totalReportCount');
-            const weeklyCountEl = document.getElementById('weeklyCount');
-            const alertCountEl = document.getElementById('alertCount');
-            const allBadge = document.getElementById('allBadge');
-            const weeklyBadge = document.getElementById('weeklyBadge');
-            const alertBadge = document.getElementById('alertBadge');
-            const filterTabs = document.querySelectorAll('.filter-tab');
+            const reportsGrid = document.getElementById('reportsGrid');
+            const videosGrid = document.getElementById('videosGrid');
+            const explainersGrid = document.getElementById('explainersGrid');
+            const totalReportCount = document.getElementById('totalReportCount');
+            const totalVideoCount = document.getElementById('totalVideoCount');
+            const totalExplainerCount = document.getElementById('totalExplainerCount');
+            const tabReportBadge = document.getElementById('tabReportBadge');
+            const tabVideoBadge = document.getElementById('tabVideoBadge');
+            const tabExplainerBadge = document.getElementById('tabExplainerBadge');
+            const filterAllBadge = document.getElementById('filterAllBadge');
+            const filterWeeklyBadge = document.getElementById('filterWeeklyBadge');
+            const filterAlertBadge = document.getElementById('filterAlertBadge');
             const searchInput = document.getElementById('searchInput');
+            const reportFilterTabs = document.querySelectorAll('.report-filter-tab');
+            const sliderTabs = document.querySelectorAll('.slider-tab');
+            const sliderPanels = document.querySelectorAll('.slider-panel');
 
             // Admin refs
             const adminOverlay = document.getElementById('adminOverlay');
@@ -1812,19 +2100,15 @@
             const githubToken = document.getElementById('githubToken');
             const adminAuthError = document.getElementById('adminAuthError');
             const adminLoginBtn = document.getElementById('adminLoginBtn');
-            const adminReportList = document.getElementById('adminReportList');
+            const adminListContainer = document.getElementById('adminListContainer');
+            const adminAddFields = document.getElementById('adminAddFields');
+            const adminAddItemBtn = document.getElementById('adminAddItemBtn');
             const adminSaveBtn = document.getElementById('adminSaveBtn');
             const adminRefreshBtn = document.getElementById('adminRefreshBtn');
             const adminLogoutBtn = document.getElementById('adminLogoutBtn');
             const adminStatus = document.getElementById('adminStatus');
             const adminFileStatus = document.getElementById('adminFileStatus');
-            const addFile = document.getElementById('addFile');
-            const addTitle = document.getElementById('addTitle');
-            const addDesc = document.getElementById('addDesc');
-            const addDate = document.getElementById('addDate');
-            const addType = document.getElementById('addType');
-            const addTags = document.getElementById('addTags');
-            const addReportBtn = document.getElementById('addReportBtn');
+            const adminSubTabs = document.querySelectorAll('.admin-sub-tab');
 
             // Modal refs
             const modal = document.getElementById('pdfModal');
@@ -1837,9 +2121,8 @@
             const downloadBtn = document.getElementById('downloadBtn');
 
             // ---- State ----
-            let allReports = [];
-            let filteredReports = [];
-            let currentFilter = 'all';
+            let fullManifest = { reports: [], videos: [], explainers: [] };
+            let currentReportFilter = 'all';
             let currentSearch = '';
             let pdfDoc = null;
             let currentPage = 1;
@@ -1847,16 +2130,18 @@
             let isAdminAuthenticated = false;
             let currentManifestSha = null;
             let observer = null;
+            let adminActiveType = 'reports';
 
-            // ---- Helpers ----
+            // ================================================================
+            //  HELPERS
+            // ================================================================
             function buildPdfUrl(filePath) {
                 const parts = filePath.split('/');
-                const encodedParts = parts.map(part => encodeURIComponent(part));
-                return PDF_BASE + encodedParts.join('/');
+                return PDF_BASE + parts.map(p => encodeURIComponent(p)).join('/');
             }
 
             function formatDate(iso) {
-                if (!iso) return 'Unknown date';
+                if (!iso) return '';
                 const d = new Date(iso);
                 return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
             }
@@ -1869,7 +2154,7 @@
                 if (!term.trim()) return true;
                 const lower = term.toLowerCase();
                 const searchable = [report.title || '', report.description || '', ...(report.tags || [])].join(' ')
-                .toLowerCase();
+                    .toLowerCase();
                 return searchable.includes(lower);
             }
 
@@ -1877,132 +2162,43 @@
                 const encoder = new TextEncoder();
                 const data = encoder.encode(str);
                 const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
             }
 
-            // ---- Render skeleton cards ----
-            function renderSkeletons(count = 6) {
-                let html = '';
-                for (let i = 0; i < count; i++) {
-                    html += `
-                        <div class="card-skeleton">
-                            <div class="skeleton-thumb"></div>
-                            <div class="skeleton-meta">
-                                <div class="skeleton-line"></div>
-                                <div class="skeleton-line short"></div>
-                                <div class="skeleton-line tiny"></div>
-                            </div>
-                        </div>
-                    `;
-                }
-                grid.innerHTML = html;
-                emptyState.style.display = 'none';
-            }
-
-            // ---- Lazy thumbnail renderer ----
-            function renderThumbnailLazy(file, container) {
-                if (container.dataset.loaded === 'true') return;
-                container.dataset.loaded = 'true';
-
-                const url = buildPdfUrl(file);
-                const placeholder = container.querySelector('.placeholder');
-                if (!placeholder) return;
-
-                placeholder.innerHTML = `
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="animation: spin 1s linear infinite;">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                        <path d="M14 2v6h6" />
-                    </svg>
-                    <span>Loading…</span>
-                `;
-
-                const loadingTask = pdfjsLib.getDocument(url);
-                loadingTask.promise
-                    .then(function(pdf) {
-                        return pdf.getPage(1);
-                    })
-                    .then(function(page) {
-                        const viewport = page.getViewport({ scale: 1 });
-                        const scale = Math.min(
-                            (container.clientWidth || 300) / viewport.width,
-                            (container.clientHeight || 200) / viewport.height
-                        );
-                        const scaledViewport = page.getViewport({ scale: Math.min(scale * 0.8, 0.5) });
-
-                        const canvas = document.createElement('canvas');
-                        canvas.width = scaledViewport.width;
-                        canvas.height = scaledViewport.height;
-                        canvas.style.width = '100%';
-                        canvas.style.height = '100%';
-                        canvas.style.objectFit = 'cover';
-
-                        const ctx = canvas.getContext('2d');
-                        const renderContext = {
-                            canvasContext: ctx,
-                            viewport: scaledViewport,
-                        };
-
-                        return page.render(renderContext).promise.then(() => {
-                            if (placeholder.parentNode) {
-                                placeholder.replaceWith(canvas);
-                            }
-                        });
-                    })
-                    .catch(function(err) {
-                        if (placeholder.parentNode) {
-                            placeholder.innerHTML = `
-                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                                    <path d="M14 2v6h6" />
-                                </svg>
-                                <span>${getFileName(file)}</span>
-                            `;
-                        }
-                    });
-            }
-
-            // ---- Setup IntersectionObserver ----
-            function setupLazyLoading() {
-                if (observer) observer.disconnect();
-
-                observer = new IntersectionObserver((entries) => {
-                    for (const entry of entries) {
-                        if (entry.isIntersecting) {
-                            const thumb = entry.target;
-                            const file = thumb.dataset.file;
-                            if (file) {
-                                renderThumbnailLazy(file, thumb);
-                            }
-                            observer.unobserve(thumb);
-                        }
-                    }
-                }, {
-                    rootMargin: '100px',
-                    threshold: 0.01
+            // ================================================================
+            //  TAB SWITCHING
+            // ================================================================
+            function switchTab(targetId) {
+                sliderTabs.forEach(tab => {
+                    const isActive = tab.dataset.target === targetId;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive);
                 });
-
-                document.querySelectorAll('.report-thumb[data-file]').forEach(el => {
-                    observer.observe(el);
+                sliderPanels.forEach(panel => {
+                    panel.classList.toggle('active', panel.id === targetId);
                 });
             }
 
-            // ---- Render reports ----
+            sliderTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTab(this.dataset.target);
+                });
+            });
+
+            // ================================================================
+            //  RENDER FUNCTIONS
+            // ================================================================
             function renderReports(reports) {
-                emptyState.style.display = 'none';
-
                 if (!reports || reports.length === 0) {
-                    emptyState.style.display = 'flex';
-                    grid.innerHTML = '';
-                    emptyState.innerHTML = `
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                            <path d="M14 2v6h6" />
-                            <path d="M12 18v-4" />
-                            <path d="M12 9v.01" />
-                        </svg>
-                        <h3>No reports match</h3>
-                        <p>Try adjusting your filter or search term.</p>
+                    reportsGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 2v6h6" /><path d="M12 18v-4" /><path d="M12 9v.01" />
+                            </svg>
+                            <h3>No reports match</h3>
+                            <p>Try adjusting your filter or search term.</p>
+                        </div>
                     `;
                     return;
                 }
@@ -2010,16 +2206,10 @@
                 let html = '';
                 for (const r of reports) {
                     const title = r.title || getFileName(r.file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
-                    const date = r.date ? formatDate(r.date) : '';
-                    const tags = r.tags || [];
-                    const file = r.file;
-                    const desc = r.description || '';
-                    // Updated labels to match "Weekly Reports" and "Special Reports"
                     const typeLabel = r.type === 'weekly' ? 'Weekly Report' : 'Special Report';
-
                     html += `
-                        <div class="report-card" data-file="${file}">
-                            <div class="report-thumb" data-file="${file}">
+                        <div class="report-card" data-file="${r.file}">
+                            <div class="report-thumb" data-file="${r.file}">
                                 <div class="placeholder">
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
@@ -2030,82 +2220,220 @@
                             </div>
                             <div class="report-meta">
                                 <div class="report-title">${title}</div>
-                                ${date ? `<div class="report-date">${date}</div>` : ''}
-                                ${desc ? `<div class="report-desc">${desc}</div>` : ''}
+                                ${r.date ? `<div class="report-date">${formatDate(r.date)}</div>` : ''}
+                                ${r.description ? `<div class="report-desc">${r.description}</div>` : ''}
                                 <div class="report-tags">
                                     <span class="tag type-tag">${typeLabel}</span>
-                                    ${tags.map(t => `<span class="tag">${t}</span>`).join('')}
+                                    ${(r.tags||[]).map(t => `<span class="tag">${t}</span>`).join('')}
                                     <span class="tag gold">PDF</span>
                                 </div>
-                                <button class="read-link" data-file="${file}">Read full report →</button>
+                                <button class="read-link" data-file="${r.file}">Read full report →</button>
                             </div>
                         </div>
                     `;
                 }
-
-                grid.innerHTML = html;
-
-                // Click handlers
-                grid.querySelectorAll('.read-link, .report-card').forEach(el => {
+                reportsGrid.innerHTML = html;
+                setupLazyLoading();
+                reportsGrid.querySelectorAll('.read-link, .report-card').forEach(el => {
                     el.addEventListener('click', function(e) {
                         const target = e.target.closest('.read-link') || e.currentTarget;
                         const file = target.dataset.file || target.closest('.report-card')?.dataset.file;
-                        if (file) {
-                            e.preventDefault();
-                            openPdf(file);
-                        }
+                        if (file) { e.preventDefault();
+                            openPdf(file); }
                     });
                 });
-
-                setupLazyLoading();
             }
 
-            // ---- Update stats ----
-            function updateStatsAndBadges(reports) {
-                const list = reports || allReports;
-                const total = list.length;
-                const weekly = list.filter(r => r.type === 'weekly').length;
-                const alert = list.filter(r => r.type === 'alert').length;
-
-                totalCountEl.textContent = total;
-                weeklyCountEl.textContent = weekly;
-                alertCountEl.textContent = alert;
-                allBadge.textContent = total;
-                weeklyBadge.textContent = weekly;
-                alertBadge.textContent = alert;
+            function renderVideos(videos) {
+                if (!videos || videos.length === 0) {
+                    videosGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polygon points="10,8 16,12 10,16 10,8" />
+                            </svg>
+                            <h3>No videos yet</h3>
+                            <p>Add videos via the admin panel (triple-click the logo).</p>
+                        </div>
+                    `;
+                    return;
+                }
+                let html = '';
+                for (const v of videos) {
+                    html += `
+                        <div class="video-card">
+                            <div class="video-thumb" style="background: var(--navy);">
+                                <div class="play-icon">▶</div>
+                                <span class="video-placeholder-text">YouTube</span>
+                            </div>
+                            <div class="video-meta">
+                                <div class="video-title">${v.title || 'Untitled'}</div>
+                                ${v.description ? `<div class="video-desc">${v.description}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                videosGrid.innerHTML = html;
             }
 
-            // ---- Filter & render ----
-            function filterAndRender() {
-                const filtered = allReports.filter(r => {
-                    const typeMatch = currentFilter === 'all' || r.type === currentFilter;
+            function renderExplainers(explainers) {
+                if (!explainers || explainers.length === 0) {
+                    explainersGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 2v6h6" /><path d="M16 13H8" /><path d="M16 17H8" /><path d="M10 9H8" />
+                            </svg>
+                            <h3>No explainers yet</h3>
+                            <p>Add explainers via the admin panel (triple-click the logo).</p>
+                        </div>
+                    `;
+                    return;
+                }
+                let html = '';
+                for (const e of explainers) {
+                    html += `
+                        <div class="explainer-card">
+                            <div class="explainer-thumb">📄</div>
+                            <div class="explainer-meta">
+                                <div class="explainer-title">${e.title || 'Untitled'}</div>
+                                ${e.description ? `<div class="explainer-desc">${e.description}</div>` : ''}
+                                ${e.link ? `<a href="${e.link}" target="_blank" class="read-more-link">Read more →</a>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                explainersGrid.innerHTML = html;
+            }
+
+            // ================================================================
+            //  LAZY LOADING (Reports thumbnails)
+            // ================================================================
+            function renderThumbnailLazy(file, container) {
+                if (container.dataset.loaded === 'true') return;
+                container.dataset.loaded = 'true';
+                const url = buildPdfUrl(file);
+                const placeholder = container.querySelector('.placeholder');
+                if (!placeholder) return;
+                placeholder.innerHTML =
+                    `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="animation: spin 1s linear infinite;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 2v6h6" /></svg><span>Loading…</span>`;
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    return pdf.getPage(1);
+                }).then(function(page) {
+                    const vp = page.getViewport({ scale: 1 });
+                    const scale = Math.min((container.clientWidth || 300) / vp.width, (container.clientHeight ||
+                        200) / vp.height);
+                    const scaled = page.getViewport({ scale: Math.min(scale * 0.8, 0.5) });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = scaled.width;
+                    canvas.height = scaled.height;
+                    canvas.style.width = '100%';
+                    canvas.style.height = '100%';
+                    canvas.style.objectFit = 'cover';
+                    const ctx = canvas.getContext('2d');
+                    page.render({ canvasContext: ctx, viewport: scaled }).promise.then(() => {
+                        if (placeholder.parentNode) placeholder.replaceWith(canvas);
+                    });
+                }).catch(() => {
+                    if (placeholder.parentNode) {
+                        placeholder.innerHTML =
+                            `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 2v6h6" /></svg><span>${getFileName(file)}</span>`;
+                    }
+                });
+            }
+
+            function setupLazyLoading() {
+                if (observer) observer.disconnect();
+                observer = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            const thumb = entry.target;
+                            const file = thumb.dataset.file;
+                            if (file) renderThumbnailLazy(file, thumb);
+                            observer.unobserve(thumb);
+                        }
+                    }
+                }, { rootMargin: '100px', threshold: 0.01 });
+                document.querySelectorAll('.report-thumb[data-file]').forEach(el => observer.observe(el));
+            }
+
+            // ================================================================
+            //  UPDATE STATS & BADGES
+            // ================================================================
+            function updateStats() {
+                const reports = fullManifest.reports || [];
+                const videos = fullManifest.videos || [];
+                const explainers = fullManifest.explainers || [];
+                const total = reports.length;
+                const weekly = reports.filter(r => r.type === 'weekly').length;
+                const alert = reports.filter(r => r.type === 'alert').length;
+
+                totalReportCount.textContent = total;
+                totalVideoCount.textContent = videos.length;
+                totalExplainerCount.textContent = explainers.length;
+                tabReportBadge.textContent = total;
+                tabVideoBadge.textContent = videos.length;
+                tabExplainerBadge.textContent = explainers.length;
+                filterAllBadge.textContent = total;
+                filterWeeklyBadge.textContent = weekly;
+                filterAlertBadge.textContent = alert;
+            }
+
+            // ================================================================
+            //  FILTER & SEARCH (Reports)
+            // ================================================================
+            function filterAndRenderReports() {
+                const reports = fullManifest.reports || [];
+                const filtered = reports.filter(r => {
+                    const typeMatch = currentReportFilter === 'all' || r.type === currentReportFilter;
                     const searchMatch = matchesSearch(r, currentSearch);
                     return typeMatch && searchMatch;
                 });
-                filteredReports = filtered;
                 renderReports(filtered);
-                updateStatsAndBadges(allReports);
+                updateStats();
             }
 
-            // ---- Load manifest ----
+            // Report Filter Tabs
+            reportFilterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    reportFilterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentReportFilter = this.dataset.filter;
+                    filterAndRenderReports();
+                });
+            });
+
+            // Global Search
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value;
+                filterAndRenderReports();
+            });
+
+            // ================================================================
+            //  LOAD MANIFEST (Full)
+            // ================================================================
             async function loadManifest(useCache = true) {
                 if (useCache) {
                     try {
                         const cached = sessionStorage.getItem(CACHE_KEY);
                         if (cached) {
                             const data = JSON.parse(cached);
-                            const age = Date.now() - (data.timestamp || 0);
-                            if (age < CACHE_TTL) {
-                                allReports = data.reports || [];
-                                updateStatsAndBadges(allReports);
-                                filterAndRender();
+                            if (Date.now() - (data.timestamp || 0) < CACHE_TTL) {
+                                fullManifest = data.manifest || { reports: [], videos: [], explainers: [] };
+                                renderVideos(fullManifest.videos);
+                                renderExplainers(fullManifest.explainers);
+                                filterAndRenderReports();
+                                updateStats();
                                 return;
                             }
                         }
                     } catch (e) { /* ignore */ }
                 }
 
-                renderSkeletons(6);
+                // Show skeletons for reports
+                reportsGrid.innerHTML =
+                    `<div class="card-skeleton"><div class="skeleton-thumb"></div><div class="skeleton-meta"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line tiny"></div></div></div>`.repeat(
+                        4);
 
                 try {
                     const token = sessionStorage.getItem('spsss_admin_token');
@@ -2113,72 +2441,54 @@
                     if (token) headers['Authorization'] = `token ${token}`;
 
                     const response = await fetch(GITHUB_API_URL, { headers });
-
                     if (response.ok) {
                         const data = await response.json();
                         const content = atob(data.content);
                         let json;
-                        try { json = JSON.parse(content); } catch (e) { json = { reports: [] }; }
-                        const list = Array.isArray(json) ? json : (json.reports || []);
-                        allReports = list;
+                        try { json = JSON.parse(content); } catch (e) { json = {}; }
+                        fullManifest = {
+                            reports: json.reports || [],
+                            videos: json.videos || [],
+                            explainers: json.explainers || []
+                        };
                         currentManifestSha = data.sha;
-
-                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-                            reports: list,
-                            timestamp: Date.now()
-                        }));
-
-                        updateStatsAndBadges(allReports);
-                        filterAndRender();
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ manifest: fullManifest, timestamp: Date
+                                .now() }));
+                        renderVideos(fullManifest.videos);
+                        renderExplainers(fullManifest.explainers);
+                        filterAndRenderReports();
+                        updateStats();
                         return;
                     }
 
-                    const fallbackRes = await fetch(MANIFEST_PATH);
-                    if (fallbackRes.ok) {
-                        const data = await fallbackRes.json();
-                        const list = Array.isArray(data) ? data : (data.reports || []);
-                        allReports = list;
-                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-                            reports: list,
-                            timestamp: Date.now()
-                        }));
-                        updateStatsAndBadges(allReports);
-                        filterAndRender();
+                    // Fallback
+                    const fbRes = await fetch(MANIFEST_PATH);
+                    if (fbRes.ok) {
+                        const data = await fbRes.json();
+                        fullManifest = { reports: data.reports || [], videos: data.videos || [],
+                            explainers: data.explainers || [] };
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ manifest: fullManifest, timestamp: Date
+                                .now() }));
+                        renderVideos(fullManifest.videos);
+                        renderExplainers(fullManifest.explainers);
+                        filterAndRenderReports();
+                        updateStats();
                         return;
                     }
-
-                    throw new Error('Manifest not found');
+                    throw new Error('Not found');
                 } catch (err) {
                     console.warn('Manifest load error:', err);
-                    try {
-                        const cached = sessionStorage.getItem(CACHE_KEY);
-                        if (cached) {
-                            const data = JSON.parse(cached);
-                            allReports = data.reports || [];
-                            updateStatsAndBadges(allReports);
-                            filterAndRender();
-                            return;
-                        }
-                    } catch (e) { /* ignore */ }
-
-                    allReports = [];
-                    updateStatsAndBadges(allReports);
-                    filterAndRender();
-                    emptyState.style.display = 'flex';
-                    emptyState.innerHTML = `
-                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                            <path d="M14 2v6h6" />
-                        </svg>
-                        <h3>No reports indexed</h3>
-                        <p style="font-size:14px;max-width:400px;margin:0 auto;">
-                            Use the <strong>Admin Panel</strong> (triple-click the logo) to create your manifest.
-                        </p>
-                    `;
+                    fullManifest = { reports: [], videos: [], explainers: [] };
+                    renderVideos([]);
+                    renderExplainers([]);
+                    filterAndRenderReports();
+                    updateStats();
                 }
             }
 
-            // ---- PDF modal ----
+            // ================================================================
+            //  PDF MODAL
+            // ================================================================
             function openPdf(file) {
                 const url = buildPdfUrl(file);
                 modalTitle.textContent = getFileName(file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
@@ -2187,9 +2497,7 @@
                     `<div class="pdf-loading"><span class="spinner"></span>Loading PDF…</div>`;
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
-
-                const loadingTask = pdfjsLib.getDocument(url);
-                loadingTask.promise.then(function(pdf) {
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
                     pdfDoc = pdf;
                     totalPages = pdf.numPages;
                     currentPage = 1;
@@ -2197,7 +2505,7 @@
                     updateNavButtons();
                 }).catch(function(err) {
                     modalBody.innerHTML =
-                        `<div style="text-align:center;padding:60px 20px;color:var(--text-light);"><p style="font-size:18px;margin-bottom:8px;">⚠️ Could not load PDF</p><p style="font-size:14px;">${err.message || 'The file may be missing or corrupted.'}</p><p style="font-size:13px;margin-top:12px;opacity:0.6;">${url}</p></div>`;
+                        `<div style="text-align:center;padding:60px 20px;color:var(--text-light);"><p>⚠️ Could not load PDF</p><p style="font-size:14px;">${err.message}</p></div>`;
                 });
             }
 
@@ -2206,32 +2514,24 @@
                 if (pageNum < 1) pageNum = 1;
                 if (pageNum > totalPages) pageNum = totalPages;
                 currentPage = pageNum;
-
                 pdfDoc.getPage(pageNum).then(function(page) {
                     const containerWidth = modalBody.clientWidth - 48 || 700;
                     const viewport = page.getViewport({ scale: 1 });
                     const scale = Math.min(containerWidth / viewport.width, (window.innerHeight * 0.65) / viewport
                         .height);
                     const scaled = page.getViewport({ scale: Math.min(scale, 2.0) });
-
                     const canvas = document.createElement('canvas');
                     canvas.width = scaled.width;
                     canvas.height = scaled.height;
                     canvas.style.width = '100%';
                     canvas.style.height = 'auto';
-                    canvas.style.borderRadius = '4px';
-                    canvas.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
-
                     const ctx = canvas.getContext('2d');
-                    const renderContext = { canvasContext: ctx, viewport: scaled };
-
                     modalBody.innerHTML = '';
                     const wrapper = document.createElement('div');
                     wrapper.className = 'pdf-page-wrapper';
                     wrapper.appendChild(canvas);
                     modalBody.appendChild(wrapper);
-
-                    page.render(renderContext).promise.then(() => { updateNavButtons(); });
+                    page.render({ canvasContext: ctx, viewport: scaled }).promise.then(() => { updateNavButtons(); });
                 });
             }
 
@@ -2246,51 +2546,22 @@
                 modal.classList.remove('open');
                 document.body.style.overflow = '';
                 pdfDoc = null;
-                currentPage = 1;
-                totalPages = 0;
             }
-
             modalClose.addEventListener('click', closeModal);
             modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
-                if (e.key === 'ArrowLeft' && modal.classList.contains('open') && currentPage > 1) renderPage(
-                    currentPage - 1);
+                if (e.key === 'ArrowLeft' && modal.classList.contains('open') && currentPage > 1) renderPage(currentPage -
+                    1);
                 if (e.key === 'ArrowRight' && modal.classList.contains('open') && currentPage < totalPages) renderPage(
                     currentPage + 1);
             });
             prevBtn.addEventListener('click', function() { if (currentPage > 1) renderPage(currentPage - 1); });
             nextBtn.addEventListener('click', function() { if (currentPage < totalPages) renderPage(currentPage + 1); });
 
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => { if (pdfDoc && modal.classList.contains('open')) renderPage(
-                        currentPage); }, 200);
-            });
-
-            // ---- Filter & search events ----
-            filterTabs.forEach(tab => {
-                tab.addEventListener('click', function() {
-                    filterTabs.forEach(t => { t.classList.remove('active');
-                        t.setAttribute('aria-selected', 'false'); });
-                    this.classList.add('active');
-                    this.setAttribute('aria-selected', 'true');
-                    currentFilter = this.dataset.filter;
-                    filterAndRender();
-                });
-            });
-
-            // Search input is now in the nav
-            searchInput.addEventListener('input', function() {
-                currentSearch = this.value;
-                filterAndRender();
-            });
-
             // ================================================================
-            //  ADMIN PANEL
+            //  ADMIN PANEL (Extended for Videos & Explainers)
             // ================================================================
-
             function openAdmin() { adminOverlay.classList.add('open'); }
 
             function closeAdmin() {
@@ -2302,14 +2573,12 @@
                 }
             }
 
-            let clickCount = 0;
-            let clickTimer = null;
+            let clickCount = 0,
+                clickTimer = null;
             adminTrigger.addEventListener('click', function(e) {
                 e.preventDefault();
                 clickCount++;
-                if (clickCount === 1) {
-                    clickTimer = setTimeout(() => { clickCount = 0; }, 500);
-                }
+                if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 500);
                 if (clickCount >= 3) {
                     clearTimeout(clickTimer);
                     clickCount = 0;
@@ -2321,36 +2590,23 @@
                     }
                 }
             });
-
             adminClose.addEventListener('click', closeAdmin);
             adminOverlay.addEventListener('click', function(e) { if (e.target === adminOverlay) closeAdmin(); });
 
             async function attemptAdminLogin(silent = false) {
                 const pass = adminPassword.value;
                 const token = githubToken.value.trim();
-
                 const enteredHash = await hashString(pass);
-                if (enteredHash !== ADMIN_PASSWORD_HASH) {
-                    if (!silent) adminAuthError.style.display = 'block';
-                    return;
-                }
+                if (enteredHash !== ADMIN_PASSWORD_HASH) { if (!silent) adminAuthError.style.display = 'block'; return; }
                 adminAuthError.style.display = 'none';
-
-                if (!token) {
-                    if (!silent) {
-                        adminAuthError.style.display = 'block';
-                        adminAuthError.textContent = 'Please paste your GitHub token.';
-                    }
-                    return;
-                }
-
+                if (!token) { if (!silent) { adminAuthError.style.display = 'block';
+                        adminAuthError.textContent = 'Please paste your GitHub token.'; } return; }
                 sessionStorage.setItem('spsss_admin_token', token);
                 sessionStorage.setItem('spsss_admin_auth', 'true');
-
                 isAdminAuthenticated = true;
                 adminAuthScreen.style.display = 'none';
                 adminEditorScreen.classList.add('active');
-                adminFileStatus.textContent = '📥 Loading manifest...';
+                adminFileStatus.textContent = '📥 Loading...';
                 loadManifestForAdmin();
             }
 
@@ -2358,104 +2614,96 @@
             adminPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
             githubToken.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
 
-            function loadManifestForAdmin() {
-                const token = sessionStorage.getItem('spsss_admin_token');
-                if (!token) return;
-
-                adminFileStatus.textContent = '⏳ Loading...';
-                setAdminStatus('loading', 'Fetching current manifest from GitHub...');
-
-                fetch(GITHUB_API_URL, {
-                        headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
-                    })
-                    .then(res => {
-                        if (!res.ok) {
-                            if (res.status === 404) {
-                                currentManifestSha = null;
-                                renderAdminReportList([]);
-                                adminFileStatus.textContent = '📄 New manifest (will be created)';
-                                setAdminStatus('success', 'No manifest found. You can create one now!');
-                                return null;
-                            }
-                            throw new Error(`GitHub API error: ${res.status}`);
-                        }
-                        return res.json();
-                    })
-                    .then(data => {
-                        if (!data) return;
-                        currentManifestSha = data.sha;
-                        const content = atob(data.content);
-                        let json;
-                        try { json = JSON.parse(content); } catch (e) { json = { reports: [] }; }
-                        const list = Array.isArray(json) ? json : (json.reports || []);
-                        renderAdminReportList(list);
-                        adminFileStatus.textContent = `📄 Loaded (${list.length} reports)`;
-                        setAdminStatus('success', `Loaded ${list.length} reports from GitHub.`);
-
-                        allReports = list;
-                        updateStatsAndBadges(allReports);
-                        filterAndRender();
-                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
-                            reports: list,
-                            timestamp: Date.now()
-                        }));
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        adminFileStatus.textContent = '❌ Load failed';
-                        setAdminStatus('error', `Error: ${err.message}`);
-                        renderAdminReportList([]);
-                    });
-            }
-
-            adminRefreshBtn.addEventListener('click', function() {
-                loadManifestForAdmin();
-                loadManifest(false);
+            adminSubTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    adminSubTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    adminActiveType = this.dataset.adminType;
+                    renderAdminList(adminActiveType);
+                    renderAdminAddForm(adminActiveType);
+                });
             });
 
-            function renderAdminReportList(reports) {
-                if (!adminReportList) return;
-                if (!reports || reports.length === 0) {
-                    adminReportList.innerHTML =
-                        `<p style="color:var(--text-light);padding:12px 0;">No reports yet. Add one below.</p>`;
+            function renderAdminAddForm(type) {
+                let fields = '';
+                if (type === 'reports') {
+                    fields = `
+                        <div class="field-group"><label>File path</label><input id="adminAddFile" placeholder="weekly/file.pdf" /></div>
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="My Report" /></div>
+                        <div class="field-group"><label>Description</label><input id="adminAddDesc" placeholder="Brief summary..." /></div>
+                        <div class="field-group"><label>Date (YYYY-MM-DD)</label><input id="adminAddDate" placeholder="2026-03-20" /></div>
+                        <div class="field-group"><label>Type</label><select id="adminAddType"><option value="weekly">Weekly</option><option value="alert">Special</option></select></div>
+                        <div class="field-group"><label>Tags (comma)</label><input id="adminAddTags" placeholder="osint, risk" /></div>
+                    `;
+                } else if (type === 'videos') {
+                    fields = `
+                        <div class="field-group"><label>Embed URL</label><input id="adminAddEmbed" placeholder="https://www.youtube.com/embed/..." /></div>
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="Video title" /></div>
+                        <div class="field-group full-width"><label>Description</label><input id="adminAddDesc" placeholder="Brief description..." /></div>
+                    `;
+                } else if (type === 'explainers') {
+                    fields = `
+                        <div class="field-group"><label>Article Link</label><input id="adminAddLink" placeholder="https://..." /></div>
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="Explainer title" /></div>
+                        <div class="field-group full-width"><label>Description</label><input id="adminAddDesc" placeholder="Brief description..." /></div>
+                    `;
+                }
+                adminAddFields.innerHTML = fields;
+            }
+
+            function renderAdminList(type) {
+                const items = fullManifest[type] || [];
+                if (!items || items.length === 0) {
+                    adminListContainer.innerHTML = `<p style="color:var(--text-light);padding:12px 0;">No ${type} added yet.</p>`;
                     return;
                 }
                 let html = '';
-                reports.forEach((r, idx) => {
-                    const tagsStr = (r.tags || []).join(', ');
+                items.forEach((item, idx) => {
+                    html += `<div class="admin-report-item" data-index="${idx}">`;
+                    if (type === 'reports') {
+                        html += `
+                            <div class="field-group"><label>File</label><input class="admin-field" data-field="file" value="${item.file||''}" /></div>
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group"><label>Description</label><input class="admin-field" data-field="description" value="${item.description||''}" /></div>
+                            <div class="field-group"><label>Date</label><input class="admin-field" data-field="date" value="${item.date||''}" /></div>
+                            <div class="field-group"><label>Type</label><select class="admin-field" data-field="type"><option value="weekly" ${item.type==='weekly'?'selected':''}>Weekly</option><option value="alert" ${item.type==='alert'?'selected':''}>Special</option></select></div>
+                            <div class="field-group"><label>Tags</label><input class="admin-field" data-field="tags" value="${(item.tags||[]).join(', ')}" /></div>
+                        `;
+                    } else if (type === 'videos') {
+                        html += `
+                            <div class="field-group"><label>Embed URL</label><input class="admin-field" data-field="embed" value="${item.embed||''}" /></div>
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group full-width"><label>Description</label><input class="admin-field" data-field="description" value="${item.description||''}" /></div>
+                        `;
+                    } else if (type === 'explainers') {
+                        html += `
+                            <div class="field-group"><label>Link</label><input class="admin-field" data-field="link" value="${item.link||''}" /></div>
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group full-width"><label>Description</label><input class="admin-field" data-field="description" value="${item.description||''}" /></div>
+                        `;
+                    }
                     html += `
-                        <div class="admin-report-item" data-index="${idx}">
-                            <div class="field-group"><label>File</label><input class="admin-file" value="${r.file || ''}" placeholder="weekly/file.pdf" /></div>
-                            <div class="field-group"><label>Title</label><input class="admin-title" value="${r.title || ''}" placeholder="Title" /></div>
-                            <div class="field-group"><label>Description</label><input class="admin-desc" value="${r.description || ''}" placeholder="Description" /></div>
-                            <div class="field-group"><label>Date</label><input class="admin-date" value="${r.date || ''}" placeholder="2026-03-20" /></div>
-                            <div class="field-group"><label>Type</label>
-                                <select class="admin-type">
-                                    <option value="weekly" ${r.type === 'weekly' ? 'selected' : ''}>Weekly Report</option>
-                                    <option value="alert" ${r.type === 'alert' ? 'selected' : ''}>Special Report</option>
-                                </select>
-                            </div>
-                            <div class="field-group"><label>Tags (comma)</label><input class="admin-tags" value="${tagsStr}" placeholder="osint, risk" /></div>
-                            <button class="delete-report-btn" data-index="${idx}" title="Delete this report">✕</button>
+                            <button class="delete-report-btn" data-index="${idx}" data-type="${type}">✕</button>
                         </div>
                     `;
                 });
-                adminReportList.innerHTML = html;
+                adminListContainer.innerHTML = html;
 
-                adminReportList.querySelectorAll('.delete-report-btn').forEach(btn => {
+                adminListContainer.querySelectorAll('.delete-report-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const idx = parseInt(this.dataset.index);
-                        if (confirm('Delete this report?')) {
-                            const currentItems = getAdminReportData();
-                            currentItems.splice(idx, 1);
-                            renderAdminReportList(currentItems);
-                            adminFileStatus.textContent = '🔄 Modified (unsaved)';
-                            setAdminStatus('loading', 'Report removed. Save to persist.');
+                        const type = this.dataset.type;
+                        if (confirm(`Delete this ${type} item?`)) {
+                            fullManifest[type].splice(idx, 1);
+                            renderAdminList(type);
+                            adminFileStatus.textContent = '✏️ Modified (unsaved)';
+                            setAdminStatus('loading', 'Item removed. Save to persist.');
+                            refreshMainViews();
                         }
                     });
                 });
 
-                adminReportList.querySelectorAll('input, select').forEach(el => {
+                adminListContainer.querySelectorAll('.admin-field').forEach(el => {
                     el.addEventListener('input', function() {
                         adminFileStatus.textContent = '✏️ Modified (unsaved)';
                         setAdminStatus('loading', 'Changes made. Click "Save to GitHub" to persist.');
@@ -2463,99 +2711,158 @@
                 });
             }
 
-            function getAdminReportData() {
-                const items = adminReportList.querySelectorAll('.admin-report-item');
-                const reports = [];
+            function collectAdminData(type) {
+                const items = adminListContainer.querySelectorAll('.admin-report-item');
+                const result = [];
                 items.forEach(item => {
-                    const file = item.querySelector('.admin-file')?.value.trim() || '';
-                    const title = item.querySelector('.admin-title')?.value.trim() || '';
-                    const description = item.querySelector('.admin-desc')?.value.trim() || '';
-                    const date = item.querySelector('.admin-date')?.value.trim() || '';
-                    const type = item.querySelector('.admin-type')?.value || 'weekly';
-                    const tagsRaw = item.querySelector('.admin-tags')?.value.trim() || '';
-                    const tags = tagsRaw ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
-                    if (file) {
-                        reports.push({ file, title, description, date, type, tags });
-                    }
+                    const fields = item.querySelectorAll('.admin-field');
+                    const obj = {};
+                    fields.forEach(f => {
+                        const key = f.dataset.field;
+                        if (key === 'tags') {
+                            obj[key] = f.value.split(',').map(s => s.trim()).filter(Boolean);
+                        } else if (key === 'type') {
+                            obj[key] = f.value;
+                        } else {
+                            obj[key] = f.value;
+                        }
+                    });
+                    Object.keys(obj).forEach(k => { if (obj[k] === '') delete obj[k]; });
+                    if (obj.file || obj.title || obj.embed || obj.link) result.push(obj);
                 });
-                return reports;
+                return result;
             }
 
-            addReportBtn.addEventListener('click', function() {
-                const file = addFile.value.trim();
-                const title = addTitle.value.trim();
-                const description = addDesc.value.trim();
-                const date = addDate.value.trim();
-                const type = addType.value;
-                const tagsRaw = addTags.value.trim();
-                const tags = tagsRaw ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+            function refreshMainViews() {
+                renderVideos(fullManifest.videos);
+                renderExplainers(fullManifest.explainers);
+                filterAndRenderReports();
+                updateStats();
+            }
 
-                if (!file) {
-                    setAdminStatus('error', 'File path is required.');
-                    return;
-                }
+            adminAddItemBtn.addEventListener('click', function() {
+                const type = adminActiveType;
+                const fields = adminAddFields.querySelectorAll('input, select');
+                const obj = {};
+                fields.forEach(f => {
+                    const key = f.id.replace('adminAdd', '').toLowerCase();
+                    if (key === 'tags') {
+                        obj[key] = f.value.split(',').map(s => s.trim()).filter(Boolean);
+                    } else if (key === 'type') {
+                        obj[key] = f.value;
+                    } else if (key === 'embed' || key === 'link') {
+                        if (f.value.trim()) obj[key] = f.value.trim();
+                    } else {
+                        if (f.value.trim()) obj[key] = f.value.trim();
+                    }
+                });
+                if (type === 'reports' && !obj.file) { setAdminStatus('error', 'File path is required.'); return; }
+                if (type === 'videos' && !obj.embed) { setAdminStatus('error', 'Embed URL is required.'); return; }
+                if (type === 'explainers' && !obj.link) { setAdminStatus('error', 'Link is required.'); return; }
 
-                const current = getAdminReportData();
-                current.push({ file, title, description, date, type, tags });
-                renderAdminReportList(current);
+                if (!fullManifest[type]) fullManifest[type] = [];
+                fullManifest[type].push(obj);
+                renderAdminList(type);
+                renderAdminAddForm(type);
                 adminFileStatus.textContent = '✏️ Modified (unsaved)';
-                setAdminStatus('success', 'Report added locally. Click "Save to GitHub" to persist.');
+                setAdminStatus('success', 'Item added locally. Click "Save to GitHub" to persist.');
+                refreshMainViews();
+            });
 
-                addFile.value = '';
-                addTitle.value = '';
-                addDesc.value = '';
-                addDate.value = '';
-                addTags.value = '';
+            function loadManifestForAdmin() {
+                const token = sessionStorage.getItem('spsss_admin_token');
+                if (!token) return;
+                adminFileStatus.textContent = '⏳ Loading...';
+                setAdminStatus('loading', 'Fetching manifest...');
+                fetch(GITHUB_API_URL, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                }).then(res => {
+                    if (!res.ok) {
+                        if (res.status === 404) {
+                            currentManifestSha = null;
+                            fullManifest = { reports: [], videos: [], explainers: [] };
+                            renderAdminList(adminActiveType);
+                            renderAdminAddForm(adminActiveType);
+                            adminFileStatus.textContent = '📄 New manifest';
+                            setAdminStatus('success', 'No manifest found. Create one now!');
+                            refreshMainViews();
+                            return null;
+                        }
+                        throw new Error(`GitHub API error: ${res.status}`);
+                    }
+                    return res.json();
+                }).then(data => {
+                    if (!data) return;
+                    currentManifestSha = data.sha;
+                    const content = atob(data.content);
+                    let json;
+                    try { json = JSON.parse(content); } catch (e) { json = {}; }
+                    fullManifest = {
+                        reports: json.reports || [],
+                        videos: json.videos || [],
+                        explainers: json.explainers || []
+                    };
+                    renderAdminList(adminActiveType);
+                    renderAdminAddForm(adminActiveType);
+                    adminFileStatus.textContent =
+                        `📄 Loaded (${fullManifest.reports.length} reports, ${fullManifest.videos.length} videos, ${fullManifest.explainers.length} explainers)`;
+                    setAdminStatus('success', 'Manifest loaded.');
+                    refreshMainViews();
+                }).catch(err => {
+                    console.error(err);
+                    adminFileStatus.textContent = '❌ Load failed';
+                    setAdminStatus('error', `Error: ${err.message}`);
+                });
+            }
+
+            adminRefreshBtn.addEventListener('click', function() {
+                loadManifestForAdmin();
+                loadManifest(false);
             });
 
             adminSaveBtn.addEventListener('click', function() {
                 const token = sessionStorage.getItem('spsss_admin_token');
-                if (!token) {
-                    setAdminStatus('error', 'No GitHub token. Please log in again.');
-                    return;
-                }
+                if (!token) { setAdminStatus('error', 'No GitHub token.'); return; }
 
-                const reports = getAdminReportData();
-                const payload = JSON.stringify({ reports }, null, 2);
+                const type = adminActiveType;
+                const collected = collectAdminData(type);
+                fullManifest[type] = collected;
 
-                setAdminStatus('loading', 'Saving to GitHub...');
+                const payload = JSON.stringify({ reports: fullManifest.reports, videos: fullManifest.videos,
+                    explainers: fullManifest.explainers }, null, 2);
+                setAdminStatus('loading', 'Saving...');
                 adminSaveBtn.disabled = true;
 
                 const body = {
-                    message: `Update manifest via admin panel (${new Date().toISOString()})`,
+                    message: `Update manifest (${new Date().toISOString()})`,
                     content: btoa(unescape(encodeURIComponent(payload))),
                     branch: 'main'
                 };
-                if (currentManifestSha) {
-                    body.sha = currentManifestSha;
-                }
+                if (currentManifestSha) body.sha = currentManifestSha;
 
                 fetch(GITHUB_API_URL, {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    })
-                    .then(res => {
-                        if (!res.ok) throw new Error(`GitHub API error: ${res.status} ${res.statusText}`);
-                        return res.json();
-                    })
-                    .then(data => {
-                        currentManifestSha = data.content.sha;
-                        adminFileStatus.textContent = `✅ Saved (${reports.length} reports)`;
-                        setAdminStatus('success', `Successfully saved ${reports.length} reports to GitHub.`);
-                        adminSaveBtn.disabled = false;
-                        loadManifest(false);
-                        loadManifestForAdmin();
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        setAdminStatus('error', `Save failed: ${err.message}`);
-                        adminSaveBtn.disabled = false;
-                    });
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                }).then(res => {
+                    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+                    return res.json();
+                }).then(data => {
+                    currentManifestSha = data.content.sha;
+                    adminFileStatus.textContent = '✅ Saved';
+                    setAdminStatus('success', 'Saved successfully.');
+                    adminSaveBtn.disabled = false;
+                    loadManifest(false);
+                    loadManifestForAdmin();
+                }).catch(err => {
+                    console.error(err);
+                    setAdminStatus('error', `Save failed: ${err.message}`);
+                    adminSaveBtn.disabled = false;
+                });
             });
 
             adminLogoutBtn.addEventListener('click', function() {
@@ -2584,7 +2891,7 @@
             loadManifest(true);
 
             // ---- Expose ----
-            window.__portfolio = { loadManifest, filterAndRender, openAdmin, closeAdmin };
+            window.__portfolio = { loadManifest, openAdmin, closeAdmin };
 
         })();
     </script>
