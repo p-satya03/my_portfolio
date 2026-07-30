@@ -16,7 +16,7 @@
 
     <style>
         /* ============================================================
-               MAIN STYLES (unchanged)
+               CSS – Professional · Minimal · Aesthetic
                ============================================================ */
         *,
         *::before,
@@ -59,8 +59,11 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 24px;
+            position: relative;
+            z-index: 2;
         }
 
+        /* ----- header / nav ----- */
         header {
             position: sticky;
             top: 0;
@@ -69,7 +72,7 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid rgba(15, 42, 74, 0.06);
-            padding: 14px 0;
+            padding: 12px 0;
             transition: var(--transition);
         }
 
@@ -87,11 +90,12 @@
             gap: 12px;
             text-decoration: none;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .logo-mark {
-            width: 42px;
-            height: 42px;
+            width: 40px;
+            height: 40px;
             background: var(--navy);
             border-radius: 10px;
             display: flex;
@@ -112,7 +116,7 @@
         }
         .logo-text .brand {
             font-weight: 700;
-            font-size: 20px;
+            font-size: 18px;
             letter-spacing: -0.3px;
             color: var(--navy);
         }
@@ -121,10 +125,10 @@
             font-weight: 300;
         }
         .logo-text .sub {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
             color: var(--text-light);
-            letter-spacing: 0.6px;
+            letter-spacing: 0.4px;
             text-transform: uppercase;
             margin-top: -1px;
         }
@@ -132,7 +136,8 @@
         nav {
             display: flex;
             align-items: center;
-            gap: 24px;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         nav a {
@@ -172,7 +177,7 @@
         .nav-cta {
             background: var(--navy);
             color: var(--white) !important;
-            padding: 8px 20px;
+            padding: 6px 18px;
             border-radius: 40px;
             font-weight: 600;
             font-size: 13px;
@@ -190,165 +195,167 @@
             box-shadow: 0 4px 16px rgba(15, 42, 74, 0.2);
         }
 
-        .hero {
-            padding: 56px 0 32px;
-            text-align: center;
-        }
-        .hero-badge {
-            display: inline-block;
-            background: rgba(196, 163, 90, 0.12);
-            color: var(--gold);
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            padding: 6px 20px;
-            border-radius: 40px;
-            margin-bottom: 16px;
-            border: 1px solid rgba(196, 163, 90, 0.15);
-        }
-        .hero h1 {
-            font-size: clamp(30px, 4.5vw, 48px);
-            font-weight: 700;
-            letter-spacing: -1px;
-            line-height: 1.15;
-            color: var(--navy);
-            margin-bottom: 10px;
-        }
-        .hero h1 .highlight {
-            color: var(--gold);
-        }
-        .hero p {
-            font-size: 17px;
-            color: var(--text-light);
-            max-width: 600px;
-            margin: 0 auto 24px;
-            font-weight: 400;
-            line-height: 1.7;
-        }
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 48px;
-            flex-wrap: wrap;
-            margin-top: 4px;
-        }
-        .hero-stats .stat {
-            text-align: center;
-        }
-        .hero-stats .stat-number {
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--navy);
-            letter-spacing: -0.5px;
-        }
-        .hero-stats .stat-label {
-            font-size: 13px;
-            color: var(--text-light);
-            font-weight: 400;
-            margin-top: 2px;
-        }
-
-        .filters-bar {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin: 24px 0 20px;
-            padding: 12px 16px;
-            background: var(--white);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(15, 42, 74, 0.04);
-        }
-        .filter-tabs {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .filter-tab {
-            background: transparent;
-            border: none;
-            padding: 8px 20px;
-            border-radius: 40px;
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--text-light);
-            cursor: pointer;
-            transition: var(--transition);
-            font-family: var(--font);
-            border: 1px solid transparent;
-        }
-        .filter-tab:hover {
-            color: var(--navy);
-            background: rgba(15, 42, 74, 0.04);
-        }
-        .filter-tab.active {
-            background: var(--navy);
-            color: var(--white);
-            border-color: var(--navy);
-            box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
-        }
-        .filter-tab.active:hover {
-            background: var(--navy-light);
-        }
-        .filter-tab .badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 40px;
-            padding: 0 8px;
-            font-size: 11px;
-            margin-left: 6px;
-            font-weight: 600;
-        }
-        .filter-tab.active .badge {
-            background: rgba(255, 255, 255, 0.2);
-        }
-        .filter-tab:not(.active) .badge {
-            background: rgba(15, 42, 74, 0.08);
-            color: var(--text-light);
-        }
-
+        /* ---- Search in Nav ---- */
         .search-wrapper {
             display: flex;
             align-items: center;
-            background: var(--cream);
+            background: var(--white);
             border-radius: 40px;
-            padding: 0 16px;
-            border: 1px solid rgba(15, 42, 74, 0.06);
+            padding: 0 14px;
+            border: 1px solid rgba(15, 42, 74, 0.08);
             transition: var(--transition);
-            flex: 1;
             min-width: 180px;
-            max-width: 320px;
         }
+
         .search-wrapper:focus-within {
             border-color: var(--gold);
-            background: var(--white);
             box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.15);
         }
+
         .search-wrapper .icon {
             color: var(--text-light);
-            opacity: 0.5;
-            font-size: 16px;
-            margin-right: 8px;
+            opacity: 0.4;
+            font-size: 14px;
+            margin-right: 6px;
         }
+
         .search-wrapper input {
             border: none;
             background: transparent;
-            padding: 10px 0;
-            font-size: 14px;
+            padding: 8px 0;
+            font-size: 13px;
             font-weight: 400;
             font-family: var(--font);
             color: var(--text);
             width: 100%;
             outline: none;
         }
+
         .search-wrapper input::placeholder {
             color: var(--text-light);
             opacity: 0.5;
         }
 
+        /* ----- Hero Section (Redesigned – no photo, abstract art) ----- */
+        .hero {
+            position: relative;
+            padding: 100px 0 80px;
+            background: var(--cream);
+            overflow: hidden;
+            text-align: center;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.04);
+        }
+
+        /* Abstract art blobs */
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(196, 163, 90, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(60px);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15, 42, 74, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(196, 163, 90, 0.12);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 4px 18px;
+            border-radius: 40px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(196, 163, 90, 0.15);
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5.5vw, 58px);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--gold);
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(196, 163, 90, 0.15);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: var(--text-light);
+            max-width: 540px;
+            margin: 0 auto 32px;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 56px;
+            flex-wrap: wrap;
+            padding-top: 24px;
+            border-top: 2px solid rgba(15, 42, 74, 0.06);
+        }
+
+        .hero-stats .stat {
+            text-align: center;
+        }
+        .hero-stats .stat-number {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .hero-stats .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* ----- Section Titles ----- */
         .section-title {
             font-size: 26px;
             font-weight: 700;
@@ -369,14 +376,75 @@
             margin: 0 0 16px 0;
         }
 
+        /* ----- Reports Section (Full Width) ----- */
         .reports-section {
-            padding: 8px 0 56px;
+            padding: 60px 0 60px;
         }
+
+        .reports-header {
+            padding: 0 40px 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-tab {
+            background: transparent;
+            border: none;
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            border: 1px solid transparent;
+        }
+
+        .filter-tab:hover {
+            color: var(--navy);
+            background: rgba(15, 42, 74, 0.04);
+        }
+
+        .filter-tab.active {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+            box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
+        }
+
+        .filter-tab .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 0 8px;
+            font-size: 10px;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+
+        .filter-tab.active .badge {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .filter-tab:not(.active) .badge {
+            background: rgba(15, 42, 74, 0.08);
+            color: var(--text-light);
+        }
+
         .reports-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-            gap: 28px;
-            margin-top: 12px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 0 40px;
         }
 
         .report-card {
@@ -390,10 +458,12 @@
             display: flex;
             flex-direction: column;
         }
+
         .report-card:hover {
             box-shadow: var(--shadow-hover);
             transform: translateY(-4px);
         }
+
         .report-thumb {
             width: 100%;
             aspect-ratio: 1.414 / 1;
@@ -404,12 +474,14 @@
             align-items: center;
             justify-content: center;
         }
+
         .report-thumb canvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
+
         .report-thumb .placeholder {
             color: var(--text-light);
             font-size: 13px;
@@ -430,8 +502,9 @@
             display: flex;
             flex-direction: column;
         }
+
         .report-meta .report-title {
-            font-size: 17px;
+            font-size: 16px;
             font-weight: 600;
             color: var(--navy);
             letter-spacing: -0.3px;
@@ -442,15 +515,17 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+
         .report-meta .report-date {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-light);
             font-weight: 400;
             letter-spacing: 0.2px;
             margin-bottom: 6px;
         }
+
         .report-meta .report-desc {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-light);
             line-height: 1.5;
             display: -webkit-box;
@@ -460,6 +535,7 @@
             margin-bottom: 8px;
             font-weight: 400;
         }
+
         .report-meta .report-tags {
             display: flex;
             flex-wrap: wrap;
@@ -467,29 +543,33 @@
             margin-top: auto;
             padding-top: 12px;
         }
+
         .report-meta .tag {
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
             color: var(--navy);
             background: rgba(15, 42, 74, 0.06);
-            padding: 3px 12px;
+            padding: 2px 10px;
             border-radius: 20px;
             letter-spacing: 0.2px;
             text-transform: uppercase;
             border: 1px solid rgba(15, 42, 74, 0.04);
         }
+
         .report-meta .tag.gold {
             background: rgba(196, 163, 90, 0.12);
             color: var(--gold);
             border-color: rgba(196, 163, 90, 0.12);
         }
+
         .report-meta .tag.type-tag {
             background: var(--navy);
             color: var(--white);
             border-color: var(--navy);
-            font-size: 10px;
-            padding: 2px 12px;
+            font-size: 9px;
+            padding: 2px 10px;
         }
+
         .report-meta .read-link {
             margin-top: 14px;
             font-size: 13px;
@@ -506,11 +586,13 @@
             padding: 0;
             width: fit-content;
         }
+
         .report-meta .read-link:hover {
             color: var(--navy);
             gap: 10px;
         }
 
+        /* ----- Empty State ----- */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -532,147 +614,140 @@
             margin: 0 auto;
         }
 
+        /* ----- About Section (Short & Punchy) ----- */
         .about-section {
-            padding: 16px 0 48px;
+            padding: 40px 0 60px;
         }
+
         .about-card {
             background: var(--white);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
-            padding: 36px 40px;
+            padding: 40px;
             display: flex;
             flex-wrap: wrap;
-            align-items: flex-start;
-            gap: 36px;
+            align-items: center;
+            gap: 40px;
             border: 1px solid rgba(15, 42, 74, 0.04);
             transition: var(--transition);
         }
+
         .about-avatar {
             flex-shrink: 0;
-            width: 96px;
-            height: 96px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
-            background: var(--navy);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--gold);
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: 1px;
+            background: var(--cream-dark);
+            overflow: hidden;
             border: 3px solid var(--gold-light);
             box-shadow: 0 8px 24px rgba(15, 42, 74, 0.08);
         }
+
+        .about-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
         .about-content {
             flex: 1;
             min-width: 220px;
         }
+
         .about-content .analyst-name {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: var(--navy);
             letter-spacing: -0.5px;
             margin-bottom: 2px;
         }
+
         .about-content .analyst-title {
             font-size: 15px;
             font-weight: 500;
             color: var(--gold);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             letter-spacing: 0.2px;
         }
+
         .about-content .analyst-bio {
             font-size: 15px;
             color: var(--text-light);
             line-height: 1.8;
-            max-width: 720px;
+            max-width: 700px;
         }
-        .about-content .analyst-bio .solo-highlight {
-            display: inline-block;
-            background: rgba(196, 163, 90, 0.08);
+
+        .about-content .analyst-bio strong {
             color: var(--navy);
             font-weight: 600;
-            padding: 0 6px;
-            border-radius: 4px;
         }
+
         .about-expertise {
             margin-top: 16px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
         }
+
         .about-expertise .expert-tag {
             background: var(--cream);
-            padding: 4px 16px;
+            padding: 4px 14px;
             border-radius: 40px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             color: var(--navy);
             border: 1px solid rgba(15, 42, 74, 0.05);
             letter-spacing: 0.2px;
         }
 
+        /* ----- Contact Section (Ultra Minimal) ----- */
         .contact-section {
-            padding: 12px 0 56px;
-        }
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            margin-top: 20px;
-            max-width: 720px;
-        }
-        .contact-item {
-            background: var(--white);
-            border-radius: var(--radius);
-            padding: 20px 16px;
-            text-align: center;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(15, 42, 74, 0.04);
-            transition: var(--transition);
-            text-decoration: none;
-            color: var(--text);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-        }
-        .contact-item:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-hover);
-            border-color: var(--gold-light);
-        }
-        .contact-item .contact-icon {
-            font-size: 28px;
-            line-height: 1;
-        }
-        .contact-item .contact-label {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--navy);
-        }
-        .contact-item .contact-handle {
-            font-size: 13px;
-            color: var(--text-light);
-            font-weight: 400;
-            word-break: break-all;
-        }
-        .contact-item.primary {
-            background: var(--navy);
-            border-color: var(--navy);
-        }
-        .contact-item.primary .contact-label,
-        .contact-item.primary .contact-handle {
-            color: var(--white);
-        }
-        .contact-item.primary .contact-icon {
-            color: var(--gold);
-        }
-        .contact-item.primary:hover {
-            background: var(--navy-light);
-            border-color: var(--navy-light);
+            padding: 20px 0 40px;
         }
 
+        .contact-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px 24px;
+            padding: 12px 0;
+            font-size: 14px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(15, 42, 74, 0.04);
+        }
+
+        .contact-strip .label {
+            font-weight: 500;
+            color: var(--navy);
+            letter-spacing: 0.2px;
+        }
+
+        .contact-strip a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .contact-strip a:hover {
+            color: var(--gold);
+        }
+
+        .contact-strip .icon {
+            font-size: 16px;
+            opacity: 0.5;
+        }
+
+        .contact-strip .sep {
+            color: var(--text-light);
+            opacity: 0.15;
+        }
+
+        /* ----- PDF Modal (Unchanged) ----- */
         .pdf-modal {
             position: fixed;
             inset: 0;
@@ -851,106 +926,141 @@
             transform: translateY(-1px);
         }
 
+        /* ----- Footer (Redesigned) ----- */
         footer {
-            background: var(--white);
-            border-top: 1px solid rgba(15, 42, 74, 0.06);
-            padding: 32px 0 28px;
-            margin-top: 16px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 48px 0 24px;
+            margin-top: 20px;
+            border-top: 4px solid var(--gold);
         }
-        footer .container {
+
+        .footer-grid {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            text-align: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
-        footer .footer-brand {
+
+        .footer-brand {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-brand .brand {
+            font-size: 22px;
             font-weight: 700;
-            font-size: 18px;
-            color: var(--navy);
-            letter-spacing: -0.3px;
+            color: var(--white);
+            letter-spacing: -0.5px;
         }
-        footer .footer-brand span {
+
+        .footer-brand .brand span {
             color: var(--gold);
             font-weight: 300;
         }
-        footer .footer-sub {
-            font-size: 12px;
-            color: var(--text-light);
-            opacity: 0.7;
-            letter-spacing: 0.5px;
-            margin-top: -4px;
+
+        .footer-brand .tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            font-weight: 300;
         }
-        footer .footer-links {
+
+        .footer-links {
             display: flex;
-            gap: 24px;
+            gap: 40px;
             flex-wrap: wrap;
-            justify-content: center;
+            flex: 2;
+            justify-content: flex-end;
         }
-        footer .footer-links a {
-            color: var(--text-light);
+
+        .footer-links-column {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .footer-links-column .col-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        .footer-links-column a {
+            color: rgba(255, 255, 255, 0.6);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 400;
             transition: var(--transition);
         }
-        footer .footer-links a:hover {
-            color: var(--navy);
-        }
-        footer .footer-copy {
-            font-size: 12px;
-            color: var(--text-light);
-            opacity: 0.5;
-            margin-top: 2px;
+
+        .footer-links-column a:hover {
+            color: var(--white);
         }
 
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 24px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            color: var(--gold);
+        }
+
+        /* ----- Responsive ----- */
         @media (max-width: 768px) {
             header .container {
                 flex-direction: column;
-                align-items: center;
+                align-items: stretch;
                 gap: 8px;
             }
             nav {
-                gap: 14px;
-                flex-wrap: wrap;
                 justify-content: center;
-            }
-            nav a {
-                font-size: 13px;
-            }
-            .hero {
-                padding: 32px 0 20px;
-            }
-            .hero h1 {
-                font-size: 28px;
-            }
-            .hero p {
-                font-size: 15px;
-            }
-            .hero-stats {
-                gap: 24px;
-            }
-            .filters-bar {
-                flex-direction: column;
-                align-items: stretch;
                 gap: 12px;
-                padding: 16px;
-            }
-            .filter-tabs {
-                justify-content: center;
             }
             .search-wrapper {
-                max-width: 100%;
+                width: 100%;
+                min-width: unset;
             }
-            .reports-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-                gap: 20px;
+            .hero {
+                padding: 60px 0 40px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .hero-stats {
+                gap: 32px;
             }
             .about-card {
-                padding: 24px 20px;
                 flex-direction: column;
-                align-items: center;
                 text-align: center;
+                padding: 24px;
             }
             .about-content .analyst-bio {
                 text-align: left;
@@ -958,35 +1068,35 @@
             .about-expertise {
                 justify-content: center;
             }
-            .contact-grid {
-                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            .reports-grid {
+                padding: 0 16px;
+                gap: 20px;
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
-            .pdf-modal {
-                padding: 12px;
-            }
-            .pdf-modal-content {
-                max-height: 96vh;
-            }
-            .pdf-modal-header .modal-title {
-                max-width: 50%;
-                font-size: 14px;
-            }
-            .pdf-modal-footer {
+            .reports-header {
+                padding: 0 16px 20px 16px;
                 flex-direction: column;
                 align-items: stretch;
-                gap: 10px;
+                gap: 12px;
             }
-            .pdf-modal-footer .page-nav {
+            .filter-tabs {
                 justify-content: center;
             }
-            .pdf-modal-footer .download-btn {
+            .contact-strip {
+                gap: 8px 16px;
+                font-size: 13px;
+            }
+            .footer-grid {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-links {
                 justify-content: center;
             }
-            .section-title {
-                font-size: 22px;
-            }
-            .logo-text .brand {
-                font-size: 17px;
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
             }
         }
 
@@ -996,26 +1106,71 @@
             }
             .reports-grid {
                 grid-template-columns: 1fr;
+                padding: 0 4px;
             }
             .hero h1 {
-                font-size: 24px;
-            }
-            .hero-stats .stat-number {
-                font-size: 20px;
-            }
-            .about-avatar {
-                width: 76px;
-                height: 76px;
                 font-size: 26px;
             }
-            .contact-grid {
-                grid-template-columns: 1fr 1fr;
+            .hero-stats {
+                gap: 20px;
+            }
+            .about-avatar {
+                width: 96px;
+                height: 96px;
+            }
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
             }
         }
 
-        /* ============================================================
-               ADMIN PANEL OVERLAY
-               ============================================================ */
+        /* ----- Skeletons ----- */
+        .card-skeleton {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            display: flex;
+            flex-direction: column;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .card-skeleton .skeleton-thumb {
+            width: 100%;
+            aspect-ratio: 1.414 / 1;
+            background: var(--cream-dark);
+        }
+        .card-skeleton .skeleton-meta {
+            padding: 18px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .card-skeleton .skeleton-line {
+            height: 14px;
+            background: var(--cream-dark);
+            border-radius: 4px;
+            width: 100%;
+        }
+        .card-skeleton .skeleton-line.short {
+            width: 60%;
+        }
+        .card-skeleton .skeleton-line.tiny {
+            width: 30%;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ----- Admin Overlay (unchanged) ----- */
         .admin-overlay {
             position: fixed;
             inset: 0;
@@ -1309,49 +1464,15 @@
             color: var(--gold);
         }
 
-        /* Loading skeleton for cards */
-        .card-skeleton {
-            background: var(--white);
-            border-radius: var(--radius);
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
             overflow: hidden;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(15, 42, 74, 0.04);
-            display: flex;
-            flex-direction: column;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-        .card-skeleton .skeleton-thumb {
-            width: 100%;
-            aspect-ratio: 1.414 / 1;
-            background: var(--cream-dark);
-        }
-        .card-skeleton .skeleton-meta {
-            padding: 18px 22px 22px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .card-skeleton .skeleton-line {
-            height: 14px;
-            background: var(--cream-dark);
-            border-radius: 4px;
-            width: 100%;
-        }
-        .card-skeleton .skeleton-line.short {
-            width: 60%;
-        }
-        .card-skeleton .skeleton-line.tiny {
-            width: 30%;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.6;
-            }
+            clip: rect(0, 0, 0, 0);
+            border: 0;
         }
     </style>
 </head>
@@ -1373,177 +1494,113 @@
             <nav>
                 <a href="#reports" class="active">Reports</a>
                 <a href="#about">About</a>
-                <a href="#contact" class="nav-cta">Contact</a>
+                <a href="#contact">Contact</a>
+                <div class="search-wrapper">
+                    <span class="icon" aria-hidden="true">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search reports…" aria-label="Search reports" />
+                </div>
             </nav>
         </div>
     </header>
 
     <!-- ============================================================
-    HERO
+    HERO · REDESIGNED (No photo, abstract art)
     ============================================================ -->
     <section class="hero">
         <div class="container">
-            <div class="hero-badge">NFSU · Intelligence &amp; Risk Analysis</div>
-            <h1>
-                Evidence-based <br />
-                <span class="highlight">strategic foresight</span>
-            </h1>
-            <p>
-                Weekly deep-dives and rapid alert briefs — verified, structured,
-                and built for decision‑makers.
-            </p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <div class="stat-number" id="totalReportCount">0</div>
-                    <div class="stat-label">Total Reports</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="weeklyCount">0</div>
-                    <div class="stat-label">Weekly Briefs</div>
-                </div>
-                <div class="stat">
-                    <div class="stat-number" id="alertCount">0</div>
-                    <div class="stat-label">Alert Reports</div>
+            <div class="hero-content">
+                <div class="hero-badge">NFSU · Intelligence &amp; Risk Analysis</div>
+                <h1>
+                    Evidence-based <br />
+                    <span class="highlight">strategic foresight</span>
+                </h1>
+                <p>
+                    Weekly deep-dives and rapid special briefs — verified, structured,
+                    and built for decision‑makers.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number" id="totalReportCount">0</div>
+                        <div class="stat-label">Total Reports</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="weeklyCount">0</div>
+                        <div class="stat-label">Weekly Reports</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="alertCount">0</div>
+                        <div class="stat-label">Special Reports</div>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================================
-    REPORTS SECTION
+    REPORTS · FULL WIDTH · TABS: Weekly / Special
     ============================================================ -->
     <section class="reports-section" id="reports">
-        <div class="container">
-            <div class="section-divider"></div>
-            <h2 class="section-title">Report Library</h2>
-            <p class="section-sub">Filter by type or search across all indexed reports.</p>
-
-            <div class="filters-bar">
-                <div class="filter-tabs" role="tablist">
-                    <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
-                        All Reports <span class="badge" id="allBadge">0</span>
-                    </button>
-                    <button class="filter-tab" data-filter="weekly" role="tab" aria-selected="false">
-                        📅 Weekly Briefs <span class="badge" id="weeklyBadge">0</span>
-                    </button>
-                    <button class="filter-tab" data-filter="alert" role="tab" aria-selected="false">
-                        ⚡ Alert Reports <span class="badge" id="alertBadge">0</span>
-                    </button>
-                </div>
-                <div class="search-wrapper">
-                    <span class="icon" aria-hidden="true">🔍</span>
-                    <input type="text" id="searchInput" placeholder="Search by title, tag, or description…" aria-label="Search reports" />
-                </div>
+        <div class="reports-header">
+            <div>
+                <h2 class="section-title">Report Library</h2>
+                <p class="section-sub">Filter by type or search above.</p>
             </div>
+            <div class="filter-tabs" role="tablist">
+                <button class="filter-tab active" data-filter="all" role="tab" aria-selected="true">
+                    All <span class="badge" id="allBadge">0</span>
+                </button>
+                <button class="filter-tab" data-filter="weekly" role="tab" aria-selected="false">
+                    Weekly Reports <span class="badge" id="weeklyBadge">0</span>
+                </button>
+                <button class="filter-tab" data-filter="alert" role="tab" aria-selected="false">
+                    Special Reports <span class="badge" id="alertBadge">0</span>
+                </button>
+            </div>
+        </div>
 
-            <div class="reports-grid" id="reportsGrid">
-                <!-- Skeletons will be injected by JS -->
-                <div class="empty-state" id="emptyState" style="display:none;">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                        <path d="M14 2v6h6" />
-                        <path d="M12 18v-4" />
-                        <path d="M12 9v.01" />
-                    </svg>
-                    <h3>No reports match</h3>
-                    <p>Try adjusting your filter or search term.</p>
-                </div>
+        <div class="reports-grid" id="reportsGrid">
+            <div class="empty-state" id="emptyState" style="display:none;">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                    <path d="M14 2v6h6" />
+                    <path d="M12 18v-4" />
+                    <path d="M12 9v.01" />
+                </svg>
+                <h3>No reports match</h3>
+                <p>Try adjusting your filter or search term.</p>
             </div>
         </div>
     </section>
 
-        <!-- ============================================================
-    ABOUT SECTION – PROFESSIONAL PROFILE
+    <!-- ============================================================
+    ABOUT · SHORT & PUNCHY (moved after reports)
     ============================================================ -->
     <section class="about-section" id="about">
         <div class="container">
             <div class="section-divider"></div>
             <h2 class="section-title">About the Analyst</h2>
-            <p class="section-sub">M.Sc. Homeland Security · OSINT &amp; Threat Intelligence</p>
+            <p class="section-sub">Who stands behind every brief.</p>
 
             <div class="about-card">
-                <!-- Profile Image (replace src with your actual image path) -->
-                <div class="about-avatar" aria-label="Analyst photo">
-                    <img src="assets/profile.jpg" alt="Profile photo" style="width:100%; height:100%; object-fit:cover; border-radius:50%;" />
+                <div class="about-avatar">
+                    <!-- Replace 'assets/profile.jpg' with your actual image path -->
+                    <img src="assets/profile.jpg" alt="Profile photo" />
                 </div>
 
                 <div class="about-content">
-                    <!-- Name & Title (customise as needed) -->
                     <div class="analyst-name">Satyasheel</div>
-                    <div class="analyst-title">M.Sc. Homeland Security · School of Police Sciences & Security Studies | NFSU</div>
+                    <div class="analyst-title">M.Sc. Homeland Security · NFSU</div>
 
-                    <!-- ====== BIO / FULL PROFILE ====== -->
                     <div class="analyst-bio">
-
-                        <!-- PROFESSIONAL SUMMARY -->
-                        <p style="margin-bottom:12px;">
-                            <strong>Professional Summary</strong><br />
-                            M.Sc. Homeland Security candidate at NFSU, focused on OSINT and threat intelligence, with experience spanning critical infrastructure, law enforcement, and aviation security. Built a Python-based pipeline that automates open-source intelligence collection and reporting. OSINT-certified through the Basel Institute, with a track record of working independently under deadline pressure.
-                        </p>
-
-                        <!-- CORE SKILLS -->
-                        <p style="margin-bottom:12px;">
-                            <strong>Core Skills</strong><br />
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">Risk &amp; Intelligence Analysis</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">OSINT Collection</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">Geopolitical Risk</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">Threat Intelligence Reporting</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">GSOC &amp; Crisis Ops</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">Python · SQL · Web Scraping</span>
-                            <span style="display:inline-block; background:var(--cream); padding:2px 10px; border-radius:12px; font-size:13px; margin:2px 4px 2px 0;">Power BI · n8n · Agile</span>
-                        </p>
-
-                        <!-- EXPERIENCE -->
-                        <p style="margin-bottom:12px;">
-                            <strong>Experience</strong><br />
-                            <strong>Security Operations Intern</strong> – Adani Ports (March 2026)<br />
-                            • Mapped threat-mitigation workflows across Tier‑1 critical infrastructure, surfacing operational interdependencies.<br />
-                            • Assessed ML‑enabled surveillance systems, documenting technology‑dependent control and failure points.<br /><br />
-
-                            <strong>Law Enforcement Operations Intern</strong> – Gujarat Police (Oct 2025)<br />
-                            • Documented field investigative workflows and inter‑unit coordination in high‑stakes environments.<br />
-                            • Analysed chain‑of‑custody and case‑handling protocols.<br /><br />
-
-                            <strong>AI Engineer</strong> – AlongX Software (Sept 2024 – Jan 2025)<br />
-                            • Developed ML models for legal document translation and predictive analysis.<br />
-                            • Built Python‑based data pipelines for model training and validation.<br /><br />
-
-                            <strong>CNS Systems Intern</strong> – Bhubaneswar Airport (BBI) (June – July 2024)<br />
-                            • Gained operational exposure to layered surveillance and security architecture.<br />
-                            • Observed radar, server, and navigation‑aid maintenance, identifying single‑point‑failure risks.<br /><br />
-
-                            <strong>Advanced Data Analytics Intern</strong> – Edunet Foundation (Dec 2023 – Jan 2024)<br />
-                            • Built Power BI dashboards for production monitoring, replacing manual reporting.
-                        </p>
-
-                        <!-- PROJECTS -->
-                        <p style="margin-bottom:12px;">
-                            <strong>Projects</strong><br />
-                            <strong>Geopolitical Risk Intelligence Reports</strong> – Armenia &amp; Bangladesh Elections (2026)<br />
-                            • Authored OSINT‑based reports structured to professional intelligence standards (summary, threat assessment, trajectory, mitigation).<br /><br />
-
-                            <strong>Automated OSINT Threat Intelligence Pipeline</strong> – Python (2026)<br />
-                            • Built a pipeline that aggregates open‑source feeds and generates structured weekly risk briefs.<br />
-                            • Automated report generation and alert dispatch, prioritising signals by business context.<br /><br />
-
-                            <strong>ICS/FEMA‑Aligned Crisis Documentation Tool</strong> – Personal Project (2026)<br />
-                            • Built a tool generating ICS/FEMA‑aligned incident reports from structured user input.
-                        </p>
-
-                        <!-- CERTIFICATIONS & EDUCATION -->
                         <p>
-                            <strong>Certifications</strong><br />
-                            • Open‑Source Intelligence (OSINT) – Basel Institute on Governance<br />
-                            • ISO/IEC 27001:2022 Information Security Associate – SkillFront<br />
-                            • Fraud Detection on Financial Transactions with ML – Google Cloud<br /><br />
-
-                            <strong>Education</strong><br />
-                            <strong>M.Sc. in Homeland Security</strong> – NFSU (2025–2027) · CGPA: 7.9 (Semester II)
+                            <strong>M.Sc. Homeland Security</strong> candidate at NFSU with a sharp focus on
+                            <strong>OSINT, geopolitical risk, and threat intelligence</strong>.
+                            Certified by the Basel Institute, I build automated intelligence pipelines and
+                            deliver structured risk briefs for critical infrastructure and law enforcement.
+                            I turn open-source data into actionable foresight.
                         </p>
                     </div>
-                    <!-- ====== END BIO ====== -->
 
-                    <!-- Expertise tags (quick reference) -->
                     <div class="about-expertise">
                         <span class="expert-tag">📡 OSINT</span>
                         <span class="expert-tag">🌍 Geopolitical Risk</span>
@@ -1558,33 +1615,27 @@
     </section>
 
     <!-- ============================================================
-    CONTACT SECTION
+    CONTACT · ULTRA MINIMAL (single line)
     ============================================================ -->
     <section class="contact-section" id="contact">
         <div class="container">
-            <div class="section-divider"></div>
-            <h2 class="section-title">Let's Connect</h2>
-            <p class="section-sub">Reach out for consulting, briefings, or collaboration.</p>
-            <div class="contact-grid">
-                <a href="mailto:your.email@nfsu.ac.in" class="contact-item primary">
-                    <span class="contact-icon">✉️</span>
-                    <span class="contact-label">Email</span>
-                    <span class="contact-handle">your.email@nfsu.ac.in</span>
+            <div class="contact-strip">
+                <span class="label">Reach out</span>
+                <span class="sep">|</span>
+                <a href="mailto:your.email@nfsu.ac.in" target="_blank" rel="noopener">
+                    <span class="icon">✉️</span> Email
                 </a>
-                <a href="#" class="contact-item" target="_blank" rel="noopener">
-                    <span class="contact-icon">💼</span>
-                    <span class="contact-label">LinkedIn</span>
-                    <span class="contact-handle">/in/yourprofile</span>
+                <span class="sep">|</span>
+                <a href="#" target="_blank" rel="noopener">
+                    <span class="icon">💼</span> LinkedIn
                 </a>
-                <a href="#" class="contact-item" target="_blank" rel="noopener">
-                    <span class="contact-icon">🐦</span>
-                    <span class="contact-label">X / Twitter</span>
-                    <span class="contact-handle">@yourhandle</span>
+                <span class="sep">|</span>
+                <a href="#" target="_blank" rel="noopener">
+                    <span class="icon">🐦</span> X
                 </a>
-                <a href="#" class="contact-item" target="_blank" rel="noopener">
-                    <span class="contact-icon">📬</span>
-                    <span class="contact-label">Substack</span>
-                    <span class="contact-handle">your.substack.com</span>
+                <span class="sep">|</span>
+                <a href="#" target="_blank" rel="noopener">
+                    <span class="icon">📬</span> Substack
                 </a>
             </div>
         </div>
@@ -1662,7 +1713,7 @@
                         <div class="field-group"><label>Description</label><input id="addDesc" placeholder="Brief summary..." /></div>
                         <div class="field-group"><label>Date (YYYY-MM-DD)</label><input id="addDate" placeholder="2026-03-20" /></div>
                         <div class="field-group"><label>Type</label>
-                            <select id="addType"><option value="weekly">Weekly</option><option value="alert">Alert</option></select>
+                            <select id="addType"><option value="weekly">Weekly</option><option value="alert">Special</option></select>
                         </div>
                         <div class="field-group"><label>Tags (comma separated)</label><input id="addTags" placeholder="osint, geopolitics" /></div>
                         <div class="add-btn-wrap">
@@ -1683,36 +1734,52 @@
     </div>
 
     <!-- ============================================================
-    FOOTER
+    FOOTER · REDESIGNED
     ============================================================ -->
     <footer>
         <div class="container">
-            <div class="footer-brand">SPSSS <span>·</span> NFSU</div>
-            <div class="footer-sub">Strategic Predictive Security &amp; Strategic Studies</div>
-            <div class="footer-links">
-                <a href="#reports">Reports</a>
-                <a href="#about">About</a>
-                <a href="#contact">Contact</a>
-                <a href="#">GitHub</a>
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand">SPSSS <span>·</span> NFSU</div>
+                    <div class="tagline">Strategic Predictive Security &amp; Strategic Studies</div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <span class="col-title">Navigate</span>
+                        <a href="#reports">Reports</a>
+                        <a href="#about">About</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-column">
+                        <span class="col-title">Legal</span>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                </div>
             </div>
-            <div class="footer-copy">
-                &copy; 2026 · National Forensic Sciences University
+
+            <div class="footer-bottom">
+                <span>&copy; 2026 · National Forensic Sciences University</span>
+                <div class="footer-social">
+                    <a href="#" aria-label="LinkedIn" title="LinkedIn">🔗</a>
+                    <a href="#" aria-label="X / Twitter" title="X / Twitter">🐦</a>
+                    <a href="#" aria-label="Substack" title="Substack">📬</a>
+                    <a href="#" aria-label="GitHub" title="GitHub">🐙</a>
+                </div>
             </div>
         </div>
     </footer>
 
+
     <!-- ============================================================
-    JAVASCRIPT – FAST & SYNCED (FIXED SPACES IN URL)
+    JAVASCRIPT (logic unchanged, labels updated)
     ============================================================ -->
     <script>
         (function() {
             'use strict';
 
             // ---- CONFIG ----
-            // 🔒 SHA-256 hash of 'NFSU_SPSSS_ADMIN'
             const ADMIN_PASSWORD_HASH = 'eb726061ac73d98f8fde13111f8db3a0f544f27f6ea6feb1dd67ecbbd5d03104';
-
-            // ⚠️ UPDATE THESE:
             const GITHUB_REPO_OWNER = 'p-satya03';
             const GITHUB_REPO_NAME = 'my_portfolio';
 
@@ -1721,7 +1788,7 @@
             const GITHUB_API_URL =
                 `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${MANIFEST_PATH}`;
             const CACHE_KEY = 'spsss_manifest_cache';
-            const CACHE_TTL = 60000; // 60 seconds
+            const CACHE_TTL = 60000;
 
             // ---- DOM refs ----
             const grid = document.getElementById('reportsGrid');
@@ -1781,17 +1848,13 @@
             let currentManifestSha = null;
             let observer = null;
 
-            // ---- CRITICAL FIX: Build safe URL with encoded spaces ----
+            // ---- Helpers ----
             function buildPdfUrl(filePath) {
-                // Split by '/' so we don't encode the slashes
                 const parts = filePath.split('/');
-                // Encode each part individually (handles spaces, special chars)
                 const encodedParts = parts.map(part => encodeURIComponent(part));
-                // Join back with '/'
                 return PDF_BASE + encodedParts.join('/');
             }
 
-            // ---- Helpers ----
             function formatDate(iso) {
                 if (!iso) return 'Unknown date';
                 const d = new Date(iso);
@@ -1818,7 +1881,7 @@
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             }
 
-            // ---- Render skeleton cards (fast initial load) ----
+            // ---- Render skeleton cards ----
             function renderSkeletons(count = 6) {
                 let html = '';
                 for (let i = 0; i < count; i++) {
@@ -1837,19 +1900,15 @@
                 emptyState.style.display = 'none';
             }
 
-            // ---- Lazy thumbnail renderer (FIXED: uses buildPdfUrl) ----
+            // ---- Lazy thumbnail renderer ----
             function renderThumbnailLazy(file, container) {
-                // Already loaded?
                 if (container.dataset.loaded === 'true') return;
                 container.dataset.loaded = 'true';
 
-                // Build safe URL
                 const url = buildPdfUrl(file);
-
                 const placeholder = container.querySelector('.placeholder');
                 if (!placeholder) return;
 
-                // Show loading state
                 placeholder.innerHTML = `
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="animation: spin 1s linear infinite;">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
@@ -1955,7 +2014,8 @@
                     const tags = r.tags || [];
                     const file = r.file;
                     const desc = r.description || '';
-                    const typeLabel = r.type === 'weekly' ? 'Weekly Brief' : 'Alert Report';
+                    // Updated labels to match "Weekly Reports" and "Special Reports"
+                    const typeLabel = r.type === 'weekly' ? 'Weekly Report' : 'Special Report';
 
                     html += `
                         <div class="report-card" data-file="${file}">
@@ -2073,7 +2133,6 @@
                         return;
                     }
 
-                    // Fallback: relative path
                     const fallbackRes = await fetch(MANIFEST_PATH);
                     if (fallbackRes.ok) {
                         const data = await fallbackRes.json();
@@ -2119,7 +2178,7 @@
                 }
             }
 
-            // ---- PDF modal (FIXED: uses buildPdfUrl) ----
+            // ---- PDF modal ----
             function openPdf(file) {
                 const url = buildPdfUrl(file);
                 modalTitle.textContent = getFileName(file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
@@ -2221,13 +2280,15 @@
                     filterAndRender();
                 });
             });
+
+            // Search input is now in the nav
             searchInput.addEventListener('input', function() {
                 currentSearch = this.value;
                 filterAndRender();
             });
 
             // ================================================================
-            //  ADMIN PANEL (unchanged, but works with the fix)
+            //  ADMIN PANEL
             // ================================================================
 
             function openAdmin() { adminOverlay.classList.add('open'); }
@@ -2370,8 +2431,8 @@
                             <div class="field-group"><label>Date</label><input class="admin-date" value="${r.date || ''}" placeholder="2026-03-20" /></div>
                             <div class="field-group"><label>Type</label>
                                 <select class="admin-type">
-                                    <option value="weekly" ${r.type === 'weekly' ? 'selected' : ''}>Weekly</option>
-                                    <option value="alert" ${r.type === 'alert' ? 'selected' : ''}>Alert</option>
+                                    <option value="weekly" ${r.type === 'weekly' ? 'selected' : ''}>Weekly Report</option>
+                                    <option value="alert" ${r.type === 'alert' ? 'selected' : ''}>Special Report</option>
                                 </select>
                             </div>
                             <div class="field-group"><label>Tags (comma)</label><input class="admin-tags" value="${tagsStr}" placeholder="osint, risk" /></div>
