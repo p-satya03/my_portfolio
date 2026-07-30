@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SPSSS · NFSU – Strategic Intelligence Reports</title>
 
-    <!-- PDF.js -->
+    <!-- PDF.js from CDN -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
     </script>
 
@@ -16,7 +16,7 @@
 
     <style>
         /* ============================================================
-               MAIN STYLES (unchanged from previous)
+               MAIN STYLES (same as before, compact)
                ============================================================ */
         *,
         *::before,
@@ -61,7 +61,6 @@
             padding: 0 24px;
         }
 
-        /* ----- header / nav ----- */
         header {
             position: sticky;
             top: 0;
@@ -88,7 +87,6 @@
             gap: 12px;
             text-decoration: none;
             cursor: pointer;
-            /* make it clickable for admin access */;
         }
 
         .logo-mark {
@@ -192,12 +190,10 @@
             box-shadow: 0 4px 16px rgba(15, 42, 74, 0.2);
         }
 
-        /* ----- hero ----- */
         .hero {
             padding: 56px 0 32px;
             text-align: center;
         }
-
         .hero-badge {
             display: inline-block;
             background: rgba(196, 163, 90, 0.12);
@@ -211,7 +207,6 @@
             margin-bottom: 16px;
             border: 1px solid rgba(196, 163, 90, 0.15);
         }
-
         .hero h1 {
             font-size: clamp(30px, 4.5vw, 48px);
             font-weight: 700;
@@ -220,12 +215,9 @@
             color: var(--navy);
             margin-bottom: 10px;
         }
-
         .hero h1 .highlight {
             color: var(--gold);
-            position: relative;
         }
-
         .hero p {
             font-size: 17px;
             color: var(--text-light);
@@ -234,7 +226,6 @@
             font-weight: 400;
             line-height: 1.7;
         }
-
         .hero-stats {
             display: flex;
             justify-content: center;
@@ -242,7 +233,6 @@
             flex-wrap: wrap;
             margin-top: 4px;
         }
-
         .hero-stats .stat {
             text-align: center;
         }
@@ -259,7 +249,6 @@
             margin-top: 2px;
         }
 
-        /* ----- filters: tabs + search ----- */
         .filters-bar {
             display: flex;
             flex-wrap: wrap;
@@ -273,13 +262,11 @@
             box-shadow: var(--shadow);
             border: 1px solid rgba(15, 42, 74, 0.04);
         }
-
         .filter-tabs {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
         }
-
         .filter-tab {
             background: transparent;
             border: none;
@@ -293,23 +280,19 @@
             font-family: var(--font);
             border: 1px solid transparent;
         }
-
         .filter-tab:hover {
             color: var(--navy);
             background: rgba(15, 42, 74, 0.04);
         }
-
         .filter-tab.active {
             background: var(--navy);
             color: var(--white);
             border-color: var(--navy);
             box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
         }
-
         .filter-tab.active:hover {
             background: var(--navy-light);
         }
-
         .filter-tab .badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
@@ -339,20 +322,17 @@
             min-width: 180px;
             max-width: 320px;
         }
-
         .search-wrapper:focus-within {
             border-color: var(--gold);
             background: var(--white);
             box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.15);
         }
-
         .search-wrapper .icon {
             color: var(--text-light);
             opacity: 0.5;
             font-size: 16px;
             margin-right: 8px;
         }
-
         .search-wrapper input {
             border: none;
             background: transparent;
@@ -364,13 +344,11 @@
             width: 100%;
             outline: none;
         }
-
         .search-wrapper input::placeholder {
             color: var(--text-light);
             opacity: 0.5;
         }
 
-        /* ----- section titles ----- */
         .section-title {
             font-size: 26px;
             font-weight: 700;
@@ -378,13 +356,11 @@
             letter-spacing: -0.5px;
             margin-bottom: 4px;
         }
-
         .section-sub {
             font-size: 15px;
             color: var(--text-light);
             font-weight: 400;
         }
-
         .section-divider {
             width: 60px;
             height: 3px;
@@ -393,11 +369,9 @@
             margin: 0 0 16px 0;
         }
 
-        /* ----- reports grid ----- */
         .reports-section {
             padding: 8px 0 56px;
         }
-
         .reports-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -416,12 +390,10 @@
             display: flex;
             flex-direction: column;
         }
-
         .report-card:hover {
             box-shadow: var(--shadow-hover);
             transform: translateY(-4px);
         }
-
         .report-thumb {
             width: 100%;
             aspect-ratio: 1.414 / 1;
@@ -432,14 +404,12 @@
             align-items: center;
             justify-content: center;
         }
-
         .report-thumb canvas {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-
         .report-thumb .placeholder {
             color: var(--text-light);
             font-size: 13px;
@@ -460,7 +430,6 @@
             display: flex;
             flex-direction: column;
         }
-
         .report-meta .report-title {
             font-size: 17px;
             font-weight: 600;
@@ -473,7 +442,6 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
-
         .report-meta .report-date {
             font-size: 13px;
             color: var(--text-light);
@@ -481,7 +449,6 @@
             letter-spacing: 0.2px;
             margin-bottom: 6px;
         }
-
         .report-meta .report-desc {
             font-size: 14px;
             color: var(--text-light);
@@ -493,7 +460,6 @@
             margin-bottom: 8px;
             font-weight: 400;
         }
-
         .report-meta .report-tags {
             display: flex;
             flex-wrap: wrap;
@@ -501,7 +467,6 @@
             margin-top: auto;
             padding-top: 12px;
         }
-
         .report-meta .tag {
             font-size: 11px;
             font-weight: 500;
@@ -513,7 +478,6 @@
             text-transform: uppercase;
             border: 1px solid rgba(15, 42, 74, 0.04);
         }
-
         .report-meta .tag.gold {
             background: rgba(196, 163, 90, 0.12);
             color: var(--gold);
@@ -526,7 +490,6 @@
             font-size: 10px;
             padding: 2px 12px;
         }
-
         .report-meta .read-link {
             margin-top: 14px;
             font-size: 13px;
@@ -543,13 +506,11 @@
             padding: 0;
             width: fit-content;
         }
-
         .report-meta .read-link:hover {
             color: var(--navy);
             gap: 10px;
         }
 
-        /* ----- empty state ----- */
         .empty-state {
             text-align: center;
             padding: 60px 20px;
@@ -571,7 +532,6 @@
             margin: 0 auto;
         }
 
-        /* ----- about & contact ----- */
         .about-section {
             padding: 16px 0 48px;
         }
@@ -626,10 +586,6 @@
             color: var(--text-light);
             line-height: 1.8;
             max-width: 720px;
-        }
-        .about-content .analyst-bio strong {
-            color: var(--navy);
-            font-weight: 600;
         }
         .about-content .analyst-bio .solo-highlight {
             display: inline-block;
@@ -717,7 +673,6 @@
             border-color: var(--navy-light);
         }
 
-        /* ----- PDF modal ----- */
         .pdf-modal {
             position: fixed;
             inset: 0;
@@ -896,7 +851,6 @@
             transform: translateY(-1px);
         }
 
-        /* ----- footer ----- */
         footer {
             background: var(--white);
             border-top: 1px solid rgba(15, 42, 74, 0.06);
@@ -950,7 +904,6 @@
             margin-top: 2px;
         }
 
-        /* ----- responsive ----- */
         @media (max-width: 768px) {
             header .container {
                 flex-direction: column;
@@ -1036,6 +989,7 @@
                 font-size: 17px;
             }
         }
+
         @media (max-width: 480px) {
             .container {
                 padding: 0 16px;
@@ -1248,9 +1202,6 @@
             background: var(--white);
             outline: none;
         }
-        .admin-report-item .field-group.full-width {
-            grid-column: 1 / -1;
-        }
         .admin-report-item .delete-report-btn {
             justify-self: end;
             align-self: center;
@@ -1314,9 +1265,6 @@
             background: var(--white);
             outline: none;
         }
-        .admin-add-form .field-group.full-width {
-            grid-column: 1 / -1;
-        }
         .admin-add-form .add-btn-wrap {
             grid-column: 1 / -1;
             display: flex;
@@ -1361,15 +1309,49 @@
             color: var(--gold);
         }
 
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
+        /* Loading skeleton for cards */
+        .card-skeleton {
+            background: var(--white);
+            border-radius: var(--radius);
             overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            display: flex;
+            flex-direction: column;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .card-skeleton .skeleton-thumb {
+            width: 100%;
+            aspect-ratio: 1.414 / 1;
+            background: var(--cream-dark);
+        }
+        .card-skeleton .skeleton-meta {
+            padding: 18px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .card-skeleton .skeleton-line {
+            height: 14px;
+            background: var(--cream-dark);
+            border-radius: 4px;
+            width: 100%;
+        }
+        .card-skeleton .skeleton-line.short {
+            width: 60%;
+        }
+        .card-skeleton .skeleton-line.tiny {
+            width: 30%;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
         }
     </style>
 </head>
@@ -1455,14 +1437,15 @@
             </div>
 
             <div class="reports-grid" id="reportsGrid">
-                <div class="empty-state" id="emptyState">
+                <!-- Skeletons will be injected by JS -->
+                <div class="empty-state" id="emptyState" style="display:none;">
                     <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
                         <path d="M14 2v6h6" />
                         <path d="M12 18v-4" />
                         <path d="M12 9v.01" />
                     </svg>
-                    <h3>No matching reports</h3>
+                    <h3>No reports match</h3>
                     <p>Try adjusting your filter or search term.</p>
                 </div>
             </div>
@@ -1577,7 +1560,7 @@
                 <button class="admin-close" id="adminClose">✕</button>
             </div>
             <div class="admin-panel-body" id="adminPanelBody">
-                <!-- Auth screen (default) -->
+                <!-- Auth screen -->
                 <div id="adminAuthScreen">
                     <div class="admin-auth">
                         <label for="adminPassword">Admin Password</label>
@@ -1595,7 +1578,7 @@
                     </div>
                 </div>
 
-                <!-- Editor (hidden until auth) -->
+                <!-- Editor -->
                 <div id="adminEditorScreen" class="admin-manifest-editor">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                         <span style="font-weight:600; color:var(--navy);">📄 Manage reports (manifest.json)</span>
@@ -1653,28 +1636,28 @@
     </footer>
 
     <!-- ============================================================
-    JAVASCRIPT
+    JAVASCRIPT – FAST & SYNCED
     ============================================================ -->
     <script>
         (function() {
             'use strict';
 
             // ---- CONFIG ----
-            // 🔒 SHA-256 hash of 'NFSU_SPSSS_ADMIN' (default).
-            // To change your password: run the hash generator in browser console
-            // (see instructions in the README or comments below).
+            // 🔒 SHA-256 hash of 'NFSU_SPSSS_ADMIN'
             const ADMIN_PASSWORD_HASH = 'eb726061ac73d98f8fde13111f8db3a0f544f27f6ea6feb1dd67ecbbd5d03104';
 
-            // ⚠️ IMPORTANT: Replace these with YOUR GitHub repo details
-            const GITHUB_REPO_OWNER = 'p-satya03'; // e.g., 'john-doe'
-            const GITHUB_REPO_NAME = 'my_portfolio'; // e.g., 'my-portfolio'
+            // ⚠️ UPDATE THESE:
+            const GITHUB_REPO_OWNER = 'p-satya03';
+            const GITHUB_REPO_NAME = 'my_portfolio';
 
             const MANIFEST_PATH = 'reports/manifest.json';
             const PDF_BASE = 'reports/';
             const GITHUB_API_URL =
                 `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${MANIFEST_PATH}`;
+            const CACHE_KEY = 'spsss_manifest_cache';
+            const CACHE_TTL = 60000; // 60 seconds
 
-            // ---- DOM refs (main) ----
+            // ---- DOM refs ----
             const grid = document.getElementById('reportsGrid');
             const emptyState = document.getElementById('emptyState');
             const totalCountEl = document.getElementById('totalReportCount');
@@ -1686,7 +1669,7 @@
             const filterTabs = document.querySelectorAll('.filter-tab');
             const searchInput = document.getElementById('searchInput');
 
-            // ---- DOM refs (admin) ----
+            // Admin refs
             const adminOverlay = document.getElementById('adminOverlay');
             const adminClose = document.getElementById('adminClose');
             const adminTrigger = document.getElementById('adminTrigger');
@@ -1702,8 +1685,6 @@
             const adminLogoutBtn = document.getElementById('adminLogoutBtn');
             const adminStatus = document.getElementById('adminStatus');
             const adminFileStatus = document.getElementById('adminFileStatus');
-
-            // Admin add form fields
             const addFile = document.getElementById('addFile');
             const addTitle = document.getElementById('addTitle');
             const addDesc = document.getElementById('addDesc');
@@ -1712,7 +1693,7 @@
             const addTags = document.getElementById('addTags');
             const addReportBtn = document.getElementById('addReportBtn');
 
-            // ---- Modal refs (PDF viewer) ----
+            // Modal refs
             const modal = document.getElementById('pdfModal');
             const modalBody = document.getElementById('modalBody');
             const modalTitle = document.getElementById('modalTitle');
@@ -1730,18 +1711,9 @@
             let pdfDoc = null;
             let currentPage = 1;
             let totalPages = 0;
-            let currentPdfUrl = '';
             let isAdminAuthenticated = false;
             let currentManifestSha = null;
-
-            // ---- Hash function (for password) ----
-            async function hashString(str) {
-                const encoder = new TextEncoder();
-                const data = encoder.encode(str);
-                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-            }
+            let observer = null;
 
             // ---- Helpers ----
             function formatDate(iso) {
@@ -1762,33 +1734,129 @@
                 return searchable.includes(lower);
             }
 
-            // ---- Filter & render (main page) ----
-            function filterAndRender() {
-                const filtered = allReports.filter(r => {
-                    const typeMatch = currentFilter === 'all' || r.type === currentFilter;
-                    const searchMatch = matchesSearch(r, currentSearch);
-                    return typeMatch && searchMatch;
+            async function hashString(str) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(str);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            // ---- Render skeleton cards (fast initial load) ----
+            function renderSkeletons(count = 6) {
+                let html = '';
+                for (let i = 0; i < count; i++) {
+                    html += `
+                        <div class="card-skeleton">
+                            <div class="skeleton-thumb"></div>
+                            <div class="skeleton-meta">
+                                <div class="skeleton-line"></div>
+                                <div class="skeleton-line short"></div>
+                                <div class="skeleton-line tiny"></div>
+                            </div>
+                        </div>
+                    `;
+                }
+                grid.innerHTML = html;
+                emptyState.style.display = 'none';
+            }
+
+            // ---- Lazy thumbnail renderer ----
+            function renderThumbnailLazy(file, container) {
+                const url = PDF_BASE + file;
+
+                // Check if already loaded
+                if (container.dataset.loaded === 'true') return;
+                container.dataset.loaded = 'true';
+
+                const placeholder = container.querySelector('.placeholder');
+                if (!placeholder) return;
+
+                // Show loading state
+                placeholder.innerHTML = `
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="animation: spin 1s linear infinite;">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                        <path d="M14 2v6h6" />
+                    </svg>
+                    <span>Loading…</span>
+                `;
+
+                const loadingTask = pdfjsLib.getDocument(url);
+                loadingTask.promise
+                    .then(function(pdf) {
+                        return pdf.getPage(1);
+                    })
+                    .then(function(page) {
+                        const viewport = page.getViewport({ scale: 1 });
+                        // Smaller thumbnails = faster
+                        const scale = Math.min(
+                            (container.clientWidth || 300) / viewport.width,
+                            (container.clientHeight || 200) / viewport.height
+                        );
+                        const scaledViewport = page.getViewport({ scale: Math.min(scale * 0.8, 0.5) });
+
+                        const canvas = document.createElement('canvas');
+                        canvas.width = scaledViewport.width;
+                        canvas.height = scaledViewport.height;
+                        canvas.style.width = '100%';
+                        canvas.style.height = '100%';
+                        canvas.style.objectFit = 'cover';
+
+                        const ctx = canvas.getContext('2d');
+                        const renderContext = {
+                            canvasContext: ctx,
+                            viewport: scaledViewport,
+                        };
+
+                        return page.render(renderContext).promise.then(() => {
+                            if (placeholder.parentNode) {
+                                placeholder.replaceWith(canvas);
+                            }
+                        });
+                    })
+                    .catch(function(err) {
+                        if (placeholder.parentNode) {
+                            placeholder.innerHTML = `
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                    <path d="M14 2v6h6" />
+                                </svg>
+                                <span>${getFileName(file)}</span>
+                            `;
+                        }
+                    });
+            }
+
+            // ---- Setup IntersectionObserver for lazy loading ----
+            function setupLazyLoading() {
+                if (observer) observer.disconnect();
+
+                observer = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            const thumb = entry.target;
+                            const file = thumb.dataset.file;
+                            if (file) {
+                                renderThumbnailLazy(file, thumb);
+                            }
+                            observer.unobserve(thumb);
+                        }
+                    }
+                }, {
+                    rootMargin: '100px',
+                    threshold: 0.01
                 });
-                filteredReports = filtered;
-                renderReports(filtered);
-                updateStatsAndBadges();
+
+                document.querySelectorAll('.report-thumb[data-file]').forEach(el => {
+                    observer.observe(el);
+                });
             }
 
-            function updateStatsAndBadges() {
-                const total = allReports.length;
-                const weekly = allReports.filter(r => r.type === 'weekly').length;
-                const alert = allReports.filter(r => r.type === 'alert').length;
-                totalCountEl.textContent = total;
-                weeklyCountEl.textContent = weekly;
-                alertCountEl.textContent = alert;
-                allBadge.textContent = total;
-                weeklyBadge.textContent = weekly;
-                alertBadge.textContent = alert;
-            }
-
+            // ---- Render reports (main page) ----
             function renderReports(reports) {
                 emptyState.style.display = 'none';
-                if (!reports.length) {
+
+                if (!reports || reports.length === 0) {
                     emptyState.style.display = 'flex';
                     grid.innerHTML = '';
                     emptyState.innerHTML = `
@@ -1814,7 +1882,7 @@
                     const typeLabel = r.type === 'weekly' ? 'Weekly Brief' : 'Alert Report';
 
                     html += `
-                        <div class="report-card" data-file="${file}" data-title="${title.replace(/"/g, '&quot;')}">
+                        <div class="report-card" data-file="${file}">
                             <div class="report-thumb" data-file="${file}">
                                 <div class="placeholder">
                                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1838,73 +1906,164 @@
                         </div>
                     `;
                 }
-                grid.innerHTML = html;
 
-                // Thumbnails
-                const cards = grid.querySelectorAll('.report-card');
-                for (const card of cards) {
-                    const file = card.dataset.file;
-                    const thumb = card.querySelector('.report-thumb');
-                    if (file && thumb) renderThumbnail(file, thumb);
-                }
+                grid.innerHTML = html;
 
                 // Click handlers
                 grid.querySelectorAll('.read-link, .report-card').forEach(el => {
                     el.addEventListener('click', function(e) {
                         const target = e.target.closest('.read-link') || e.currentTarget;
                         const file = target.dataset.file || target.closest('.report-card')?.dataset.file;
-                        if (file) { e.preventDefault();
-                            openPdf(file); }
+                        if (file) {
+                            e.preventDefault();
+                            openPdf(file);
+                        }
                     });
                 });
+
+                // Setup lazy loading for thumbnails
+                setupLazyLoading();
             }
 
-            function renderThumbnail(file, container) {
-                const url = PDF_BASE + file;
-                const placeholder = container.querySelector('.placeholder');
-                const loadingTask = pdfjsLib.getDocument(url);
-                loadingTask.promise.then(function(pdf) {
-                    return pdf.getPage(1);
-                }).then(function(page) {
-                    const viewport = page.getViewport({ scale: 1 });
-                    const scale = Math.min((container.clientWidth || 300) / viewport.width, (container
-                    .clientHeight || 200) / viewport.height);
-                    const scaledViewport = page.getViewport({ scale: scale * 0.95 });
-                    const canvas = document.createElement('canvas');
-                    canvas.width = scaledViewport.width;
-                    canvas.height = scaledViewport.height;
-                    canvas.style.width = '100%';
-                    canvas.style.height = '100%';
-                    canvas.style.objectFit = 'cover';
-                    const ctx = canvas.getContext('2d');
-                    const renderContext = { canvasContext: ctx, viewport: scaledViewport };
-                    return page.render(renderContext).promise.then(() => {
-                        if (placeholder) placeholder.replaceWith(canvas);
-                        else container.appendChild(canvas);
-                    });
-                }).catch(function(err) {
-                    if (placeholder) {
-                        placeholder.innerHTML = `
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                                <path d="M14 2v6h6" />
-                            </svg>
-                            <span>${getFileName(file)}</span>
-                        `;
-                    }
+            // ---- Update stats ----
+            function updateStatsAndBadges(reports) {
+                const list = reports || allReports;
+                const total = list.length;
+                const weekly = list.filter(r => r.type === 'weekly').length;
+                const alert = list.filter(r => r.type === 'alert').length;
+
+                totalCountEl.textContent = total;
+                weeklyCountEl.textContent = weekly;
+                alertCountEl.textContent = alert;
+                allBadge.textContent = total;
+                weeklyBadge.textContent = weekly;
+                alertBadge.textContent = alert;
+            }
+
+            // ---- Filter & render ----
+            function filterAndRender() {
+                const filtered = allReports.filter(r => {
+                    const typeMatch = currentFilter === 'all' || r.type === currentFilter;
+                    const searchMatch = matchesSearch(r, currentSearch);
+                    return typeMatch && searchMatch;
                 });
+                filteredReports = filtered;
+                renderReports(filtered);
+                updateStatsAndBadges(allReports);
+            }
+
+            // ---- Load manifest (main page – uses GitHub API for consistency) ----
+            async function loadManifest(useCache = true) {
+                // Check cache
+                if (useCache) {
+                    try {
+                        const cached = sessionStorage.getItem(CACHE_KEY);
+                        if (cached) {
+                            const data = JSON.parse(cached);
+                            const age = Date.now() - (data.timestamp || 0);
+                            if (age < CACHE_TTL) {
+                                allReports = data.reports || [];
+                                updateStatsAndBadges(allReports);
+                                filterAndRender();
+                                return;
+                            }
+                        }
+                    } catch (e) { /* ignore */ }
+                }
+
+                // Show skeletons while loading
+                renderSkeletons(6);
+
+                try {
+                    // Try GitHub API first (consistent with admin panel)
+                    const token = sessionStorage.getItem('spsss_admin_token');
+                    const headers = {
+                        'Accept': 'application/vnd.github.v3+json'
+                    };
+                    if (token) {
+                        headers['Authorization'] = `token ${token}`;
+                    }
+
+                    const response = await fetch(GITHUB_API_URL, { headers });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        const content = atob(data.content);
+                        let json;
+                        try { json = JSON.parse(content); } catch (e) { json = { reports: [] }; }
+                        const list = Array.isArray(json) ? json : (json.reports || []);
+                        allReports = list;
+                        currentManifestSha = data.sha;
+
+                        // Cache it
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                            reports: list,
+                            timestamp: Date.now()
+                        }));
+
+                        updateStatsAndBadges(allReports);
+                        filterAndRender();
+                        return;
+                    }
+
+                    // Fallback: try relative path
+                    const fallbackRes = await fetch(MANIFEST_PATH);
+                    if (fallbackRes.ok) {
+                        const data = await fallbackRes.json();
+                        const list = Array.isArray(data) ? data : (data.reports || []);
+                        allReports = list;
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                            reports: list,
+                            timestamp: Date.now()
+                        }));
+                        updateStatsAndBadges(allReports);
+                        filterAndRender();
+                        return;
+                    }
+
+                    throw new Error('Manifest not found');
+                } catch (err) {
+                    console.warn('Manifest load error:', err);
+                    // Try one last time with cache
+                    try {
+                        const cached = sessionStorage.getItem(CACHE_KEY);
+                        if (cached) {
+                            const data = JSON.parse(cached);
+                            allReports = data.reports || [];
+                            updateStatsAndBadges(allReports);
+                            filterAndRender();
+                            return;
+                        }
+                    } catch (e) { /* ignore */ }
+
+                    // Show empty state
+                    allReports = [];
+                    updateStatsAndBadges(allReports);
+                    filterAndRender();
+                    emptyState.style.display = 'flex';
+                    emptyState.innerHTML = `
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                            <path d="M14 2v6h6" />
+                        </svg>
+                        <h3>No reports indexed</h3>
+                        <p style="font-size:14px;max-width:400px;margin:0 auto;">
+                            Use the <strong>Admin Panel</strong> (triple-click the logo) to create your manifest.
+                        </p>
+                    `;
+                }
             }
 
             // ---- PDF modal ----
             function openPdf(file) {
                 const url = PDF_BASE + file;
-                currentPdfUrl = url;
                 modalTitle.textContent = getFileName(file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
                 downloadBtn.href = url;
                 modalBody.innerHTML =
                     `<div class="pdf-loading"><span class="spinner"></span>Loading PDF…</div>`;
                 modal.classList.add('open');
                 document.body.style.overflow = 'hidden';
+
                 const loadingTask = pdfjsLib.getDocument(url);
                 loadingTask.promise.then(function(pdf) {
                     pdfDoc = pdf;
@@ -1923,12 +2082,14 @@
                 if (pageNum < 1) pageNum = 1;
                 if (pageNum > totalPages) pageNum = totalPages;
                 currentPage = pageNum;
+
                 pdfDoc.getPage(pageNum).then(function(page) {
                     const containerWidth = modalBody.clientWidth - 48 || 700;
                     const viewport = page.getViewport({ scale: 1 });
                     const scale = Math.min(containerWidth / viewport.width, (window.innerHeight * 0.65) / viewport
                         .height);
                     const scaled = page.getViewport({ scale: Math.min(scale, 2.0) });
+
                     const canvas = document.createElement('canvas');
                     canvas.width = scaled.width;
                     canvas.height = scaled.height;
@@ -1936,13 +2097,16 @@
                     canvas.style.height = 'auto';
                     canvas.style.borderRadius = '4px';
                     canvas.style.boxShadow = '0 2px 8px rgba(0,0,0,0.04)';
+
                     const ctx = canvas.getContext('2d');
                     const renderContext = { canvasContext: ctx, viewport: scaled };
+
                     modalBody.innerHTML = '';
                     const wrapper = document.createElement('div');
                     wrapper.className = 'pdf-page-wrapper';
                     wrapper.appendChild(canvas);
                     modalBody.appendChild(wrapper);
+
                     page.render(renderContext).promise.then(() => { updateNavButtons(); });
                 });
             }
@@ -1961,17 +2125,19 @@
                 currentPage = 1;
                 totalPages = 0;
             }
+
             modalClose.addEventListener('click', closeModal);
             modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
                 if (e.key === 'ArrowLeft' && modal.classList.contains('open') && currentPage > 1) renderPage(
-                currentPage - 1);
+                    currentPage - 1);
                 if (e.key === 'ArrowRight' && modal.classList.contains('open') && currentPage < totalPages) renderPage(
                     currentPage + 1);
             });
             prevBtn.addEventListener('click', function() { if (currentPage > 1) renderPage(currentPage - 1); });
             nextBtn.addEventListener('click', function() { if (currentPage < totalPages) renderPage(currentPage + 1); });
+
             let resizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
@@ -1995,39 +2161,8 @@
                 filterAndRender();
             });
 
-            // ---- Load manifest (main) ----
-            function loadManifest() {
-                fetch(MANIFEST_PATH)
-                    .then(function(res) {
-                        if (!res.ok) throw new Error('Manifest not found');
-                        return res.json();
-                    })
-                    .then(function(data) {
-                        let list = Array.isArray(data) ? data : (data.reports || []);
-                        allReports = list;
-                        updateStatsAndBadges();
-                        filterAndRender();
-                    })
-                    .catch(function(err) {
-                        console.warn('Manifest load error:', err);
-                        emptyState.style.display = 'flex';
-                        emptyState.innerHTML = `
-                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
-                                <path d="M14 2v6h6" />
-                            </svg>
-                            <h3>No reports indexed</h3>
-                            <p style="font-size:14px;max-width:400px;margin:0 auto;">
-                                Place PDFs in <code>reports/weekly/</code> or <code>reports/alert/</code>
-                                and use the <strong>Admin Panel</strong> (triple-click the logo) to create your manifest.
-                            </p>
-                        `;
-                        updateStatsAndBadges();
-                    });
-            }
-
             // ================================================================
-            //  ADMIN PANEL LOGIC
+            //  ADMIN PANEL
             // ================================================================
 
             function openAdmin() { adminOverlay.classList.add('open'); }
@@ -2065,14 +2200,12 @@
             adminClose.addEventListener('click', closeAdmin);
             adminOverlay.addEventListener('click', function(e) { if (e.target === adminOverlay) closeAdmin(); });
 
-            // Admin Login (with hash comparison)
+            // Admin Login
             async function attemptAdminLogin(silent = false) {
                 const pass = adminPassword.value;
                 const token = githubToken.value.trim();
 
-                // Hash the entered password and compare
                 const enteredHash = await hashString(pass);
-
                 if (enteredHash !== ADMIN_PASSWORD_HASH) {
                     if (!silent) adminAuthError.style.display = 'block';
                     return;
@@ -2087,7 +2220,6 @@
                     return;
                 }
 
-                // Store token in session
                 sessionStorage.setItem('spsss_admin_token', token);
                 sessionStorage.setItem('spsss_admin_auth', 'true');
 
@@ -2136,6 +2268,15 @@
                         renderAdminReportList(list);
                         adminFileStatus.textContent = `📄 Loaded (${list.length} reports)`;
                         setAdminStatus('success', `Loaded ${list.length} reports from GitHub.`);
+
+                        // Also update main page
+                        allReports = list;
+                        updateStatsAndBadges(allReports);
+                        filterAndRender();
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({
+                            reports: list,
+                            timestamp: Date.now()
+                        }));
                     })
                     .catch(err => {
                         console.error(err);
@@ -2145,7 +2286,11 @@
                     });
             }
 
-            adminRefreshBtn.addEventListener('click', loadManifestForAdmin);
+            adminRefreshBtn.addEventListener('click', function() {
+                loadManifestForAdmin();
+                // Also refresh main page
+                loadManifest(false);
+            });
 
             function renderAdminReportList(reports) {
                 if (!adminReportList) return;
@@ -2176,7 +2321,6 @@
                 });
                 adminReportList.innerHTML = html;
 
-                // Delete handlers
                 adminReportList.querySelectorAll('.delete-report-btn').forEach(btn => {
                     btn.addEventListener('click', function() {
                         const idx = parseInt(this.dataset.index);
@@ -2190,7 +2334,6 @@
                     });
                 });
 
-                // Mark as modified when any input changes
                 adminReportList.querySelectorAll('input, select').forEach(el => {
                     el.addEventListener('input', function() {
                         adminFileStatus.textContent = '✏️ Modified (unsaved)';
@@ -2217,7 +2360,6 @@
                 return reports;
             }
 
-            // Add report
             addReportBtn.addEventListener('click', function() {
                 const file = addFile.value.trim();
                 const title = addTitle.value.trim();
@@ -2238,7 +2380,6 @@
                 adminFileStatus.textContent = '✏️ Modified (unsaved)';
                 setAdminStatus('success', 'Report added locally. Click "Save to GitHub" to persist.');
 
-                // Clear form
                 addFile.value = '';
                 addTitle.value = '';
                 addDesc.value = '';
@@ -2246,7 +2387,6 @@
                 addTags.value = '';
             });
 
-            // Save to GitHub
             adminSaveBtn.addEventListener('click', function() {
                 const token = sessionStorage.getItem('spsss_admin_token');
                 if (!token) {
@@ -2269,8 +2409,7 @@
                     body.sha = currentManifestSha;
                 }
 
-                const url = GITHUB_API_URL;
-                fetch(url, {
+                fetch(GITHUB_API_URL, {
                         method: 'PUT',
                         headers: {
                             'Authorization': `token ${token}`,
@@ -2288,7 +2427,9 @@
                         adminFileStatus.textContent = `✅ Saved (${reports.length} reports)`;
                         setAdminStatus('success', `Successfully saved ${reports.length} reports to GitHub.`);
                         adminSaveBtn.disabled = false;
-                        loadManifest();
+                        // Refresh main page
+                        loadManifest(false);
+                        // Refresh admin
                         loadManifestForAdmin();
                     })
                     .catch(err => {
@@ -2298,7 +2439,6 @@
                     });
             });
 
-            // Logout
             adminLogoutBtn.addEventListener('click', function() {
                 sessionStorage.removeItem('spsss_admin_token');
                 sessionStorage.removeItem('spsss_admin_auth');
@@ -2322,7 +2462,7 @@
             }
 
             // ---- Init ----
-            loadManifest();
+            loadManifest(true);
 
             // ---- Expose ----
             window.__portfolio = { loadManifest, filterAndRender, openAdmin, closeAdmin };
