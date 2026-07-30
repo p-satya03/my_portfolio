@@ -6,7 +6,10 @@
       "description": "A test report to verify the system works.",
       "date": "2026-03-20",
       "type": "weekly",
-      "tags": ["test", "demo"]
+      "tags": [
+        "test",
+        "demo"
+      ]
     }
   ]
 }
