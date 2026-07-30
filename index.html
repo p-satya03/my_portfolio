@@ -571,7 +571,7 @@
             margin: 0 auto;
         }
 
-        /* ----- about & contact (unchanged) ----- */
+        /* ----- about & contact ----- */
         .about-section {
             padding: 16px 0 48px;
         }
@@ -717,7 +717,7 @@
             border-color: var(--navy-light);
         }
 
-        /* ----- PDF modal (unchanged) ----- */
+        /* ----- PDF modal ----- */
         .pdf-modal {
             position: fixed;
             inset: 0;
@@ -1060,7 +1060,7 @@
         }
 
         /* ============================================================
-               ADMIN PANEL OVERLAY (NEW)
+               ADMIN PANEL OVERLAY
                ============================================================ */
         .admin-overlay {
             position: fixed;
@@ -1568,7 +1568,7 @@
     </div>
 
     <!-- ============================================================
-    ADMIN PANEL OVERLAY (NEW)
+    ADMIN PANEL OVERLAY
     ============================================================ -->
     <div class="admin-overlay" id="adminOverlay">
         <div class="admin-panel">
@@ -1660,11 +1660,17 @@
             'use strict';
 
             // ---- CONFIG ----
-            const ADMIN_PASSWORD = 'NFSU_SPSSS_ADMIN'; // 🔒 CHANGE THIS to your own secret password
+            // 🔒 SHA-256 hash of 'NFSU_SPSSS_ADMIN' (default).
+            // To change your password: run the hash generator in browser console
+            // (see instructions in the README or comments below).
+            const ADMIN_PASSWORD_HASH = 'eb726061ac73d98f8fde13111f8db3a0f544f27f6ea6feb1dd67ecbbd5d03104';
+
+            // ⚠️ IMPORTANT: Replace these with YOUR GitHub repo details
+            const GITHUB_REPO_OWNER = 'p-satya03'; // e.g., 'john-doe'
+            const GITHUB_REPO_NAME = 'my_portfolio'; // e.g., 'my-portfolio'
+
             const MANIFEST_PATH = 'reports/manifest.json';
             const PDF_BASE = 'reports/';
-            const GITHUB_REPO_OWNER = 'YOUR_USERNAME'; // ⚠️ Change to your GitHub username
-            const GITHUB_REPO_NAME = 'YOUR_REPO_NAME'; // ⚠️ Change to your repo name
             const GITHUB_API_URL =
                 `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${MANIFEST_PATH}`;
 
@@ -1727,6 +1733,15 @@
             let currentPdfUrl = '';
             let isAdminAuthenticated = false;
             let currentManifestSha = null;
+
+            // ---- Hash function (for password) ----
+            async function hashString(str) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(str);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
 
             // ---- Helpers ----
             function formatDate(iso) {
@@ -2050,12 +2065,15 @@
             adminClose.addEventListener('click', closeAdmin);
             adminOverlay.addEventListener('click', function(e) { if (e.target === adminOverlay) closeAdmin(); });
 
-            // Admin Login
-            function attemptAdminLogin(silent = false) {
+            // Admin Login (with hash comparison)
+            async function attemptAdminLogin(silent = false) {
                 const pass = adminPassword.value;
                 const token = githubToken.value.trim();
 
-                if (pass !== ADMIN_PASSWORD) {
+                // Hash the entered password and compare
+                const enteredHash = await hashString(pass);
+
+                if (enteredHash !== ADMIN_PASSWORD_HASH) {
                     if (!silent) adminAuthError.style.display = 'block';
                     return;
                 }
@@ -2098,7 +2116,6 @@
                     .then(res => {
                         if (!res.ok) {
                             if (res.status === 404) {
-                                // Manifest doesn't exist yet
                                 currentManifestSha = null;
                                 renderAdminReportList([]);
                                 adminFileStatus.textContent = '📄 New manifest (will be created)';
@@ -2245,7 +2262,7 @@
 
                 const body = {
                     message: `Update manifest via admin panel (${new Date().toISOString()})`,
-                    content: btoa(unescape(encodeURIComponent(payload))), // btoa for UTF-8
+                    content: btoa(unescape(encodeURIComponent(payload))),
                     branch: 'main'
                 };
                 if (currentManifestSha) {
@@ -2271,9 +2288,7 @@
                         adminFileStatus.textContent = `✅ Saved (${reports.length} reports)`;
                         setAdminStatus('success', `Successfully saved ${reports.length} reports to GitHub.`);
                         adminSaveBtn.disabled = false;
-                        // Reload main page
                         loadManifest();
-                        // Reload admin view to get fresh SHA
                         loadManifestForAdmin();
                     })
                     .catch(err => {
