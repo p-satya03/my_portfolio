@@ -39,17 +39,6 @@
       "tags": []
     }
   ],
-  "videos": [
-    {
-      "embed": "<iframe width=",
-      "title": "test vid-dummy data"
-    }
-  ],
-  "explainers": [
-    {
-      "link": "https://www.bellingcat.com/news/2026/07/16/leakedbb-crypto-entrepreneur/",
-      "title": "dummy article 1",
-      "description": "test"
-    }
-  ]
+  "videos": [],
+  "explainers": []
 }
