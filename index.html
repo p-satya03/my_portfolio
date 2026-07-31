@@ -1,12 +1,3385 @@
-<h2>How I Built the OSINT Pipeline</h2>
-<p>This project automates intelligence collection using Python, n8n, and open-source APIs...</p>
-<img src="https://your-image-url.com/pipeline-diagram.png" alt="Pipeline architecture" />
-<h3>Key Components</h3>
-<ul>
-  <li>Web scrapers for news sources</li>
-  <li>GDELT event data integration</li>
-  <li>Automated report generation</li>
-</ul>
-<div class="video-embed-wrap">
-  <iframe src="https://www.youtube.com/embed/your-video-id" allowfullscreen></iframe>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NFSU – Strategic Risk Intelligence Reports</title>
+
+    <!-- PDF.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js">
+    </script>
+
+    <!-- Google Font: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ============================================================
+               CSS – Professional · Minimal · Tabbed Slider
+               ============================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0F2A4A;
+            --navy-light: #1E3A5F;
+            --gold: #C4A35A;
+            --gold-light: #DCC28D;
+            --cream: #F8F6F2;
+            --cream-dark: #EDE8DF;
+            --text: #1E1E1E;
+            --text-light: #555555;
+            --white: #FFFFFF;
+            --shadow: 0 8px 30px rgba(15, 42, 74, 0.07);
+            --shadow-hover: 0 16px 48px rgba(15, 42, 74, 0.14);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ----- header / nav ----- */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            padding: 10px 0;
+            transition: var(--transition);
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .logo-mark {
+            width: 38px;
+            height: 38px;
+            background: var(--navy);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 15px;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+            border: 1px solid rgba(196, 163, 90, 0.2);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.15;
+        }
+        .logo-text .brand {
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.3px;
+            color: var(--navy);
+        }
+        .logo-text .brand span {
+            color: var(--gold);
+            font-weight: 300;
+        }
+        .logo-text .sub {
+            font-size: 9.5px;
+            font-weight: 500;
+            color: var(--text-light);
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: var(--transition);
+            padding: 6px 14px;
+            border-radius: 40px;
+            letter-spacing: 0.2px;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--navy);
+            background: rgba(15, 42, 74, 0.04);
+        }
+
+        nav a.active {
+            color: var(--white);
+            background: var(--navy);
+        }
+
+        nav a.active:hover {
+            background: var(--navy-light);
+        }
+
+        .search-wrapper {
+            display: flex;
+            align-items: center;
+            background: var(--white);
+            border-radius: 40px;
+            padding: 0 14px;
+            border: 1px solid rgba(15, 42, 74, 0.08);
+            transition: var(--transition);
+            min-width: 160px;
+            margin-left: 4px;
+        }
+
+        .search-wrapper:focus-within {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.12);
+        }
+
+        .search-wrapper .icon {
+            color: var(--text-light);
+            opacity: 0.4;
+            font-size: 13px;
+            margin-right: 6px;
+        }
+
+        .search-wrapper input {
+            border: none;
+            background: transparent;
+            padding: 7px 0;
+            font-size: 13px;
+            font-weight: 400;
+            font-family: var(--font);
+            color: var(--text);
+            width: 100%;
+            outline: none;
+        }
+
+        .search-wrapper input::placeholder {
+            color: var(--text-light);
+            opacity: 0.5;
+            font-size: 12px;
+        }
+
+        /* ----- Hero ----- */
+        .hero {
+            position: relative;
+            padding: 80px 0 60px;
+            background: var(--cream);
+            overflow: hidden;
+            text-align: center;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.04);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(196, 163, 90, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(60px);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -20%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(15, 42, 74, 0.06) 0%, transparent 70%);
+            border-radius: 50%;
+            z-index: 0;
+            filter: blur(50px);
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            background: rgba(196, 163, 90, 0.12);
+            color: var(--gold);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 4px 18px;
+            border-radius: 40px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(196, 163, 90, 0.15);
+        }
+
+        .hero h1 {
+            font-size: clamp(38px, 5.5vw, 58px);
+            font-weight: 700;
+            letter-spacing: -1.5px;
+            line-height: 1.08;
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--gold);
+            position: relative;
+        }
+
+        .hero h1 .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: rgba(196, 163, 90, 0.15);
+            z-index: -1;
+            border-radius: 4px;
+        }
+
+        .hero p {
+            font-size: 19px;
+            color: var(--text-light);
+            max-width: 540px;
+            margin: 0 auto 32px;
+            font-weight: 400;
+            line-height: 1.7;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 56px;
+            flex-wrap: wrap;
+            padding-top: 24px;
+            border-top: 2px solid rgba(15, 42, 74, 0.06);
+        }
+
+        .hero-stats .stat {
+            text-align: center;
+        }
+        .hero-stats .stat-number {
+            font-size: 30px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+        }
+        .hero-stats .stat-label {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 400;
+            opacity: 0.8;
+        }
+
+        /* ----- Section Titles (for within panels) ----- */
+        .section-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        .section-sub {
+            font-size: 15px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        .section-divider {
+            width: 60px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 4px;
+            margin: 0 0 16px 0;
+        }
+
+        /* ================================================================
+           TABBED SLIDER CONTENT
+           ================================================================ */
+        .slider-section {
+            padding: 40px 0 40px;
+            background: var(--cream);
+        }
+
+        .slider-tabs {
+            display: flex;
+            gap: 4px;
+            border-bottom: 2px solid rgba(15, 42, 74, 0.06);
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .slider-tab {
+            background: transparent;
+            border: none;
+            padding: 12px 28px;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+
+        .slider-tab:hover {
+            color: var(--navy);
+        }
+
+        .slider-tab.active {
+            color: var(--navy);
+            border-bottom-color: var(--gold);
+        }
+
+        .slider-tab .badge {
+            display: inline-block;
+            background: rgba(15, 42, 74, 0.08);
+            border-radius: 40px;
+            padding: 0 8px;
+            font-size: 11px;
+            margin-left: 6px;
+            font-weight: 600;
+            color: var(--text-light);
+        }
+
+        .slider-tab.active .badge {
+            background: rgba(196, 163, 90, 0.15);
+            color: var(--gold);
+        }
+
+        .slider-panel {
+            display: none;
+            height: 620px;
+            overflow-y: auto;
+            padding-right: 4px;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-light) transparent;
+        }
+
+        .slider-panel.active {
+            display: block;
+        }
+
+        .slider-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+        .slider-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .slider-panel::-webkit-scrollbar-thumb {
+            background: var(--gold-light);
+            border-radius: 10px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .panel-header .panel-left {
+            flex: 1;
+        }
+
+        .panel-header .panel-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .report-filter-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .report-filter-tab {
+            background: transparent;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            border: 1px solid transparent;
+        }
+
+        .report-filter-tab:hover {
+            color: var(--navy);
+            background: rgba(15, 42, 74, 0.04);
+        }
+
+        .report-filter-tab.active {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+            box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
+        }
+
+        .report-filter-tab .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 0 6px;
+            font-size: 10px;
+            margin-left: 4px;
+            font-weight: 600;
+        }
+
+        .report-filter-tab.active .badge {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        .report-filter-tab:not(.active) .badge {
+            background: rgba(15, 42, 74, 0.08);
+            color: var(--text-light);
+        }
+
+        /* Grids */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        /* Report Card */
+        .report-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .report-thumb {
+            width: 100%;
+            aspect-ratio: 1.414 / 1;
+            background: var(--cream-dark);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .report-thumb canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .report-thumb .placeholder {
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        .report-thumb .placeholder svg {
+            opacity: 0.3;
+        }
+
+        .report-meta {
+            padding: 18px 22px 22px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .report-meta .report-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+            margin-bottom: 4px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .report-meta .report-date {
+            font-size: 12px;
+            color: var(--text-light);
+            font-weight: 400;
+            letter-spacing: 0.2px;
+            margin-bottom: 6px;
+        }
+
+        .report-meta .report-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 8px;
+            font-weight: 400;
+        }
+
+        .report-meta .report-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: auto;
+            padding-top: 12px;
+        }
+
+        .report-meta .tag {
+            font-size: 10px;
+            font-weight: 500;
+            color: var(--navy);
+            background: rgba(15, 42, 74, 0.06);
+            padding: 2px 10px;
+            border-radius: 20px;
+            letter-spacing: 0.2px;
+            text-transform: uppercase;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+        }
+
+        .report-meta .tag.gold {
+            background: rgba(196, 163, 90, 0.12);
+            color: var(--gold);
+            border-color: rgba(196, 163, 90, 0.12);
+        }
+
+        .report-meta .tag.type-tag {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+            font-size: 9px;
+            padding: 2px 10px;
+        }
+
+        .report-meta .read-link {
+            margin-top: 14px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            width: fit-content;
+        }
+
+        .report-meta .read-link:hover {
+            color: var(--navy);
+            gap: 10px;
+        }
+
+        /* Video Card */
+        .video-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .video-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--navy);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .video-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.6;
+        }
+
+        .video-thumb .play-icon {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-size: 24px;
+            transition: var(--transition);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            z-index: 2;
+        }
+
+        .video-card:hover .play-icon {
+            background: var(--gold);
+            color: var(--white);
+            transform: scale(1.08);
+        }
+
+        .video-thumb .video-placeholder-text {
+            position: absolute;
+            bottom: 10px;
+            right: 12px;
+            background: rgba(0, 0, 0, 0.6);
+            color: var(--white);
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 4px;
+            font-weight: 500;
+            z-index: 2;
+        }
+
+        .video-meta {
+            padding: 16px 20px 20px;
+        }
+
+        .video-meta .video-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+            line-height: 1.4;
+        }
+
+        .video-meta .video-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Explainer Card */
+        .explainer-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .explainer-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+        }
+
+        .explainer-thumb {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background: var(--cream-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .explainer-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .explainer-thumb .thumb-placeholder {
+            color: var(--text-light);
+            font-size: 32px;
+            opacity: 0.3;
+        }
+
+        .explainer-meta {
+            padding: 16px 20px 20px;
+        }
+
+        .explainer-meta .explainer-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 4px;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .explainer-meta .explainer-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 12px;
+        }
+
+        .explainer-meta .read-more-link {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--gold);
+            text-decoration: none;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .explainer-meta .read-more-link:hover {
+            color: var(--navy);
+            gap: 10px;
+        }
+
+        /* ================================================================
+           VIDEO MODAL
+           ================================================================ */
+        .video-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .video-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .video-modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 880px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .video-modal.open .video-modal-content {
+            transform: scale(1);
+        }
+
+        .video-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            background: var(--white);
+        }
+
+        .video-modal-header .video-modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .video-modal-header .video-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+            line-height: 1;
+        }
+
+        .video-modal-header .video-modal-close:hover {
+            background: rgba(15, 42, 74, 0.06);
+            color: var(--navy);
+        }
+
+        .video-modal-body {
+            padding: 0;
+            background: #000;
+            aspect-ratio: 16 / 9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .video-modal-body iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-modal-body .video-error {
+            color: var(--white);
+            font-size: 16px;
+            text-align: center;
+            padding: 40px;
+        }
+
+        /* ================================================================
+           EXPLAINER DETAIL MODAL (Article Viewer)
+           ================================================================ */
+        .explainer-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .explainer-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .explainer-modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 820px;
+            width: 100%;
+            max-height: 90vh;
+            overflow: hidden;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+
+        .explainer-modal.open .explainer-modal-content {
+            transform: scale(1);
+        }
+
+        .explainer-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            background: var(--white);
+            flex-shrink: 0;
+        }
+
+        .explainer-modal-header .explainer-modal-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 70%;
+        }
+
+        .explainer-modal-header .explainer-modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+            line-height: 1;
+        }
+
+        .explainer-modal-header .explainer-modal-close:hover {
+            background: rgba(15, 42, 74, 0.06);
+            color: var(--navy);
+        }
+
+        .explainer-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 32px 36px 40px;
+            background: var(--white);
+            line-height: 1.8;
+        }
+
+        .explainer-modal-body .explainer-featured-image {
+            width: 100%;
+            max-height: 340px;
+            object-fit: cover;
+            border-radius: var(--radius);
+            margin-bottom: 24px;
+            background: var(--cream-dark);
+        }
+
+        .explainer-modal-body .explainer-full-content {
+            font-size: 15px;
+            color: var(--text);
+        }
+
+        .explainer-modal-body .explainer-full-content h2 {
+            font-size: 20px;
+            color: var(--navy);
+            margin: 24px 0 12px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .explainer-modal-body .explainer-full-content h3 {
+            font-size: 17px;
+            color: var(--navy);
+            margin: 18px 0 10px;
+            font-weight: 600;
+        }
+
+        .explainer-modal-body .explainer-full-content p {
+            margin-bottom: 14px;
+            color: var(--text-light);
+        }
+
+        .explainer-modal-body .explainer-full-content img {
+            max-width: 100%;
+            border-radius: var(--radius);
+            margin: 16px 0;
+            border: 1px solid rgba(15, 42, 74, 0.06);
+        }
+
+        .explainer-modal-body .explainer-full-content ul,
+        .explainer-modal-body .explainer-full-content ol {
+            margin: 10px 0 16px 24px;
+            color: var(--text-light);
+        }
+
+        .explainer-modal-body .explainer-full-content li {
+            margin-bottom: 6px;
+        }
+
+        .explainer-modal-body .explainer-full-content blockquote {
+            border-left: 4px solid var(--gold);
+            padding-left: 20px;
+            margin: 16px 0;
+            color: var(--text-light);
+            font-style: italic;
+        }
+
+        .explainer-modal-body .explainer-full-content .video-embed-wrap {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: var(--radius);
+            margin: 16px 0;
+            background: #000;
+        }
+
+        .explainer-modal-body .explainer-full-content .video-embed-wrap iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Empty state inside panels */
+        .panel-empty {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+            grid-column: 1 / -1;
+        }
+        .panel-empty svg {
+            opacity: 0.15;
+            margin-bottom: 16px;
+        }
+        .panel-empty h3 {
+            font-size: 18px;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .panel-empty p {
+            font-size: 14px;
+            max-width: 400px;
+            margin: 0 auto;
+            opacity: 0.7;
+        }
+
+        /* Skeletons */
+        .card-skeleton {
+            background: var(--white);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            display: flex;
+            flex-direction: column;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .card-skeleton .skeleton-thumb {
+            width: 100%;
+            aspect-ratio: 1.414 / 1;
+            background: var(--cream-dark);
+        }
+        .card-skeleton .skeleton-meta {
+            padding: 18px 22px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .card-skeleton .skeleton-line {
+            height: 14px;
+            background: var(--cream-dark);
+            border-radius: 4px;
+            width: 100%;
+        }
+        .card-skeleton .skeleton-line.short {
+            width: 60%;
+        }
+        .card-skeleton .skeleton-line.tiny {
+            width: 30%;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.6;
+            }
+        }
+
+        /* ----- About Section ----- */
+        .about-section {
+            padding: 40px 0 60px;
+        }
+
+        .about-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 40px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 40px;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            transition: var(--transition);
+        }
+
+        .about-avatar {
+            flex-shrink: 0;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--cream-dark);
+            overflow: hidden;
+            border: 3px solid var(--gold-light);
+            box-shadow: 0 8px 24px rgba(15, 42, 74, 0.08);
+        }
+
+        .about-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .about-content {
+            flex: 1;
+            min-width: 220px;
+        }
+
+        .about-content .analyst-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            margin-bottom: 2px;
+        }
+
+        .about-content .analyst-title {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--gold);
+            margin-bottom: 8px;
+            letter-spacing: 0.2px;
+        }
+
+        .about-content .analyst-bio {
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.8;
+            max-width: 700px;
+        }
+
+        .about-content .analyst-bio strong {
+            color: var(--navy);
+            font-weight: 600;
+        }
+
+        .about-expertise {
+            margin-top: 16px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .about-expertise .expert-tag {
+            background: var(--cream);
+            padding: 4px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--navy);
+            border: 1px solid rgba(15, 42, 74, 0.05);
+            letter-spacing: 0.2px;
+        }
+
+        /* ----- Contact Section ----- */
+        .contact-section {
+            padding: 20px 0 40px;
+        }
+
+        .contact-strip {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px 24px;
+            padding: 12px 0;
+            font-size: 14px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(15, 42, 74, 0.04);
+        }
+
+        .contact-strip .label {
+            font-weight: 500;
+            color: var(--navy);
+            letter-spacing: 0.2px;
+        }
+
+        .contact-strip a {
+            color: var(--text-light);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .contact-strip a:hover {
+            color: var(--gold);
+        }
+
+        .contact-strip .icon {
+            font-size: 16px;
+            opacity: 0.5;
+        }
+
+        .contact-strip .sep {
+            color: var(--text-light);
+            opacity: 0.15;
+        }
+
+        /* ----- PDF Modal ----- */
+        .pdf-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .pdf-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+        .pdf-modal-content {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 900px;
+            width: 100%;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            transform: scale(0.96);
+            transition: transform 0.3s ease;
+        }
+        .pdf-modal.open .pdf-modal-content {
+            transform: scale(1);
+        }
+        .pdf-modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            flex-shrink: 0;
+            background: var(--white);
+            border-radius: var(--radius) var(--radius) 0 0;
+        }
+        .pdf-modal-header .modal-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 60%;
+        }
+        .pdf-modal-header .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: var(--text-light);
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .pdf-modal-header .modal-close:hover {
+            background: rgba(15, 42, 74, 0.06);
+            color: var(--navy);
+        }
+        .pdf-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 24px 16px;
+            background: var(--cream);
+            min-height: 300px;
+            position: relative;
+        }
+        .pdf-modal-body .pdf-loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px;
+            color: var(--text-light);
+            font-size: 14px;
+            gap: 12px;
+        }
+        .pdf-modal-body .pdf-loading .spinner {
+            width: 28px;
+            height: 28px;
+            border: 3px solid rgba(15, 42, 74, 0.08);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        .pdf-modal-body canvas {
+            width: 100% !important;
+            height: auto !important;
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            margin-bottom: 12px;
+            background: var(--white);
+        }
+        .pdf-modal-body .pdf-page-wrapper {
+            position: relative;
+            margin: 0 auto 12px;
+            max-width: 100%;
+            background: var(--white);
+            border-radius: 4px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+        .pdf-modal-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px 16px;
+            border-top: 1px solid rgba(15, 42, 74, 0.06);
+            flex-shrink: 0;
+            background: var(--white);
+            border-radius: 0 0 var(--radius) var(--radius);
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .pdf-modal-footer .page-info {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+        .pdf-modal-footer .page-nav {
+            display: flex;
+            gap: 8px;
+        }
+        .pdf-modal-footer .page-nav button {
+            background: none;
+            border: 1px solid rgba(15, 42, 74, 0.08);
+            padding: 6px 14px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+        .pdf-modal-footer .page-nav button:hover:not(:disabled) {
+            background: var(--navy);
+            color: var(--white);
+            border-color: var(--navy);
+        }
+        .pdf-modal-footer .page-nav button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .pdf-modal-footer .download-btn {
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            padding: 6px 18px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pdf-modal-footer .download-btn:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+        }
+
+        /* ----- Footer ----- */
+        footer {
+            background: var(--navy);
+            color: var(--white);
+            padding: 48px 0 24px;
+            margin-top: 20px;
+            border-top: 4px solid var(--gold);
+        }
+
+        .footer-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 40px;
+            padding-bottom: 32px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .footer-brand {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-brand .brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.5px;
+        }
+
+        .footer-brand .brand span {
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .footer-brand .tagline {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            margin-top: 4px;
+            font-weight: 300;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+            flex: 2;
+            justify-content: flex-end;
+        }
+
+        .footer-links-column {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .footer-links-column .col-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-bottom: 4px;
+        }
+
+        .footer-links-column a {
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 400;
+            transition: var(--transition);
+        }
+
+        .footer-links-column a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-top: 24px;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 16px;
+        }
+
+        .footer-social a {
+            color: rgba(255, 255, 255, 0.3);
+            text-decoration: none;
+            font-size: 18px;
+            transition: var(--transition);
+        }
+
+        .footer-social a:hover {
+            color: var(--gold);
+        }
+
+        /* ----- Responsive ----- */
+        @media (max-width: 768px) {
+            header .container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 6px;
+            }
+            nav {
+                justify-content: center;
+                gap: 4px;
+            }
+            nav a {
+                font-size: 12px;
+                padding: 4px 10px;
+            }
+            .search-wrapper {
+                width: 100%;
+                min-width: unset;
+            }
+            .hero {
+                padding: 60px 0 40px;
+            }
+            .hero h1 {
+                font-size: 32px;
+            }
+            .hero p {
+                font-size: 16px;
+            }
+            .hero-stats {
+                gap: 32px;
+            }
+            .slider-panel {
+                height: 550px;
+            }
+            .slider-tab {
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+            .about-card {
+                flex-direction: column;
+                text-align: center;
+                padding: 24px;
+            }
+            .about-content .analyst-bio {
+                text-align: left;
+            }
+            .about-expertise {
+                justify-content: center;
+            }
+            .contact-strip {
+                gap: 8px 16px;
+                font-size: 13px;
+            }
+            .footer-grid {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            .footer-links {
+                justify-content: center;
+            }
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+            }
+            .content-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+                gap: 16px;
+            }
+            .panel-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .report-filter-tabs {
+                justify-content: center;
+            }
+            .explainer-modal-body {
+                padding: 20px;
+            }
+            .video-modal-content {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 16px;
+            }
+            .slider-panel {
+                height: 500px;
+            }
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 26px;
+            }
+            .hero-stats {
+                gap: 20px;
+            }
+            .about-avatar {
+                width: 96px;
+                height: 96px;
+            }
+            .footer-links {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            .slider-tab {
+                flex: 1;
+                text-align: center;
+                padding: 8px 12px;
+                font-size: 13px;
+            }
+            .explainer-modal-body {
+                padding: 16px;
+            }
+        }
+
+        /* ----- Admin Overlay ----- */
+        .admin-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .admin-overlay.open {
+            display: flex;
+        }
+
+        .admin-panel {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 860px;
+            width: 100%;
+            max-height: 92vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .admin-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.08);
+            background: var(--navy);
+            color: var(--white);
+            flex-shrink: 0;
+        }
+        .admin-panel-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .admin-panel-header h2 span {
+            color: var(--gold);
+        }
+        .admin-panel-header .admin-close {
+            background: none;
+            border: none;
+            color: var(--white);
+            font-size: 24px;
+            cursor: pointer;
+            opacity: 0.6;
+            transition: var(--transition);
+        }
+        .admin-panel-header .admin-close:hover {
+            opacity: 1;
+        }
+
+        .admin-panel-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            background: var(--cream);
+        }
+
+        .admin-auth {
+            max-width: 400px;
+            margin: 40px auto;
+            background: var(--white);
+            padding: 32px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        .admin-auth label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--navy);
+            margin-bottom: 4px;
+        }
+        .admin-auth input[type="password"],
+        .admin-auth input[type="text"] {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid rgba(15, 42, 74, 0.12);
+            border-radius: 8px;
+            font-family: var(--font);
+            font-size: 14px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+        .admin-auth input:focus {
+            border-color: var(--gold);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.15);
+        }
+        .admin-auth .admin-error {
+            color: #c0392b;
+            font-size: 13px;
+            margin-top: -8px;
+            margin-bottom: 12px;
+            display: none;
+        }
+        .admin-btn {
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: var(--font);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .admin-btn:hover {
+            background: var(--navy-light);
+        }
+        .admin-btn.gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+        .admin-btn.gold:hover {
+            background: var(--gold-light);
+        }
+        .admin-btn.danger {
+            background: #e74c3c;
+            color: white;
+        }
+        .admin-btn.danger:hover {
+            background: #c0392b;
+        }
+        .admin-btn.small {
+            padding: 4px 12px;
+            font-size: 12px;
+        }
+        .admin-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .admin-manifest-editor {
+            display: none;
+        }
+        .admin-manifest-editor.active {
+            display: block;
+        }
+
+        .admin-sub-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            border-bottom: 1px solid rgba(15, 42, 74, 0.06);
+            padding-bottom: 8px;
+        }
+        .admin-sub-tab {
+            background: none;
+            border: none;
+            padding: 6px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            font-family: var(--font);
+            border-radius: 20px;
+            transition: var(--transition);
+        }
+        .admin-sub-tab:hover {
+            background: rgba(15, 42, 74, 0.04);
+            color: var(--navy);
+        }
+        .admin-sub-tab.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .admin-list-container {
+            min-height: 200px;
+        }
+
+        .admin-report-item {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(15, 42, 74, 0.06);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            align-items: start;
+        }
+        .admin-report-item .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .admin-report-item .field-group label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .admin-report-item .field-group input,
+        .admin-report-item .field-group select,
+        .admin-report-item .field-group textarea {
+            padding: 5px 8px;
+            border: 1px solid rgba(15, 42, 74, 0.08);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: var(--font);
+            background: var(--cream);
+            transition: var(--transition);
+            width: 100%;
+        }
+        .admin-report-item .field-group textarea {
+            min-height: 60px;
+            resize: vertical;
+        }
+        .admin-report-item .field-group input:focus,
+        .admin-report-item .field-group select:focus,
+        .admin-report-item .field-group textarea:focus {
+            border-color: var(--gold);
+            background: var(--white);
+            outline: none;
+        }
+        .admin-report-item .field-group.full-width {
+            grid-column: 1 / -1;
+        }
+        .admin-report-item .delete-report-btn {
+            justify-self: end;
+            align-self: center;
+            background: none;
+            border: none;
+            color: #e74c3c;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+        .admin-report-item .delete-report-btn:hover {
+            background: rgba(231, 76, 60, 0.08);
+        }
+
+        .admin-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid rgba(15, 42, 74, 0.06);
+        }
+
+        .admin-add-form {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0 12px;
+            border: 1px dashed var(--gold-light);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .admin-add-form .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .admin-add-form .field-group label {
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+        .admin-add-form .field-group input,
+        .admin-add-form .field-group select,
+        .admin-add-form .field-group textarea {
+            padding: 5px 8px;
+            border: 1px solid rgba(15, 42, 74, 0.08);
+            border-radius: 6px;
+            font-size: 13px;
+            font-family: var(--font);
+            background: var(--cream);
+            transition: var(--transition);
+        }
+        .admin-add-form .field-group input:focus,
+        .admin-add-form .field-group select:focus,
+        .admin-add-form .field-group textarea:focus {
+            border-color: var(--gold);
+            background: var(--white);
+            outline: none;
+        }
+        .admin-add-form .field-group textarea {
+            min-height: 50px;
+            resize: vertical;
+        }
+        .admin-add-form .add-btn-wrap {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .admin-status {
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-top: 12px;
+            display: none;
+        }
+        .admin-status.success {
+            display: block;
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .admin-status.error {
+            display: block;
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .admin-status.loading {
+            display: block;
+            background: #e2e3e5;
+            color: #383d41;
+            border: 1px solid #d6d8db;
+        }
+
+        .admin-token-warning {
+            font-size: 12px;
+            color: var(--text-light);
+            margin: 4px 0 12px;
+            opacity: 0.7;
+        }
+        .admin-token-warning a {
+            color: var(--gold);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ============================================================
+    HEADER · SPSSS (NFSU)
+    ============================================================ -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo" id="adminTrigger" aria-label="SPSSS · NFSU (triple-click for admin)">
+                <span class="logo-mark">S</span>
+                <span class="logo-text">
+                    <span class="brand">SPSSS <span>·</span> NFSU</span>
+                    <span class="sub">School of Police Science &amp; Security Studies</span>
+                </span>
+            </a>
+            <nav>
+                <a href="#content-slider" class="active">Content</a>
+                <a href="#about">About</a>
+                <a href="#contact">Contact</a>
+                <div class="search-wrapper">
+                    <span class="icon" aria-hidden="true">🔍</span>
+                    <input type="text" id="searchInput" placeholder="Search reports…" aria-label="Search reports" />
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    HERO
+    ============================================================ -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge">NFSU · Intelligence &amp; Risk Analysis</div>
+                <h1>
+                    Evidence-based <br />
+                    <span class="highlight">strategic foresight</span>
+                </h1>
+                <p>
+                    Weekly deep-dives, rapid special briefs, and explainer content —
+                    all in one place.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number" id="totalReportCount">0</div>
+                        <div class="stat-label">Reports</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="totalVideoCount">0</div>
+                        <div class="stat-label">Videos</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" id="totalExplainerCount">0</div>
+                        <div class="stat-label">Explainers</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    TABBED SLIDER · REPORTS / VIDEOS / EXPLAINERS
+    ============================================================ -->
+    <section class="slider-section" id="content-slider">
+        <div class="container">
+            <div class="slider-tabs" role="tablist">
+                <button class="slider-tab active" data-target="panel-reports" role="tab" aria-selected="true">
+                    Reports <span class="badge" id="tabReportBadge">0</span>
+                </button>
+                <button class="slider-tab" data-target="panel-videos" role="tab" aria-selected="false">
+                    Videos <span class="badge" id="tabVideoBadge">0</span>
+                </button>
+                <button class="slider-tab" data-target="panel-explainers" role="tab" aria-selected="false">
+                    Explainers <span class="badge" id="tabExplainerBadge">0</span>
+                </button>
+            </div>
+
+            <!-- PANEL: Reports -->
+            <div id="panel-reports" class="slider-panel active">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Report Library</h3>
+                        <p class="section-sub" style="font-size:14px;">Filter by type or search above.</p>
+                    </div>
+                    <div class="panel-actions">
+                        <div class="report-filter-tabs" id="reportFilterTabs">
+                            <button class="report-filter-tab active" data-filter="all">All <span class="badge" id="filterAllBadge">0</span></button>
+                            <button class="report-filter-tab" data-filter="weekly">Weekly <span class="badge" id="filterWeeklyBadge">0</span></button>
+                            <button class="report-filter-tab" data-filter="alert">Special <span class="badge" id="filterAlertBadge">0</span></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="content-grid" id="reportsGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                            <path d="M14 2v6h6" />
+                            <path d="M12 18v-4" />
+                            <path d="M12 9v.01" />
+                        </svg>
+                        <h3>No reports yet</h3>
+                        <p>Use the admin panel (triple-click the logo) to add reports.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Videos -->
+            <div id="panel-videos" class="slider-panel">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Video Library</h3>
+                        <p class="section-sub" style="font-size:14px;">Intelligence briefings, OSINT deep‑dives, and explainers.</p>
+                    </div>
+                </div>
+                <div class="content-grid" id="videosGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <circle cx="12" cy="12" r="10" />
+                            <polygon points="10,8 16,12 10,16 10,8" />
+                        </svg>
+                        <h3>No videos yet</h3>
+                        <p>Add videos via the admin panel (triple-click the logo).</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: Explainers -->
+            <div id="panel-explainers" class="slider-panel">
+                <div class="panel-header">
+                    <div class="panel-left">
+                        <h3 class="section-title" style="font-size:20px;">Project Explainers</h3>
+                        <p class="section-sub" style="font-size:14px;">Deep‑dive articles with images, videos, and project walkthroughs.</p>
+                    </div>
+                </div>
+                <div class="content-grid" id="explainersGrid">
+                    <div class="panel-empty">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                            <path d="M14 2v6h6" />
+                            <path d="M16 13H8" />
+                            <path d="M16 17H8" />
+                            <path d="M10 9H8" />
+                        </svg>
+                        <h3>No explainers yet</h3>
+                        <p>Add explainers via the admin panel (triple-click the logo).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    ABOUT
+    ============================================================ -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-divider"></div>
+            <h2 class="section-title">About the Analyst</h2>
+            <p class="section-sub">Who stands behind every brief.</p>
+
+            <div class="about-card">
+                <div class="about-avatar">
+                    <img src="assets/profile.jpg" alt="Profile photo" />
+                </div>
+                <div class="about-content">
+                    <div class="analyst-name">Satyasheel</div>
+                    <div class="analyst-title">M.Sc. Homeland Security · NFSU</div>
+                    <div class="analyst-bio">
+                        <p>
+                            <strong>M.Sc. Homeland Security</strong> candidate at NFSU with a sharp focus on
+                            <strong>OSINT, geopolitical risk, and threat intelligence</strong>.
+                            Certified by the Basel Institute, I build automated intelligence pipelines and
+                            deliver structured risk briefs for critical infrastructure and law enforcement.
+                            I turn open-source data into actionable foresight.
+                        </p>
+                    </div>
+                    <div class="about-expertise">
+                        <span class="expert-tag">📡 OSINT</span>
+                        <span class="expert-tag">🌍 Geopolitical Risk</span>
+                        <span class="expert-tag">🕵️ Threat Intelligence</span>
+                        <span class="expert-tag">📊 Data Analytics</span>
+                        <span class="expert-tag">⚙️ Python &amp; Automation</span>
+                        <span class="expert-tag">🛡️ Critical Infrastructure</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    CONTACT
+    ============================================================ -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="contact-strip">
+                <span class="label">Reach out</span>
+                <span class="sep">|</span>
+                <a href="mailto:satyasheel.mshs@gj.nfsu.edu.in" target="_blank" rel="noopener">
+                    <span class="icon">✉️</span> Email
+                </a>
+                <span class="sep">|</span>
+                <a href="https://www.linkedin.com/in/p-satya03/" target="_blank" rel="noopener">
+                    <span class="icon">💼</span> LinkedIn
+                </a>
+                <span class="sep">|</span>
+                <a href="#" target="_blank" rel="noopener">
+                    <span class="icon">🐦</span> X
+                </a>
+                <span class="sep">|</span>
+                <a href="#" target="_blank" rel="noopener">
+                    <span class="icon">📬</span> Substack
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+    PDF MODAL
+    ============================================================ -->
+    <div class="pdf-modal" id="pdfModal" role="dialog" aria-modal="true" aria-label="PDF viewer">
+        <div class="pdf-modal-content">
+            <div class="pdf-modal-header">
+                <span class="modal-title" id="modalTitle">Document</span>
+                <button class="modal-close" id="modalClose" aria-label="Close PDF viewer">✕</button>
+            </div>
+            <div class="pdf-modal-body" id="modalBody">
+                <div class="pdf-loading">
+                    <span class="spinner"></span>
+                    Loading PDF…
+                </div>
+            </div>
+            <div class="pdf-modal-footer">
+                <span class="page-info" id="pageInfo">Page 1 / 1</span>
+                <div class="page-nav">
+                    <button id="prevPage" disabled>← Prev</button>
+                    <button id="nextPage" disabled>Next →</button>
+                </div>
+                <a class="download-btn" id="downloadBtn" href="#" download target="_blank">↓ Download PDF</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    VIDEO MODAL
+    ============================================================ -->
+    <div class="video-modal" id="videoModal" role="dialog" aria-modal="true" aria-label="Video player">
+        <div class="video-modal-content">
+            <div class="video-modal-header">
+                <span class="video-modal-title" id="videoModalTitle">Video</span>
+                <button class="video-modal-close" id="videoModalClose" aria-label="Close video">✕</button>
+            </div>
+            <div class="video-modal-body" id="videoModalBody">
+                <div class="video-error">Loading video…</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    EXPLAINER DETAIL MODAL
+    ============================================================ -->
+    <div class="explainer-modal" id="explainerModal" role="dialog" aria-modal="true" aria-label="Article viewer">
+        <div class="explainer-modal-content">
+            <div class="explainer-modal-header">
+                <span class="explainer-modal-title" id="explainerModalTitle">Article</span>
+                <button class="explainer-modal-close" id="explainerModalClose" aria-label="Close article">✕</button>
+            </div>
+            <div class="explainer-modal-body" id="explainerModalBody">
+                <!-- Rendered dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    ADMIN PANEL
+    ============================================================ -->
+    <div class="admin-overlay" id="adminOverlay">
+        <div class="admin-panel">
+            <div class="admin-panel-header">
+                <h2>⚙️ <span>SPSSS</span> · Admin Panel</h2>
+                <button class="admin-close" id="adminClose">✕</button>
+            </div>
+            <div class="admin-panel-body" id="adminPanelBody">
+                <!-- Auth -->
+                <div id="adminAuthScreen">
+                    <div class="admin-auth">
+                        <label for="adminPassword">Admin Password</label>
+                        <input type="password" id="adminPassword" placeholder="Enter admin password" />
+                        <div class="admin-error" id="adminAuthError">Incorrect password.</div>
+                        <label for="githubToken">GitHub Token</label>
+                        <input type="text" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" />
+                        <div class="admin-token-warning">Needs <strong>repo</strong> scope.</div>
+                        <button class="admin-btn" id="adminLoginBtn">🔓 Unlock Editor</button>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div id="adminEditorScreen" class="admin-manifest-editor">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <span style="font-weight:600; color:var(--navy);">📄 Manage Content</span>
+                        <span style="font-size:13px; color:var(--text-light);" id="adminFileStatus">Not saved</span>
+                    </div>
+
+                    <div class="admin-sub-tabs">
+                        <button class="admin-sub-tab active" data-admin-type="reports">Reports</button>
+                        <button class="admin-sub-tab" data-admin-type="videos">Videos</button>
+                        <button class="admin-sub-tab" data-admin-type="explainers">Explainers</button>
+                    </div>
+
+                    <div class="admin-list-container" id="adminListContainer">
+                        <!-- Rendered dynamically -->
+                    </div>
+
+                    <div class="admin-add-form" id="adminAddForm">
+                        <div id="adminAddFields"></div>
+                        <div class="add-btn-wrap">
+                            <button class="admin-btn gold" id="adminAddItemBtn">+ Add Item</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-actions">
+                        <button class="admin-btn" id="adminSaveBtn">💾 Save to GitHub</button>
+                        <button class="admin-btn" id="adminRefreshBtn">⟳ Refresh</button>
+                        <button class="admin-btn danger" id="adminLogoutBtn">🚪 Lock &amp; Logout</button>
+                    </div>
+                    <div class="admin-status" id="adminStatus"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <div class="brand">SPSSS <span>·</span> NFSU</div>
+                    <div class="tagline">Strategic Predictive Security &amp; Strategic Studies</div>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <span class="col-title">Navigate</span>
+                        <a href="#content-slider">Content</a>
+                        <a href="#about">About</a>
+                        <a href="#contact">Contact</a>
+                    </div>
+                    <div class="footer-links-column">
+                        <span class="col-title">Legal</span>
+                        <a href="#">Privacy</a>
+                        <a href="#">Terms</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 · National Forensic Sciences University</span>
+                <div class="footer-social">
+                    <a href="https://www.linkedin.com/in/p-satya03/" aria-label="LinkedIn">🔗</a>
+                    <a href="#" aria-label="X / Twitter">🐦</a>
+                    <a href="#" aria-label="Substack">📬</a>
+                    <a href="#" aria-label="GitHub">🐙</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- ============================================================
+    JAVASCRIPT – Clean, No Samples, Full Filtering
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- CONFIG ----
+            const ADMIN_PASSWORD_HASH = 'eb726061ac73d98f8fde13111f8db3a0f544f27f6ea6feb1dd67ecbbd5d03104';
+            const GITHUB_REPO_OWNER = 'p-satya03';
+            const GITHUB_REPO_NAME = 'my_portfolio';
+            const MANIFEST_PATH = 'reports/manifest.json';
+            const PDF_BASE = 'reports/';
+            const GITHUB_API_URL =
+                `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${MANIFEST_PATH}`;
+            const CACHE_KEY = 'spsss_full_manifest_cache';
+            const CACHE_TTL = 60000;
+
+            // ---- DOM refs ----
+            const reportsGrid = document.getElementById('reportsGrid');
+            const videosGrid = document.getElementById('videosGrid');
+            const explainersGrid = document.getElementById('explainersGrid');
+            const totalReportCount = document.getElementById('totalReportCount');
+            const totalVideoCount = document.getElementById('totalVideoCount');
+            const totalExplainerCount = document.getElementById('totalExplainerCount');
+            const tabReportBadge = document.getElementById('tabReportBadge');
+            const tabVideoBadge = document.getElementById('tabVideoBadge');
+            const tabExplainerBadge = document.getElementById('tabExplainerBadge');
+            const filterAllBadge = document.getElementById('filterAllBadge');
+            const filterWeeklyBadge = document.getElementById('filterWeeklyBadge');
+            const filterAlertBadge = document.getElementById('filterAlertBadge');
+            const searchInput = document.getElementById('searchInput');
+            const reportFilterTabs = document.querySelectorAll('.report-filter-tab');
+            const sliderTabs = document.querySelectorAll('.slider-tab');
+            const sliderPanels = document.querySelectorAll('.slider-panel');
+
+            // Admin refs
+            const adminOverlay = document.getElementById('adminOverlay');
+            const adminClose = document.getElementById('adminClose');
+            const adminTrigger = document.getElementById('adminTrigger');
+            const adminAuthScreen = document.getElementById('adminAuthScreen');
+            const adminEditorScreen = document.getElementById('adminEditorScreen');
+            const adminPassword = document.getElementById('adminPassword');
+            const githubToken = document.getElementById('githubToken');
+            const adminAuthError = document.getElementById('adminAuthError');
+            const adminLoginBtn = document.getElementById('adminLoginBtn');
+            const adminListContainer = document.getElementById('adminListContainer');
+            const adminAddFields = document.getElementById('adminAddFields');
+            const adminAddItemBtn = document.getElementById('adminAddItemBtn');
+            const adminSaveBtn = document.getElementById('adminSaveBtn');
+            const adminRefreshBtn = document.getElementById('adminRefreshBtn');
+            const adminLogoutBtn = document.getElementById('adminLogoutBtn');
+            const adminStatus = document.getElementById('adminStatus');
+            const adminFileStatus = document.getElementById('adminFileStatus');
+            const adminSubTabs = document.querySelectorAll('.admin-sub-tab');
+
+            // Modal refs
+            const modal = document.getElementById('pdfModal');
+            const modalBody = document.getElementById('modalBody');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalClose = document.getElementById('modalClose');
+            const prevBtn = document.getElementById('prevPage');
+            const nextBtn = document.getElementById('nextPage');
+            const pageInfo = document.getElementById('pageInfo');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            // Video Modal refs
+            const videoModal = document.getElementById('videoModal');
+            const videoModalTitle = document.getElementById('videoModalTitle');
+            const videoModalBody = document.getElementById('videoModalBody');
+            const videoModalClose = document.getElementById('videoModalClose');
+
+            // Explainer Modal refs
+            const explainerModal = document.getElementById('explainerModal');
+            const explainerModalTitle = document.getElementById('explainerModalTitle');
+            const explainerModalBody = document.getElementById('explainerModalBody');
+            const explainerModalClose = document.getElementById('explainerModalClose');
+
+            // ---- State ----
+            let fullManifest = { reports: [], videos: [], explainers: [] };
+            let currentReportFilter = 'all';
+            let currentSearch = '';
+            let pdfDoc = null;
+            let currentPage = 1;
+            let totalPages = 0;
+            let isAdminAuthenticated = false;
+            let currentManifestSha = null;
+            let observer = null;
+            let adminActiveType = 'reports';
+
+            // ================================================================
+            //  HELPERS
+            // ================================================================
+            function buildPdfUrl(filePath) {
+                const parts = filePath.split('/');
+                return PDF_BASE + parts.map(p => encodeURIComponent(p)).join('/');
+            }
+
+            function formatDate(iso) {
+                if (!iso) return '';
+                const d = new Date(iso);
+                return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+
+            function getFileName(path) {
+                return path.split('/').pop() || path;
+            }
+
+            function matchesSearch(report, term) {
+                if (!term.trim()) return true;
+                const lower = term.toLowerCase();
+                const searchable = [report.title || '', report.description || '', ...(report.tags || [])].join(' ')
+                    .toLowerCase();
+                return searchable.includes(lower);
+            }
+
+            async function hashString(str) {
+                const encoder = new TextEncoder();
+                const data = encoder.encode(str);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            // ================================================================
+            //  TAB SWITCHING
+            // ================================================================
+            function switchTab(targetId) {
+                sliderTabs.forEach(tab => {
+                    const isActive = tab.dataset.target === targetId;
+                    tab.classList.toggle('active', isActive);
+                    tab.setAttribute('aria-selected', isActive);
+                });
+                sliderPanels.forEach(panel => {
+                    panel.classList.toggle('active', panel.id === targetId);
+                });
+            }
+
+            sliderTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    switchTab(this.dataset.target);
+                });
+            });
+
+            // ================================================================
+            //  RENDER FUNCTIONS
+            // ================================================================
+            function renderReports(reports) {
+                if (!reports || reports.length === 0) {
+                    reportsGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 2v6h6" /><path d="M12 18v-4" /><path d="M12 9v.01" />
+                            </svg>
+                            <h3>No reports match</h3>
+                            <p>Try adjusting your filter or search term.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                let html = '';
+                for (const r of reports) {
+                    const title = r.title || getFileName(r.file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
+                    const typeLabel = r.type === 'weekly' ? 'Weekly Report' : 'Special Report';
+                    html += `
+                        <div class="report-card" data-file="${r.file}">
+                            <div class="report-thumb" data-file="${r.file}">
+                                <div class="placeholder">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                        <path d="M14 2v6h6" />
+                                    </svg>
+                                    <span>Loading preview…</span>
+                                </div>
+                            </div>
+                            <div class="report-meta">
+                                <div class="report-title">${title}</div>
+                                ${r.date ? `<div class="report-date">${formatDate(r.date)}</div>` : ''}
+                                ${r.description ? `<div class="report-desc">${r.description}</div>` : ''}
+                                <div class="report-tags">
+                                    <span class="tag type-tag">${typeLabel}</span>
+                                    ${(r.tags||[]).map(t => `<span class="tag">${t}</span>`).join('')}
+                                    <span class="tag gold">PDF</span>
+                                </div>
+                                <button class="read-link" data-file="${r.file}">Read full report →</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                reportsGrid.innerHTML = html;
+                setupLazyLoading();
+                reportsGrid.querySelectorAll('.read-link, .report-card').forEach(el => {
+                    el.addEventListener('click', function(e) {
+                        const target = e.target.closest('.read-link') || e.currentTarget;
+                        const file = target.dataset.file || target.closest('.report-card')?.dataset.file;
+                        if (file) { e.preventDefault();
+                            openPdf(file); }
+                    });
+                });
+            }
+
+            function renderVideos(videos) {
+                if (!videos || videos.length === 0) {
+                    videosGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <polygon points="10,8 16,12 10,16 10,8" />
+                            </svg>
+                            <h3>No videos yet</h3>
+                            <p>Add videos via the admin panel (triple-click the logo).</p>
+                        </div>
+                    `;
+                    return;
+                }
+                let html = '';
+                for (const v of videos) {
+                    const embedUrl = v.embed || '';
+                    const thumbnail = v.thumbnail || '';
+                    // For YouTube, we can generate a thumbnail from the embed URL
+                    let thumbUrl = thumbnail;
+                    if (!thumbUrl && embedUrl) {
+                        // Try to extract video ID from YouTube embed URL
+                        const match = embedUrl.match(/(?:embed\/|v=|\/)([a-zA-Z0-9_-]{11})/);
+                        if (match) {
+                            thumbUrl = `https://img.youtube.com/vi/${match[1]}/mqdefault.jpg`;
+                        }
+                    }
+                    html += `
+                        <div class="video-card" data-embed="${embedUrl}" data-title="${v.title || 'Untitled'}">
+                            <div class="video-thumb">
+                                ${thumbUrl ? `<img src="${thumbUrl}" alt="${v.title || 'Video thumbnail'}" loading="lazy" />` : ''}
+                                <div class="play-icon">▶</div>
+                                <span class="video-placeholder-text">▶ Watch</span>
+                            </div>
+                            <div class="video-meta">
+                                <div class="video-title">${v.title || 'Untitled'}</div>
+                                ${v.description ? `<div class="video-desc">${v.description}</div>` : ''}
+                            </div>
+                        </div>
+                    `;
+                }
+                videosGrid.innerHTML = html;
+
+                // Video click handler
+                videosGrid.querySelectorAll('.video-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const embed = this.dataset.embed;
+                        const title = this.dataset.title || 'Video';
+                        if (embed) {
+                            openVideoModal(embed, title);
+                        } else {
+                            alert('No embed URL provided for this video.');
+                        }
+                    });
+                });
+            }
+
+            function renderExplainers(explainers) {
+                if (!explainers || explainers.length === 0) {
+                    explainersGrid.innerHTML = `
+                        <div class="panel-empty">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 2v6h6" /><path d="M16 13H8" /><path d="M16 17H8" /><path d="M10 9H8" />
+                            </svg>
+                            <h3>No explainers yet</h3>
+                            <p>Add explainers via the admin panel (triple-click the logo).</p>
+                        </div>
+                    `;
+                    return;
+                }
+                let html = '';
+                for (const e of explainers) {
+                    const image = e.image || '';
+                    const link = e.link || '';
+                    const content = e.content || '';
+                    html += `
+                        <div class="explainer-card" data-title="${e.title || 'Untitled'}" data-content="${encodeURIComponent(content)}" data-image="${image}" data-link="${link}">
+                            <div class="explainer-thumb">
+                                ${image ? `<img src="${image}" alt="${e.title || 'Explainer thumbnail'}" loading="lazy" />` : `<span class="thumb-placeholder">📄</span>`}
+                            </div>
+                            <div class="explainer-meta">
+                                <div class="explainer-title">${e.title || 'Untitled'}</div>
+                                ${e.description ? `<div class="explainer-desc">${e.description}</div>` : ''}
+                                <button class="read-more-link" data-title="${e.title || 'Untitled'}" data-content="${encodeURIComponent(content)}" data-image="${image}" data-link="${link}">Read full article →</button>
+                            </div>
+                        </div>
+                    `;
+                }
+                explainersGrid.innerHTML = html;
+
+                // Explainer click handler
+                explainersGrid.querySelectorAll('.read-more-link').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const title = this.dataset.title || 'Article';
+                        const content = decodeURIComponent(this.dataset.content || '');
+                        const image = this.dataset.image || '';
+                        const link = this.dataset.link || '';
+                        openExplainerModal(title, content, image, link);
+                    });
+                });
+
+                // Also allow clicking on the card itself
+                explainersGrid.querySelectorAll('.explainer-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const title = this.dataset.title || 'Article';
+                        const content = decodeURIComponent(this.dataset.content || '');
+                        const image = this.dataset.image || '';
+                        const link = this.dataset.link || '';
+                        openExplainerModal(title, content, image, link);
+                    });
+                });
+            }
+
+            // ================================================================
+            //  VIDEO MODAL
+            // ================================================================
+            function openVideoModal(embedUrl, title) {
+                videoModalTitle.textContent = title || 'Video';
+                videoModalBody.innerHTML = `
+                    <iframe src="${embedUrl}?autoplay=1&rel=0" allow="autoplay; encrypted-media; fullscreen" allowfullscreen loading="lazy"></iframe>
+                `;
+                videoModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeVideoModal() {
+                videoModal.classList.remove('open');
+                videoModalBody.innerHTML = '<div class="video-error">Loading video…</div>';
+                document.body.style.overflow = '';
+            }
+
+            videoModalClose.addEventListener('click', closeVideoModal);
+            videoModal.addEventListener('click', function(e) { if (e.target === videoModal) closeVideoModal(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && videoModal.classList.contains('open')) closeVideoModal();
+            });
+
+            // ================================================================
+            //  EXPLAINER MODAL (Full Article Viewer)
+            // ================================================================
+            function openExplainerModal(title, content, image, link) {
+                explainerModalTitle.textContent = title || 'Article';
+
+                let html = '';
+                if (image) {
+                    html += `<img src="${image}" alt="${title}" class="explainer-featured-image" loading="lazy" />`;
+                }
+                if (content) {
+                    html += `<div class="explainer-full-content">${content}</div>`;
+                } else {
+                    html += `<p style="color:var(--text-light);">No content available for this explainer.</p>`;
+                }
+                if (link && !content) {
+                    html +=
+                        `<p><a href="${link}" target="_blank" style="color:var(--gold);font-weight:600;">Read the full article →</a></p>`;
+                }
+
+                explainerModalBody.innerHTML = html;
+                explainerModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeExplainerModal() {
+                explainerModal.classList.remove('open');
+                explainerModalBody.innerHTML = '';
+                document.body.style.overflow = '';
+            }
+
+            explainerModalClose.addEventListener('click', closeExplainerModal);
+            explainerModal.addEventListener('click', function(e) { if (e.target === explainerModal) closeExplainerModal(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && explainerModal.classList.contains('open')) closeExplainerModal();
+            });
+
+            // ================================================================
+            //  LAZY LOADING (Reports thumbnails)
+            // ================================================================
+            function renderThumbnailLazy(file, container) {
+                if (container.dataset.loaded === 'true') return;
+                container.dataset.loaded = 'true';
+                const url = buildPdfUrl(file);
+                const placeholder = container.querySelector('.placeholder');
+                if (!placeholder) return;
+                placeholder.innerHTML =
+                    `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="animation: spin 1s linear infinite;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 2v6h6" /></svg><span>Loading…</span>`;
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    return pdf.getPage(1);
+                }).then(function(page) {
+                    const vp = page.getViewport({ scale: 1 });
+                    const scale = Math.min((container.clientWidth || 300) / vp.width, (container.clientHeight ||
+                        200) / vp.height);
+                    const scaled = page.getViewport({ scale: Math.min(scale * 0.8, 0.5) });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = scaled.width;
+                    canvas.height = scaled.height;
+                    canvas.style.width = '100%';
+                    canvas.style.height = '100%';
+                    canvas.style.objectFit = 'cover';
+                    const ctx = canvas.getContext('2d');
+                    page.render({ canvasContext: ctx, viewport: scaled }).promise.then(() => {
+                        if (placeholder.parentNode) placeholder.replaceWith(canvas);
+                    });
+                }).catch(() => {
+                    if (placeholder.parentNode) {
+                        placeholder.innerHTML =
+                            `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z" /><path d="M14 2v6h6" /></svg><span>${getFileName(file)}</span>`;
+                    }
+                });
+            }
+
+            function setupLazyLoading() {
+                if (observer) observer.disconnect();
+                observer = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting) {
+                            const thumb = entry.target;
+                            const file = thumb.dataset.file;
+                            if (file) renderThumbnailLazy(file, thumb);
+                            observer.unobserve(thumb);
+                        }
+                    }
+                }, { rootMargin: '100px', threshold: 0.01 });
+                document.querySelectorAll('.report-thumb[data-file]').forEach(el => observer.observe(el));
+            }
+
+            // ================================================================
+            //  UPDATE STATS & BADGES
+            // ================================================================
+            function updateStats() {
+                const reports = fullManifest.reports || [];
+                const videos = fullManifest.videos || [];
+                const explainers = fullManifest.explainers || [];
+                const total = reports.length;
+                const weekly = reports.filter(r => r.type === 'weekly').length;
+                const alert = reports.filter(r => r.type === 'alert').length;
+
+                totalReportCount.textContent = total;
+                totalVideoCount.textContent = videos.length;
+                totalExplainerCount.textContent = explainers.length;
+                tabReportBadge.textContent = total;
+                tabVideoBadge.textContent = videos.length;
+                tabExplainerBadge.textContent = explainers.length;
+                filterAllBadge.textContent = total;
+                filterWeeklyBadge.textContent = weekly;
+                filterAlertBadge.textContent = alert;
+            }
+
+            // ================================================================
+            //  FILTER & SEARCH (Reports)
+            // ================================================================
+            function filterAndRenderReports() {
+                const reports = fullManifest.reports || [];
+                const filtered = reports.filter(r => {
+                    const typeMatch = currentReportFilter === 'all' || r.type === currentReportFilter;
+                    const searchMatch = matchesSearch(r, currentSearch);
+                    return typeMatch && searchMatch;
+                });
+                renderReports(filtered);
+                updateStats();
+            }
+
+            // Report Filter Tabs
+            reportFilterTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    reportFilterTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    currentReportFilter = this.dataset.filter;
+                    filterAndRenderReports();
+                });
+            });
+
+            // Global Search
+            searchInput.addEventListener('input', function() {
+                currentSearch = this.value;
+                filterAndRenderReports();
+            });
+
+            // ================================================================
+            //  LOAD MANIFEST (Full)
+            // ================================================================
+            async function loadManifest(useCache = true) {
+                if (useCache) {
+                    try {
+                        const cached = sessionStorage.getItem(CACHE_KEY);
+                        if (cached) {
+                            const data = JSON.parse(cached);
+                            if (Date.now() - (data.timestamp || 0) < CACHE_TTL) {
+                                fullManifest = data.manifest || { reports: [], videos: [], explainers: [] };
+                                renderVideos(fullManifest.videos);
+                                renderExplainers(fullManifest.explainers);
+                                filterAndRenderReports();
+                                updateStats();
+                                return;
+                            }
+                        }
+                    } catch (e) { /* ignore */ }
+                }
+
+                // Show skeletons for reports
+                reportsGrid.innerHTML =
+                    `<div class="card-skeleton"><div class="skeleton-thumb"></div><div class="skeleton-meta"><div class="skeleton-line"></div><div class="skeleton-line short"></div><div class="skeleton-line tiny"></div></div></div>`.repeat(
+                        4);
+
+                try {
+                    const token = sessionStorage.getItem('spsss_admin_token');
+                    const headers = { 'Accept': 'application/vnd.github.v3+json' };
+                    if (token) headers['Authorization'] = `token ${token}`;
+
+                    const response = await fetch(GITHUB_API_URL, { headers });
+                    if (response.ok) {
+                        const data = await response.json();
+                        const content = atob(data.content);
+                        let json;
+                        try { json = JSON.parse(content); } catch (e) { json = {}; }
+                        fullManifest = {
+                            reports: json.reports || [],
+                            videos: json.videos || [],
+                            explainers: json.explainers || []
+                        };
+                        currentManifestSha = data.sha;
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ manifest: fullManifest, timestamp: Date
+                                .now() }));
+                        renderVideos(fullManifest.videos);
+                        renderExplainers(fullManifest.explainers);
+                        filterAndRenderReports();
+                        updateStats();
+                        return;
+                    }
+
+                    // Fallback
+                    const fbRes = await fetch(MANIFEST_PATH);
+                    if (fbRes.ok) {
+                        const data = await fbRes.json();
+                        fullManifest = { reports: data.reports || [], videos: data.videos || [],
+                            explainers: data.explainers || [] };
+                        sessionStorage.setItem(CACHE_KEY, JSON.stringify({ manifest: fullManifest, timestamp: Date
+                                .now() }));
+                        renderVideos(fullManifest.videos);
+                        renderExplainers(fullManifest.explainers);
+                        filterAndRenderReports();
+                        updateStats();
+                        return;
+                    }
+                    throw new Error('Not found');
+                } catch (err) {
+                    console.warn('Manifest load error:', err);
+                    fullManifest = { reports: [], videos: [], explainers: [] };
+                    renderVideos([]);
+                    renderExplainers([]);
+                    filterAndRenderReports();
+                    updateStats();
+                }
+            }
+
+            // ================================================================
+            //  PDF MODAL
+            // ================================================================
+            function openPdf(file) {
+                const url = buildPdfUrl(file);
+                modalTitle.textContent = getFileName(file).replace(/\.pdf$/i, '').replace(/[-_]/g, ' ');
+                downloadBtn.href = url;
+                modalBody.innerHTML =
+                    `<div class="pdf-loading"><span class="spinner"></span>Loading PDF…</div>`;
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                pdfjsLib.getDocument(url).promise.then(function(pdf) {
+                    pdfDoc = pdf;
+                    totalPages = pdf.numPages;
+                    currentPage = 1;
+                    renderPage(currentPage);
+                    updateNavButtons();
+                }).catch(function(err) {
+                    modalBody.innerHTML =
+                        `<div style="text-align:center;padding:60px 20px;color:var(--text-light);"><p>⚠️ Could not load PDF</p><p style="font-size:14px;">${err.message}</p></div>`;
+                });
+            }
+
+            function renderPage(pageNum) {
+                if (!pdfDoc) return;
+                if (pageNum < 1) pageNum = 1;
+                if (pageNum > totalPages) pageNum = totalPages;
+                currentPage = pageNum;
+                pdfDoc.getPage(pageNum).then(function(page) {
+                    const containerWidth = modalBody.clientWidth - 48 || 700;
+                    const viewport = page.getViewport({ scale: 1 });
+                    const scale = Math.min(containerWidth / viewport.width, (window.innerHeight * 0.65) / viewport
+                        .height);
+                    const scaled = page.getViewport({ scale: Math.min(scale, 2.0) });
+                    const canvas = document.createElement('canvas');
+                    canvas.width = scaled.width;
+                    canvas.height = scaled.height;
+                    canvas.style.width = '100%';
+                    canvas.style.height = 'auto';
+                    const ctx = canvas.getContext('2d');
+                    modalBody.innerHTML = '';
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'pdf-page-wrapper';
+                    wrapper.appendChild(canvas);
+                    modalBody.appendChild(wrapper);
+                    page.render({ canvasContext: ctx, viewport: scaled }).promise.then(() => { updateNavButtons(); });
+                });
+            }
+
+            function updateNavButtons() {
+                if (!pdfDoc) return;
+                prevBtn.disabled = currentPage <= 1;
+                nextBtn.disabled = currentPage >= totalPages;
+                pageInfo.textContent = `Page ${currentPage} / ${totalPages}`;
+            }
+
+            function closeModal() {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+                pdfDoc = null;
+            }
+            modalClose.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e) { if (e.target === modal) closeModal(); });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && modal.classList.contains('open')) closeModal();
+                if (e.key === 'ArrowLeft' && modal.classList.contains('open') && currentPage > 1) renderPage(currentPage -
+                    1);
+                if (e.key === 'ArrowRight' && modal.classList.contains('open') && currentPage < totalPages) renderPage(
+                    currentPage + 1);
+            });
+            prevBtn.addEventListener('click', function() { if (currentPage > 1) renderPage(currentPage - 1); });
+            nextBtn.addEventListener('click', function() { if (currentPage < totalPages) renderPage(currentPage + 1); });
+
+            // ================================================================
+            //  ADMIN PANEL (Extended for Videos & Explainers)
+            // ================================================================
+            function openAdmin() { adminOverlay.classList.add('open'); }
+
+            function closeAdmin() {
+                adminOverlay.classList.remove('open');
+                adminAuthError.style.display = 'none';
+                if (!isAdminAuthenticated) {
+                    adminEditorScreen.classList.remove('active');
+                    adminAuthScreen.style.display = 'block';
+                }
+            }
+
+            let clickCount = 0,
+                clickTimer = null;
+            adminTrigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                clickCount++;
+                if (clickCount === 1) clickTimer = setTimeout(() => { clickCount = 0; }, 500);
+                if (clickCount >= 3) {
+                    clearTimeout(clickTimer);
+                    clickCount = 0;
+                    openAdmin();
+                    if (sessionStorage.getItem('spsss_admin_token') && sessionStorage.getItem('spsss_admin_auth') ===
+                        'true') {
+                        githubToken.value = sessionStorage.getItem('spsss_admin_token') || '';
+                        attemptAdminLogin(true);
+                    }
+                }
+            });
+            adminClose.addEventListener('click', closeAdmin);
+            adminOverlay.addEventListener('click', function(e) { if (e.target === adminOverlay) closeAdmin(); });
+
+            async function attemptAdminLogin(silent = false) {
+                const pass = adminPassword.value;
+                const token = githubToken.value.trim();
+                const enteredHash = await hashString(pass);
+                if (enteredHash !== ADMIN_PASSWORD_HASH) { if (!silent) adminAuthError.style.display = 'block'; return; }
+                adminAuthError.style.display = 'none';
+                if (!token) { if (!silent) { adminAuthError.style.display = 'block';
+                        adminAuthError.textContent = 'Please paste your GitHub token.'; } return; }
+                sessionStorage.setItem('spsss_admin_token', token);
+                sessionStorage.setItem('spsss_admin_auth', 'true');
+                isAdminAuthenticated = true;
+                adminAuthScreen.style.display = 'none';
+                adminEditorScreen.classList.add('active');
+                adminFileStatus.textContent = '📥 Loading...';
+                loadManifestForAdmin();
+            }
+
+            adminLoginBtn.addEventListener('click', function() { attemptAdminLogin(false); });
+            adminPassword.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
+            githubToken.addEventListener('keydown', function(e) { if (e.key === 'Enter') attemptAdminLogin(false); });
+
+            adminSubTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    adminSubTabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    adminActiveType = this.dataset.adminType;
+                    renderAdminList(adminActiveType);
+                    renderAdminAddForm(adminActiveType);
+                });
+            });
+
+            function renderAdminAddForm(type) {
+                let fields = '';
+                if (type === 'reports') {
+                    fields = `
+                        <div class="field-group"><label>File path</label><input id="adminAddFile" placeholder="weekly/file.pdf" /></div>
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="My Report" /></div>
+                        <div class="field-group"><label>Description</label><input id="adminAddDesc" placeholder="Brief summary..." /></div>
+                        <div class="field-group"><label>Date (YYYY-MM-DD)</label><input id="adminAddDate" placeholder="2026-03-20" /></div>
+                        <div class="field-group"><label>Type</label><select id="adminAddType"><option value="weekly">Weekly</option><option value="alert">Special</option></select></div>
+                        <div class="field-group"><label>Tags (comma)</label><input id="adminAddTags" placeholder="osint, risk" /></div>
+                    `;
+                } else if (type === 'videos') {
+                    fields = `
+                        <div class="field-group"><label>Embed URL</label><input id="adminAddEmbed" placeholder="https://www.youtube.com/embed/VIDEO_ID" /></div>
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="Video title" /></div>
+                        <div class="field-group"><label>Thumbnail (optional)</label><input id="adminAddThumbnail" placeholder="https://.../image.jpg" /></div>
+                        <div class="field-group full-width"><label>Description</label><textarea id="adminAddDesc" placeholder="Brief description..." rows="2"></textarea></div>
+                    `;
+                } else if (type === 'explainers') {
+                    fields = `
+                        <div class="field-group"><label>Title</label><input id="adminAddTitle" placeholder="Explainer title" /></div>
+                        <div class="field-group"><label>Featured Image</label><input id="adminAddImage" placeholder="https://.../image.jpg" /></div>
+                        <div class="field-group full-width"><label>Description (preview)</label><textarea id="adminAddDesc" placeholder="Brief preview..." rows="2"></textarea></div>
+                        <div class="field-group full-width"><label>Full Content (HTML)</label><textarea id="adminAddContent" placeholder="Write your full article with HTML (images, videos, formatting)..." rows="6"></textarea></div>
+                        <div class="field-group full-width"><label>External Link (optional)</label><input id="adminAddLink" placeholder="https://..." /></div>
+                    `;
+                }
+                adminAddFields.innerHTML = fields;
+            }
+
+            function renderAdminList(type) {
+                const items = fullManifest[type] || [];
+                if (!items || items.length === 0) {
+                    adminListContainer.innerHTML = `<p style="color:var(--text-light);padding:12px 0;">No ${type} added yet.</p>`;
+                    return;
+                }
+                let html = '';
+                items.forEach((item, idx) => {
+                    html += `<div class="admin-report-item" data-index="${idx}">`;
+                    if (type === 'reports') {
+                        html += `
+                            <div class="field-group"><label>File</label><input class="admin-field" data-field="file" value="${item.file||''}" /></div>
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group"><label>Description</label><input class="admin-field" data-field="description" value="${item.description||''}" /></div>
+                            <div class="field-group"><label>Date</label><input class="admin-field" data-field="date" value="${item.date||''}" /></div>
+                            <div class="field-group"><label>Type</label><select class="admin-field" data-field="type"><option value="weekly" ${item.type==='weekly'?'selected':''}>Weekly</option><option value="alert" ${item.type==='alert'?'selected':''}>Special</option></select></div>
+                            <div class="field-group"><label>Tags</label><input class="admin-field" data-field="tags" value="${(item.tags||[]).join(', ')}" /></div>
+                        `;
+                    } else if (type === 'videos') {
+                        html += `
+                            <div class="field-group"><label>Embed</label><input class="admin-field" data-field="embed" value="${item.embed||''}" /></div>
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group"><label>Thumbnail</label><input class="admin-field" data-field="thumbnail" value="${item.thumbnail||''}" /></div>
+                            <div class="field-group full-width"><label>Description</label><textarea class="admin-field" data-field="description" rows="2">${item.description||''}</textarea></div>
+                        `;
+                    } else if (type === 'explainers') {
+                        html += `
+                            <div class="field-group"><label>Title</label><input class="admin-field" data-field="title" value="${item.title||''}" /></div>
+                            <div class="field-group"><label>Image</label><input class="admin-field" data-field="image" value="${item.image||''}" /></div>
+                            <div class="field-group full-width"><label>Description</label><textarea class="admin-field" data-field="description" rows="2">${item.description||''}</textarea></div>
+                            <div class="field-group full-width"><label>Content (HTML)</label><textarea class="admin-field" data-field="content" rows="3">${item.content||''}</textarea></div>
+                            <div class="field-group full-width"><label>Link</label><input class="admin-field" data-field="link" value="${item.link||''}" /></div>
+                        `;
+                    }
+                    html += `
+                            <button class="delete-report-btn" data-index="${idx}" data-type="${type}">✕</button>
+                        </div>
+                    `;
+                });
+                adminListContainer.innerHTML = html;
+
+                adminListContainer.querySelectorAll('.delete-report-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idx = parseInt(this.dataset.index);
+                        const type = this.dataset.type;
+                        if (confirm(`Delete this ${type} item?`)) {
+                            fullManifest[type].splice(idx, 1);
+                            renderAdminList(type);
+                            adminFileStatus.textContent = '✏️ Modified (unsaved)';
+                            setAdminStatus('loading', 'Item removed. Save to persist.');
+                            refreshMainViews();
+                        }
+                    });
+                });
+
+                adminListContainer.querySelectorAll('.admin-field').forEach(el => {
+                    el.addEventListener('input', function() {
+                        adminFileStatus.textContent = '✏️ Modified (unsaved)';
+                        setAdminStatus('loading', 'Changes made. Click "Save to GitHub" to persist.');
+                    });
+                });
+            }
+
+            function collectAdminData(type) {
+                const items = adminListContainer.querySelectorAll('.admin-report-item');
+                const result = [];
+                items.forEach(item => {
+                    const fields = item.querySelectorAll('.admin-field');
+                    const obj = {};
+                    fields.forEach(f => {
+                        const key = f.dataset.field;
+                        if (key === 'tags') {
+                            obj[key] = f.value.split(',').map(s => s.trim()).filter(Boolean);
+                        } else if (key === 'type') {
+                            obj[key] = f.value;
+                        } else {
+                            obj[key] = f.value;
+                        }
+                    });
+                    Object.keys(obj).forEach(k => { if (obj[k] === '') delete obj[k]; });
+                    if (obj.file || obj.title || obj.embed || obj.link) result.push(obj);
+                });
+                return result;
+            }
+
+            function refreshMainViews() {
+                renderVideos(fullManifest.videos);
+                renderExplainers(fullManifest.explainers);
+                filterAndRenderReports();
+                updateStats();
+            }
+
+            adminAddItemBtn.addEventListener('click', function() {
+                const type = adminActiveType;
+                const fields = adminAddFields.querySelectorAll('input, select, textarea');
+                const obj = {};
+                fields.forEach(f => {
+                    const key = f.id.replace('adminAdd', '').toLowerCase();
+                    if (key === 'tags') {
+                        obj[key] = f.value.split(',').map(s => s.trim()).filter(Boolean);
+                    } else if (key === 'type') {
+                        obj[key] = f.value;
+                    } else if (key === 'embed' || key === 'link' || key === 'image' || key === 'thumbnail') {
+                        if (f.value.trim()) obj[key] = f.value.trim();
+                    } else if (key === 'content') {
+                        if (f.value.trim()) obj[key] = f.value.trim();
+                    } else {
+                        if (f.value.trim()) obj[key] = f.value.trim();
+                    }
+                });
+                if (type === 'reports' && !obj.file) { setAdminStatus('error', 'File path is required.'); return; }
+                if (type === 'videos' && !obj.embed) { setAdminStatus('error', 'Embed URL is required.'); return; }
+                if (type === 'explainers' && !obj.title) { setAdminStatus('error', 'Title is required.'); return; }
+
+                if (!fullManifest[type]) fullManifest[type] = [];
+                fullManifest[type].push(obj);
+                renderAdminList(type);
+                renderAdminAddForm(type);
+                adminFileStatus.textContent = '✏️ Modified (unsaved)';
+                setAdminStatus('success', 'Item added locally. Click "Save to GitHub" to persist.');
+                refreshMainViews();
+            });
+
+            function loadManifestForAdmin() {
+                const token = sessionStorage.getItem('spsss_admin_token');
+                if (!token) return;
+                adminFileStatus.textContent = '⏳ Loading...';
+                setAdminStatus('loading', 'Fetching manifest...');
+                fetch(GITHUB_API_URL, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                }).then(res => {
+                    if (!res.ok) {
+                        if (res.status === 404) {
+                            currentManifestSha = null;
+                            fullManifest = { reports: [], videos: [], explainers: [] };
+                            renderAdminList(adminActiveType);
+                            renderAdminAddForm(adminActiveType);
+                            adminFileStatus.textContent = '📄 New manifest';
+                            setAdminStatus('success', 'No manifest found. Create one now!');
+                            refreshMainViews();
+                            return null;
+                        }
+                        throw new Error(`GitHub API error: ${res.status}`);
+                    }
+                    return res.json();
+                }).then(data => {
+                    if (!data) return;
+                    currentManifestSha = data.sha;
+                    const content = atob(data.content);
+                    let json;
+                    try { json = JSON.parse(content); } catch (e) { json = {}; }
+                    fullManifest = {
+                        reports: json.reports || [],
+                        videos: json.videos || [],
+                        explainers: json.explainers || []
+                    };
+                    renderAdminList(adminActiveType);
+                    renderAdminAddForm(adminActiveType);
+                    adminFileStatus.textContent =
+                        `📄 Loaded (${fullManifest.reports.length} reports, ${fullManifest.videos.length} videos, ${fullManifest.explainers.length} explainers)`;
+                    setAdminStatus('success', 'Manifest loaded.');
+                    refreshMainViews();
+                }).catch(err => {
+                    console.error(err);
+                    adminFileStatus.textContent = '❌ Load failed';
+                    setAdminStatus('error', `Error: ${err.message}`);
+                });
+            }
+
+            adminRefreshBtn.addEventListener('click', function() {
+                loadManifestForAdmin();
+                loadManifest(false);
+            });
+
+            adminSaveBtn.addEventListener('click', function() {
+                const token = sessionStorage.getItem('spsss_admin_token');
+                if (!token) { setAdminStatus('error', 'No GitHub token.'); return; }
+
+                const type = adminActiveType;
+                const collected = collectAdminData(type);
+                fullManifest[type] = collected;
+
+                const payload = JSON.stringify({ reports: fullManifest.reports, videos: fullManifest.videos,
+                    explainers: fullManifest.explainers }, null, 2);
+                setAdminStatus('loading', 'Saving...');
+                adminSaveBtn.disabled = true;
+
+                const body = {
+                    message: `Update manifest (${new Date().toISOString()})`,
+                    content: btoa(unescape(encodeURIComponent(payload))),
+                    branch: 'main'
+                };
+                if (currentManifestSha) body.sha = currentManifestSha;
+
+                fetch(GITHUB_API_URL, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `token ${token}`,
+                        'Accept': 'application/vnd.github.v3+json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(body)
+                }).then(res => {
+                    if (!res.ok) throw new Error(`GitHub API error: ${res.status}`);
+                    return res.json();
+                }).then(data => {
+                    currentManifestSha = data.content.sha;
+                    adminFileStatus.textContent = '✅ Saved';
+                    setAdminStatus('success', 'Saved successfully.');
+                    adminSaveBtn.disabled = false;
+                    loadManifest(false);
+                    loadManifestForAdmin();
+                }).catch(err => {
+                    console.error(err);
+                    setAdminStatus('error', `Save failed: ${err.message}`);
+                    adminSaveBtn.disabled = false;
+                });
+            });
+
+            adminLogoutBtn.addEventListener('click', function() {
+                sessionStorage.removeItem('spsss_admin_token');
+                sessionStorage.removeItem('spsss_admin_auth');
+                isAdminAuthenticated = false;
+                adminEditorScreen.classList.remove('active');
+                adminAuthScreen.style.display = 'block';
+                adminPassword.value = '';
+                adminAuthError.style.display = 'none';
+                setAdminStatus('', '');
+                closeAdmin();
+            });
+
+            function setAdminStatus(type, msg) {
+                adminStatus.className = 'admin-status';
+                if (!msg) { adminStatus.style.display = 'none'; return; }
+                adminStatus.style.display = 'block';
+                adminStatus.textContent = msg;
+                if (type === 'success') adminStatus.classList.add('success');
+                else if (type === 'error') adminStatus.classList.add('error');
+                else if (type === 'loading') adminStatus.classList.add('loading');
+            }
+
+            // ---- Init ----
+            loadManifest(true);
+
+            // ---- Expose ----
+            window.__portfolio = { loadManifest, openAdmin, closeAdmin };
+
+        })();
+    </script>
+
+</body>
+</html>
