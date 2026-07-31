@@ -2057,6 +2057,7 @@
                 <a href="#content-slider" class="active">Content</a>
                 <a href="#about">About</a>
                 <a href="#contact">Contact</a>
+                <a href="media-kit.html" target="_blank">Media Kit</a>
                 <div class="search-wrapper">
                     <span class="icon" aria-hidden="true">🔍</span>
                     <input type="text" id="searchInput" placeholder="Search reports…" aria-label="Search reports" />
@@ -2384,6 +2385,7 @@
                         <a href="#content-slider">Content</a>
                         <a href="#about">About</a>
                         <a href="#contact">Contact</a>
+                        <a href="media-kit.html">Media Kit</a>
                     </div>
                     <div class="footer-links-column">
                         <span class="col-title">Legal</span>
@@ -3381,5 +3383,26 @@
         })();
     </script>
 
+<script>
+    fetch('reports/manifest.json')
+        .then(res => res.json())
+        .then(data => {
+            const reports = data.reports || [];
+            // Option 1: take first 3
+            const featured = reports.slice(0, 3);
+            // Option 2: filter by a 'featured' flag (if you add it)
+            // const featured = reports.filter(r => r.featured === true);
+            const grid = document.querySelector('.report-grid');
+            grid.innerHTML = featured.map(r => `
+                <div class="report-card">
+                    <h3>${r.title || 'Untitled'}</h3>
+                    <p>${r.description || ''}</p>
+                    <a href="reports/${r.file}" target="_blank">Read PDF →</a>
+                </div>
+            `).join('');
+        })
+        .catch(() => console.warn('Could not load manifest.'));
+</script>    
+    
 </body>
 </html>
