@@ -39,6 +39,11 @@
       "tags": []
     }
   ],
-  "videos": [],
+  "videos": [
+    {
+      "embed": "<iframe width=",
+      "title": "test vid-dummy data"
+    }
+  ],
   "explainers": []
 }
