@@ -1,16 +1,552 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Google CSE Test</title>
-</head>
-<body style="padding: 50px;">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fact Check · SPSSS · NFSU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
 
-    <h2>Google Search Engine Test</h2>
-    
-    <script async src="https://cse.google.com/cse.js?cx=a689e93bb5bdd4de6">
-</script>
-<div class="gcse-search"></div>
+    <style>
+        /* ============================================================
+           MINIMALIST FACT CHECK – FIXED HEADER + SCROLLABLE RESULTS
+           ============================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --navy: #0F2A4A;
+            --navy-light: #1E3A5F;
+            --gold: #C4A35A;
+            --gold-light: #DCC28D;
+            --cream: #F8F6F2;
+            --text: #1E1E1E;
+            --text-light: #555555;
+            --white: #FFFFFF;
+            --shadow: 0 8px 30px rgba(15, 42, 74, 0.07);
+            --radius: 12px;
+            --transition: 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --header-height: 64px;
+            --controls-height: 80px;
+        }
+
+        html,
+        body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: var(--font);
+            background: #F5F7FA;
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 0 24px;
+            width: 100%;
+        }
+
+        /* ============================================================
+           HEADER – Fixed
+           ============================================================ */
+        header {
+            background: var(--white);
+            border-bottom: 1px solid rgba(15, 42, 74, 0.04);
+            padding: 14px 0;
+            flex-shrink: 0;
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.88);
+            position: relative;
+            z-index: 20;
+        }
+
+        header .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo-text {
+            font-weight: 700;
+            font-size: 17px;
+            color: var(--navy);
+            letter-spacing: -0.3px;
+        }
+        .logo-text span {
+            color: var(--gold);
+            font-weight: 300;
+        }
+
+        .back-link {
+            color: var(--text-light);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: var(--transition);
+            padding: 4px 10px;
+            border-radius: 40px;
+        }
+
+        .back-link:hover {
+            background: rgba(15, 42, 74, 0.04);
+            color: var(--navy);
+        }
+
+        /* ============================================================
+           MAIN – Flex column, fixed controls + scrollable results
+           ============================================================ */
+        .fact-check-main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .fact-check-main .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        /* ---- TOGGLE (Fixed) ---- */
+        .toggle-wrapper {
+            flex-shrink: 0;
+            display: flex;
+            gap: 4px;
+            background: var(--white);
+            padding: 4px;
+            border-radius: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            margin-bottom: 20px;
+            width: fit-content;
+            align-self: center;
+            position: relative;
+            z-index: 5;
+        }
+
+        .toggle-option {
+            padding: 8px 24px;
+            border: none;
+            background: transparent;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            white-space: nowrap;
+        }
+
+        .toggle-option.active {
+            color: var(--white);
+            background: var(--navy);
+            box-shadow: 0 4px 12px rgba(15, 42, 74, 0.15);
+        }
+
+        .toggle-option:not(.active):hover {
+            color: var(--navy);
+            background: rgba(15, 42, 74, 0.04);
+        }
+
+        .toggle-option .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            padding: 0 8px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .toggle-option:not(.active) .badge {
+            background: rgba(15, 42, 74, 0.06);
+            color: var(--text-light);
+        }
+
+        /* ---- SEARCH BOX (Fixed) ---- */
+        .search-fixed-area {
+            flex-shrink: 0;
+            background: var(--white);
+            border-radius: var(--radius) var(--radius) 0 0;
+            padding: 20px 24px 16px 24px;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            border-bottom: none;
+            box-shadow: var(--shadow);
+            position: relative;
+            z-index: 4;
+        }
+
+        .search-fixed-area .gcse-searchbox {
+            min-height: 40px;
+        }
+
+        /* ---- RESULTS (Scrollable) ---- */
+        .results-scroll-area {
+            flex: 1;
+            overflow-y: auto;
+            background: var(--white);
+            border-radius: 0 0 var(--radius) var(--radius);
+            padding: 0 24px 24px 24px;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+            border-top: none;
+            box-shadow: var(--shadow);
+            min-height: 0;
+        }
+
+        .results-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .results-scroll-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .results-scroll-area::-webkit-scrollbar-thumb {
+            background: var(--gold-light);
+            border-radius: 10px;
+        }
+
+        .results-scroll-area::-webkit-scrollbar-thumb:hover {
+            background: var(--gold);
+        }
+
+        .results-scroll-area .gcse-searchresults {
+            min-height: 100px;
+        }
+
+        /* ---- Google CSE Overrides ---- */
+        .gsc-control-cse {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+        }
+
+        .gsc-input-box {
+            border: 1px solid rgba(15, 42, 74, 0.12) !important;
+            border-radius: 8px !important;
+            padding: 4px !important;
+            background: var(--white) !important;
+        }
+
+        .gsc-input-box:focus-within {
+            border-color: var(--gold) !important;
+            box-shadow: 0 0 0 3px rgba(196, 163, 90, 0.12) !important;
+        }
+
+        .gsc-search-button {
+            background: var(--navy) !important;
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 8px 22px !important;
+            font-weight: 600 !important;
+            font-family: var(--font) !important;
+            transition: var(--transition) !important;
+            margin-left: 8px !important;
+        }
+
+        .gsc-search-button:hover {
+            background: var(--navy-light) !important;
+        }
+
+        .gsc-search-button svg {
+            fill: var(--white) !important;
+        }
+
+        .gsc-results-wrapper-overlay {
+            background: var(--white) !important;
+            border-radius: var(--radius) !important;
+            box-shadow: 0 16px 48px rgba(15, 42, 74, 0.15) !important;
+        }
+
+        .gs-result .gs-title {
+            color: var(--navy) !important;
+            font-weight: 600 !important;
+        }
+
+        .gs-result .gs-snippet {
+            color: var(--text-light) !important;
+        }
+
+        .gs-result .gs-visibleUrl {
+            color: var(--gold) !important;
+        }
+
+        .gsc-result-info {
+            color: var(--text-light) !important;
+        }
+
+        .gsc-orderby {
+            color: var(--text-light) !important;
+        }
+
+        /* ---- Empty state when no results ---- */
+        .gsc-results .gsc-cursor-box {
+            padding: 16px 0 !important;
+        }
+
+        /* ---- Footer (minimal) ---- */
+        footer {
+            flex-shrink: 0;
+            padding: 12px 0;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-light);
+            opacity: 0.4;
+            border-top: 1px solid rgba(15, 42, 74, 0.04);
+            background: var(--white);
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        footer a:hover {
+            color: var(--navy);
+        }
+
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
+        @media (max-width: 600px) {
+            header .container {
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+            .toggle-wrapper {
+                width: 100%;
+                border-radius: 30px;
+                justify-content: center;
+            }
+            .toggle-option {
+                flex: 1;
+                text-align: center;
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            .search-fixed-area {
+                padding: 14px 16px 12px 16px;
+            }
+            .results-scroll-area {
+                padding: 0 16px 16px 16px;
+            }
+            .logo-text {
+                font-size: 15px;
+            }
+            .back-link {
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .toggle-option {
+                font-size: 11px;
+                padding: 4px 8px;
+            }
+            .search-fixed-area {
+                padding: 10px 12px 8px 12px;
+            }
+            .results-scroll-area {
+                padding: 0 12px 12px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+    HEADER – Fixed
+    ============================================================ -->
+    <header>
+        <div class="container">
+            <div class="logo-text">SPSSS <span>·</span> NFSU</div>
+            <a href="index.html" class="back-link">← Back</a>
+        </div>
+    </header>
+
+    <!-- ============================================================
+    MAIN – Scrollable Results Only
+    ============================================================ -->
+    <main class="fact-check-main">
+        <div class="container">
+
+            <!-- Toggle – Fixed -->
+            <div class="toggle-wrapper" role="group" aria-label="Search engine selector">
+                <button class="toggle-option active" data-cx="a689e93bb5bdd4de6" data-name="Preliminary">
+                    🔍 Preliminary <span class="badge">Broad</span>
+                </button>
+                <button class="toggle-option" data-cx="5105b7042e9ee4903" data-name="Narrow">
+                    🎯 Narrow <span class="badge">Verify</span>
+                </button>
+            </div>
+
+            <!-- Search Box – Fixed -->
+            <div class="search-fixed-area" id="searchBoxContainer">
+                <!-- gcse-searchbox will be injected here -->
+            </div>
+
+            <!-- Results – Scrollable -->
+            <div class="results-scroll-area" id="resultsContainer">
+                <!-- gcse-searchresults will be injected here -->
+            </div>
+
+        </div>
+    </main>
+
+    <!-- ============================================================
+    FOOTER
+    ============================================================ -->
+    <footer>
+        <div class="container">
+            <span>Part of <a href="index.html">SPSSS · NFSU Portfolio</a></span>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+    JAVASCRIPT – Dynamic CSE Loader with Fixed Search + Scrollable Results
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            const toggleOptions = document.querySelectorAll('.toggle-option');
+            const searchBoxContainer = document.getElementById('searchBoxContainer');
+            const resultsContainer = document.getElementById('resultsContainer');
+            let currentCx = 'a689e93bb5bdd4de6'; // default
+
+            // ---- Helper: Clear containers and remove old scripts ----
+            function clearCSE() {
+                // Remove any existing CSE scripts
+                const scripts = document.querySelectorAll('script[src*="cse.google.com/cse.js"]');
+                scripts.forEach(el => el.remove());
+
+                // Clear containers
+                searchBoxContainer.innerHTML = '';
+                resultsContainer.innerHTML = '';
+
+                // Also remove any stray gsc classes that might linger
+                const gscElements = document.querySelectorAll('.gsc-control-cse, .gsc-results-wrapper-overlay');
+                gscElements.forEach(el => {
+                    if (el.parentNode && el.parentNode.id !== 'searchBoxContainer' && el.parentNode.id !==
+                        'resultsContainer') {
+                        el.remove();
+                    }
+                });
+            }
+
+            // ---- Helper: Load a CSE engine ----
+            function loadCSE(cx) {
+                currentCx = cx;
+
+                // Clear everything first
+                clearCSE();
+
+                // Create search box div
+                const searchBoxDiv = document.createElement('div');
+                searchBoxDiv.className = 'gcse-searchbox';
+                searchBoxContainer.appendChild(searchBoxDiv);
+
+                // Create results div
+                const resultsDiv = document.createElement('div');
+                resultsDiv.className = 'gcse-searchresults';
+                resultsContainer.appendChild(resultsDiv);
+
+                // Load the CSE script
+                const script = document.createElement('script');
+                script.src = `https://cse.google.com/cse.js?cx=${cx}`;
+                script.async = true;
+                script.defer = true;
+
+                // When the script loads, Google CSE will automatically render
+                // into all .gcse-searchbox and .gcse-searchresults elements
+                script.onload = function() {
+                    // Small delay to let CSE fully render, then adjust heights
+                    setTimeout(() => {
+                        // Force the results container to show scroll if needed
+                        resultsContainer.style.overflowY = 'auto';
+                    }, 300);
+                };
+
+                document.head.appendChild(script);
+            }
+
+            // ---- Handle toggle clicks ----
+            toggleOptions.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Update active state
+                    toggleOptions.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+
+                    // Load the corresponding search engine
+                    const cx = this.dataset.cx;
+                    loadCSE(cx);
+                });
+            });
+
+            // ---- Load the default engine on page load ----
+            // Wait a tick for DOM to be ready
+            setTimeout(() => {
+                const activeBtn = document.querySelector('.toggle-option.active');
+                if (activeBtn) {
+                    loadCSE(activeBtn.dataset.cx);
+                } else {
+                    // Fallback: load the first one
+                    loadCSE('a689e93bb5bdd4de6');
+                }
+            }, 100);
+
+            // ---- Handle URL hash for direct linking ----
+            if (window.location.hash) {
+                const hash = window.location.hash.replace('#', '');
+                const target = document.querySelector(`.toggle-option[data-name="${hash}"]`);
+                if (target) {
+                    setTimeout(() => {
+                        target.click();
+                    }, 200);
+                }
+            }
+
+            // ---- Handle window resize to keep scroll area behaving ----
+            let resizeTimeout;
+            window.addEventListener('resize', function() {
+                clearTimeout(resizeTimeout);
+                resizeTimeout = setTimeout(() => {
+                    // Force a reflow to keep scroll working
+                    if (resultsContainer) {
+                        resultsContainer.style.overflowY = 'auto';
+                    }
+                }, 200);
+            });
+
+        })();
+    </script>
 
 </body>
 </html>
