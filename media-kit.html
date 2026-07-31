@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Media Kit · SPSSS · NFSU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* Reuse your brand colors */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        :root {
+            --navy: #0F2A4A;
+            --gold: #C4A35A;
+            --gold-light: #DCC28D;
+            --cream: #F8F6F2;
+            --text: #1E1E1E;
+            --text-light: #555555;
+            --white: #FFFFFF;
+            --shadow: 0 8px 30px rgba(15, 42, 74, 0.07);
+            --radius: 12px;
+            --font: 'Inter', sans-serif;
+        }
+        body {
+            font-family: var(--font);
+            background: var(--cream);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 48px 56px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.5px;
+            border-bottom: 3px solid var(--gold);
+            padding-bottom: 12px;
+            margin-bottom: 24px;
+        }
+        .bio {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 32px;
+            line-height: 1.8;
+        }
+        .bio strong {
+            color: var(--navy);
+        }
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+        .report-card {
+            background: var(--cream);
+            border-radius: var(--radius);
+            padding: 20px;
+            transition: 0.2s;
+            border: 1px solid rgba(15, 42, 74, 0.04);
+        }
+        .report-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow);
+        }
+        .report-card h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 6px;
+        }
+        .report-card p {
+            font-size: 14px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+        .report-card a {
+            color: var(--gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+        .report-card a:hover {
+            text-decoration: underline;
+        }
+        .footer-note {
+            margin-top: 40px;
+            font-size: 13px;
+            color: var(--text-light);
+            border-top: 1px solid rgba(15, 42, 74, 0.06);
+            padding-top: 20px;
+            text-align: center;
+        }
+        .footer-note a {
+            color: var(--gold);
+            text-decoration: none;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px;
+            }
+            h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Media Kit</h1>
+
+        <div class="bio">
+            <p><strong>Satyasheel</strong> — M.Sc. Homeland Security candidate at NFSU, OSINT-certified (Basel Institute). I build automated intelligence pipelines and deliver structured risk briefs for critical infrastructure and law enforcement. I turn open-source data into actionable foresight.</p>
+            <p style="margin-top: 8px;">🔗 <a href="https://www.linkedin.com/in/p-satya03/" target="_blank">LinkedIn</a> · <a href="mailto:satyasheel.mshs@gj.nfsu.edu.in">Email</a></p>
+        </div>
+
+        <h2 style="font-size:20px; font-weight:600; color:var(--navy); margin-bottom:16px;">🏆 Featured Reports</h2>
+        <div class="report-grid">
+            <!-- Replace the href and text with your actual reports -->
+            <div class="report-card">
+                <h3>NEET 2026 Disinformation Patterns</h3>
+                <p>Verified disinformation campaigns using InVID and reverse image search.</p>
+                <a href="reports/weekly/neet-report.pdf" target="_blank">Read PDF →</a>
+            </div>
+            <div class="report-card">
+                <h3>Bangladesh Unrest: Rapid SITREP</h3>
+                <p>Flash assessment of protests in Dhaka with geolocated risk zones.</p>
+                <a href="reports/alert/bangladesh-unrest.pdf" target="_blank">Read PDF →</a>
+            </div>
+            <div class="report-card">
+                <h3>Global Cyber Threat Landscape 2026</h3>
+                <p>Comprehensive overview of emerging cyber risks and mitigation strategies.</p>
+                <a href="reports/weekly/cyber-threat.pdf" target="_blank">Read PDF →</a>
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <p>For press inquiries or collaboration, reach out via <a href="mailto:satyasheel.mshs@gj.nfsu.edu.in">email</a>.</p>
+            <p style="margin-top: 4px; opacity:0.6;">This page is part of my <a href="index.html">SPSSS · NFSU portfolio</a>.</p>
+        </div>
+    </div>
+</body>
+</html>
