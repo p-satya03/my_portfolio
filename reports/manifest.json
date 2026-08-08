@@ -37,6 +37,15 @@
       "date": "2026-02-27",
       "type": "alert",
       "tags": []
+    },
+    {
+      "file": "special/dht.pdf",
+      "title": "Digital Honey Trap - Indian Version",
+      "date": "-",
+      "type": "alert",
+      "tags": [
+        "Digital Honey Trap Guide"
+      ]
     }
   ],
   "videos": [],
