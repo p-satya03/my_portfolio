@@ -76,6 +76,16 @@
       "title": "Automated Report- 3 | 12th October",
       "type": "alert",
       "tags": []
+    },
+    {
+      "file": "special/report_run_20261012T053433Z_0f3204_a98af19c.pdf",
+      "title": "Hourly Trend Tracker Report- 4",
+      "date": "2026-10-12",
+      "type": "alert",
+      "tags": [
+        "Automated Report",
+        "Hourly Report"
+      ]
     }
   ],
   "videos": [],
