@@ -61,8 +61,23 @@
     },
     {
       "file": "special/firstAI_backedReport.pdf",
-      "title": "FIRST VERSION OF AUTOMATED LIVE REPORTING",
-      "type": "weekly",
+      "title": "Automated Report- 1 ",
+      "date": "10th October",
+      "type": "alert",
+      "tags": []
+    },
+    {
+      "file": "special/CJP_Report_2.pdf",
+      "title": "Automated Report- 2",
+      "date": " 12th October",
+      "type": "alert",
+      "tags": []
+    },
+    {
+      "file": "special/CJP_Report_3.pdf",
+      "title": "Automated Report- 3 ",
+      "date": "12th October",
+      "type": "alert",
       "tags": []
     }
   ],
