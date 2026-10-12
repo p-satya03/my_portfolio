@@ -61,22 +61,19 @@
     },
     {
       "file": "special/firstAI_backedReport.pdf",
-      "title": "Automated Report- 1 ",
-      "date": "10th October",
+      "title": "Automated Report- 1 | 10th October",
       "type": "alert",
       "tags": []
     },
     {
       "file": "special/CJP_Report_2.pdf",
-      "title": "Automated Report- 2",
-      "date": " 12th October",
+      "title": "Automated Report- 2 |  12th October",
       "type": "alert",
       "tags": []
     },
     {
       "file": "special/CJP_Report_3.pdf",
-      "title": "Automated Report- 3 ",
-      "date": "12th October",
+      "title": "Automated Report- 3 | 12th October",
       "type": "alert",
       "tags": []
     }
